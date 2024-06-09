@@ -3,7 +3,7 @@ extends CharacterBody3D
 
 const SPEED = 7.0
 const JUMP_VELOCITY = 4.5
-const accel = 6.0
+const accel = 8.0
 var GRAVITY = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 #@onready var pivot = $CamOrigin
@@ -129,12 +129,11 @@ func _physics_process(delta: float) -> void:
 			direction = (wallPoint - position).normalized()
 			position.x += direction.x * SPEED * delta
 			position.z += direction.z * SPEED * delta
-		elif !is_on_floor():
-			#TODO for some reason, acceleration only works if it is ! or "" not both
-			# 1.5 since model will misbehave after sprinting (.01 to test deceleration)
-			velocity.x = move_toward(velocity.x, 0, SPEED * 1.5)
-			velocity.z = move_toward(velocity.z, 0, SPEED * 1.5)
+		else:
 			$star/AnimationPlayer.play("Rest")
+			# 1.5 since model will misbehave after sprinting (only for stopping on a dime)
+			#velocity.x = move_toward(velocity.x, 0, SPEED * 1.5)
+			#velocity.z = move_toward(velocity.z, 0, SPEED * 1.5)
 
 	move_and_slide()
 	
@@ -145,7 +144,7 @@ func _physics_process(delta: float) -> void:
 	elif Vector3(velocity.x, 0, velocity.z).length() >= 1:
 		# Move model in direction of keys
 		var look_dir = Vector2(velocity.z, velocity.x)
-		model.rotation.y = look_dir.angle() + deg_to_rad(180)
+		model.rotation.y = lerp_angle(model.rotation.y, look_dir.angle() + deg_to_rad(180), rotate_speed * delta)
 
 
 func item_collected() -> void:
