@@ -1,0 +1,67 @@
+[gd_scene load_steps=9 format=3 uid="uid://jrroq7wi8bhm"]
+
+[ext_resource type="Material" uid="uid://bk8ewcvmq6bvu" path="res://GridTexture1.tres" id="1_enji8"]
+[ext_resource type="Script" path="res://Level/Player.gd" id="2_adyt8"]
+[ext_resource type="PackedScene" uid="uid://4mgxa2aoms4m" path="res://Characters/star.glb" id="3_s15la"]
+[ext_resource type="Script" path="res://Level/CameraArm.gd" id="4_bgwsj"]
+
+[sub_resource type="Environment" id="Environment_d866r"]
+background_energy_multiplier = 2.0
+ambient_light_color = Color(1, 1, 1, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3o36h"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ixhvj"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_8tglv"]
+
+[node name="Test Map" type="Node3D"]
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="Floor" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(23.1742, 0, 0, 0, 1, 0, 0, 0, 23.5646, 0, 0, 0)
+material = ExtResource("1_enji8")
+
+[node name="Wall" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(10.7879, 0, 0, 0, 4, 0, 0, 0, 1.77165, 4.134, 2.5, 9.44275)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_d866r")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.707107, 0.5, 0.5, -0.612372, 0.0794593, 0.786566, 0.353553, -0.862372, 0.362372, 14, 17, 13)
+light_energy = 0.322
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.24998, 0)
+script = ExtResource("2_adyt8")
+
+[node name="BodyCol" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_3o36h")
+
+[node name="BodyMesh" type="MeshInstance3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_ixhvj")
+
+[node name="Nose" type="MeshInstance3D" parent="Player/BodyMesh"]
+transform = Transform3D(0.376703, 0, 0, 0, 0.274877, 0, 0, 0, 0.99867, -0.00842977, 0.305434, -0.452408)
+mesh = SubResource("SphereMesh_8tglv")
+
+[node name="star" parent="Player" instance=ExtResource("3_s15la")]
+transform = Transform3D(-1.8978e-08, 0, 0.434167, 0, 0.434167, 0, -0.434167, 0, -1.8978e-08, 0, 0, 0)
+visible = false
+
+[node name="CamOrigin" type="Node3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="Player/CamOrigin"]
+transform = Transform3D(1, 0, 0, 0, 0.995757, 0.092023, 0, -0.092023, 0.995757, 0, 0, 0)
+spring_length = 3.0
+margin = 0.5
+script = ExtResource("4_bgwsj")
+
+[node name="Camera3D" type="Camera3D" parent="Player/CamOrigin/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 1.49012e-08, 0, -7.45058e-09, 1, 0, 0, 3)

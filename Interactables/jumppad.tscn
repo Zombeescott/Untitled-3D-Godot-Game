@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://58ojuf7581rj"]
+
+[ext_resource type="Script" path="res://jumppad.gd" id="1_fh4lf"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ifthw"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_pvoxp"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_i5l45"]
+
+[node name="Jumppad" type="Node3D"]
+script = ExtResource("1_fh4lf")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1.66919, 0, 0, 0, 1.66919, 0, 0, 0, 1.66919, 0, 0, 0)
+shape = SubResource("SphereShape3D_ifthw")
+
+[node name="Cushion" type="MeshInstance3D" parent="Area3D"]
+transform = Transform3D(1.79184, 0, 0, 0, 1.79184, 0, 0, 0, 1.79184, 0, 0, 0)
+mesh = SubResource("SphereMesh_pvoxp")
+
+[node name="Box" type="MeshInstance3D" parent="Area3D/Cushion"]
+transform = Transform3D(1, 0, 0, 0, 0.656273, 0, 0, 0, 1, 0, -0.195381, 0)
+mesh = SubResource("BoxMesh_i5l45")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

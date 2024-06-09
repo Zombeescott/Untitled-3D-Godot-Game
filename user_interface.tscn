@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://dbwckmuvocqrr"]
+
+[ext_resource type="Script" path="res://user_interface.gd" id="1_mntl7"]
+
+[node name="User Interface" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_mntl7")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Coin Count" type="Label" parent="CanvasLayer"]
+offset_left = 24.0
+offset_top = 22.0
+offset_right = 85.0
+offset_bottom = 45.0
+theme_override_font_sizes/font_size = 46
+text = "Coins: 0"

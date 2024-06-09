@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://b64ovwa3oxmk5"]
+
+[ext_resource type="Script" path="res://Characters/Player.gd" id="1_cye5l"]
+[ext_resource type="PackedScene" uid="uid://4mgxa2aoms4m" path="res://Characters/star.glb" id="2_arc6q"]
+[ext_resource type="PackedScene" uid="uid://dbwckmuvocqrr" path="res://user_interface.tscn" id="3_gp6i2"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3o36h"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ixhvj"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_8tglv"]
+
+[node name="Player" type="CharacterBody3D" groups=["entity", "player"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.24998, 0)
+script = ExtResource("1_cye5l")
+
+[node name="BodyCol" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_3o36h")
+
+[node name="BodyMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+visible = false
+mesh = SubResource("CapsuleMesh_ixhvj")
+
+[node name="Nose" type="MeshInstance3D" parent="BodyMesh"]
+transform = Transform3D(0.376703, 0, 0, 0, 0.274877, 0, 0, 0, 0.99867, -0.00842977, 0.305434, -0.452408)
+mesh = SubResource("SphereMesh_8tglv")
+
+[node name="star" parent="." instance=ExtResource("2_arc6q")]
+transform = Transform3D(0.416985, 0, 0, 0, 0.416985, 0, 0, 0, 0.416985, 0, 0, 0)
+
+[node name="CamOrigin" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CamOrigin"]
+transform = Transform3D(1, 0, 0, 0, 0.995757, 0.092023, 0, -0.092023, 0.995757, 0, 0, 0)
+spring_length = 4.0
+margin = 0.5
+
+[node name="Camera3D" type="Camera3D" parent="CamOrigin/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 1.49012e-08, 0, -7.45058e-09, 1, 0, 0, 4)
+
+[node name="User Interface" parent="." instance=ExtResource("3_gp6i2")]
