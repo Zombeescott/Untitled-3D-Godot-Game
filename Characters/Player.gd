@@ -1,8 +1,9 @@
 extends CharacterBody3D
 
 
-const SPEED = 5.0
+const SPEED = 7.0
 const JUMP_VELOCITY = 4.5
+const accel = 6.0
 var GRAVITY = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 #@onready var pivot = $CamOrigin
@@ -10,7 +11,6 @@ var GRAVITY = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var x_pivot = $CamOrigin/y_axis/x_axis
 @onready var t_wall_sens = $"CamOrigin/y_axis/Top Wall Sensor"
 @onready var b_wall_sens = $"CamOrigin/y_axis/Bottom Wall Sensor"
-#@onready var model = $BodyMesh
 @onready var model = $star
 
 @export var sens = 0.01
@@ -42,7 +42,6 @@ func _input(event: InputEvent) -> void:
 		x_pivot.rotation.x = clamp(x_pivot.rotation.x, deg_to_rad(-89), deg_to_rad(45))
 		y_pivot.rotation.y -= event.relative.x * sens
 		y_pivot.rotation.y = wrapf(y_pivot.rotation.y, deg_to_rad(0), deg_to_rad(360))
-		
 
 
 func _physics_process(delta: float) -> void:
@@ -66,7 +65,6 @@ func _physics_process(delta: float) -> void:
 		elif !doubleJump:
 			if wallHang:
 				wallHang = false
-				print(wallHang)
 				wallPoint = Vector3.ZERO
 			velocity.y = JUMP_VELOCITY
 			doubleJump = true
@@ -93,22 +91,25 @@ func _physics_process(delta: float) -> void:
 		crouching = false
 	
 	# Get the input direction and handle the movement/deceleration.
+	var speed_multiplier = 1
+	if crouching:
+		speed_multiplier = .5
+	elif sprinting:
+		speed_multiplier = 1.5
+	# Make player move
+	var vy = velocity.y
+	velocity.y = 0
 	var input_dir := Input.get_vector("left", "right", "forward", "back")
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y))
 	direction = direction.rotated(Vector3.UP, y_pivot.rotation.y).normalized()
+	# Make player accelerate
+	velocity = lerp(velocity, direction * SPEED * speed_multiplier, accel * delta)
+	velocity.y = vy
 	
 	# Direction provided
 	if direction and !groundPound:
-		var speed_multiplier = 1
-		if crouching:
-			speed_multiplier = .5
-		elif sprinting:
-			speed_multiplier = 1.5
-		
-		velocity.x = direction.x * SPEED * speed_multiplier
-		velocity.z = direction.z * SPEED * speed_multiplier
-		# Trying to add friction
-		#velocity += velocity.normalized() * (friction * delta)
+		$star/AnimationPlayer.speed_scale = speed_multiplier
+		$star/AnimationPlayer.play("Walking")
 		
 		if wallHang:
 			if position.distance_to(wallPoint) >= 1:
@@ -128,10 +129,12 @@ func _physics_process(delta: float) -> void:
 			direction = (wallPoint - position).normalized()
 			position.x += direction.x * SPEED * delta
 			position.z += direction.z * SPEED * delta
-		else:
+		elif !is_on_floor():
+			#TODO for some reason, acceleration only works if it is ! or "" not both
 			# 1.5 since model will misbehave after sprinting (.01 to test deceleration)
 			velocity.x = move_toward(velocity.x, 0, SPEED * 1.5)
 			velocity.z = move_toward(velocity.z, 0, SPEED * 1.5)
+			$star/AnimationPlayer.play("Rest")
 
 	move_and_slide()
 	
@@ -153,7 +156,7 @@ func interaction_occured(action: String) -> void:
 	match action:
 		"jumppad":
 			velocity.y = JUMP_VELOCITY * 2
-			# Refresh doublejump without touching ground
+			# Refresh without touching ground
 			doubleJump = false
 			groundPound = false
 			gravity = GRAVITY
