@@ -13,9 +13,14 @@ const JUMP_VELOCITY = 4.5
 @export var sens = 0.01
 @export var rotate_speed = 12.0
 @export var ground_accel = 10.0
-@export var air_accel = 2.0
+@export var air_accel = 9.5
 
-var const_gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+@export var initial_jump_velo: float = 1
+@export var jump_velo_rate: float = 1.15
+var curr_jump_velo: float
+
+#var const_gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+var const_gravity = 12
 var gravity: float
 var aiming: bool = false
 var sprinting: bool = false
@@ -26,6 +31,7 @@ var spun: bool = false
 var spinning: bool = false
 # Jumping
 var jumpPad: bool = false
+var jumping: bool = false
 var doubleJump: bool = false
 # Wall hanging
 var wallHang: bool = false
@@ -64,20 +70,32 @@ func _physics_process(delta: float) -> void:
 			doubleJump = false
 	
 	# Handle actions.
-	if Input.is_action_just_pressed("jump"):
-		if is_on_floor():
-			velocity.y = JUMP_VELOCITY
-		# Check if player can hang off a wall
-		elif !wallHang and !t_wall_sens.is_colliding() and b_wall_sens.is_colliding():
-			wallHang = true
-			velocity.y = 0
-			wallPoint = b_wall_sens.get_collision_point()
-		elif !doubleJump and !groundPound:
-			if wallHang:
-				wallHang = false
-				wallPoint = Vector3.ZERO
-			velocity.y = JUMP_VELOCITY
-			doubleJump = true
+	if Input.is_action_pressed("jump"):
+		if Input.is_action_just_pressed("jump"):
+			if is_on_floor():
+				jumping = true
+				velocity.y = initial_jump_velo
+				curr_jump_velo = initial_jump_velo
+			elif !wallHang and !t_wall_sens.is_colliding() and b_wall_sens.is_colliding():
+				# Check if player can hang off a wall
+				wallHang = true
+				velocity.y = 0
+				wallPoint = b_wall_sens.get_collision_point()
+			elif !doubleJump and !groundPound:
+				# Double jumping
+				if wallHang:
+					wallHang = false
+					wallPoint = Vector3.ZERO
+				# Less velocity for double jump
+				velocity.y = initial_jump_velo / 1.25
+				curr_jump_velo = initial_jump_velo / 1.25
+				doubleJump = true
+		else:
+			# Holding down jump
+			if velocity.y >= 0 and !wallHang and !groundPound:
+				# Slow jump down longer jump button is held
+				curr_jump_velo /= jump_velo_rate
+				velocity.y += curr_jump_velo
 	# Aim
 	if Input.is_action_just_pressed("aim"):
 		aiming = true
@@ -111,12 +129,13 @@ func _physics_process(delta: float) -> void:
 			$PlayerModel/PlayerAnimation.play("spin_attack")
 			velocity.y = 0
 	
-	# Get the input direction and handle the movement/deceleration.
+	# Handle the movement/deceleration.
 	var speed_multiplier = 1
 	if crouching:
 		speed_multiplier = .5
 	elif sprinting:
 		speed_multiplier = 1.5
+	
 	# Make player move
 	var vy = velocity.y
 	velocity.y = 0
@@ -155,10 +174,10 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	
-	# if statements to change direction model is facing while moving
+	# Change direction model is facing while moving
 	if aiming:
-			# Move model in direction of camera
-			model.rotation.y = lerp_angle(model.rotation.y, y_pivot.rotation.y, rotate_speed * delta)
+		# Move model in direction of camera
+		model.rotation.y = lerp_angle(model.rotation.y, y_pivot.rotation.y, rotate_speed * delta)
 	elif Vector3(velocity.x, 0, velocity.z).length() >= 1:
 		# Move model in direction of keys
 		var look_dir = Vector2(velocity.z, velocity.x)
