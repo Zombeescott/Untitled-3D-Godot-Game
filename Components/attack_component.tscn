@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://da0u1sw1ccqqy"]
+
+[ext_resource type="Script" path="res://Components/attack_component.gd" id="1_igsa3"]
+
+[node name="Attack Component" type="Area3D"]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_igsa3")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

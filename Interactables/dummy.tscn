@@ -1,0 +1,43 @@
+[gd_scene load_steps=8 format=3 uid="uid://cdw25ygsbdxln"]
+
+[ext_resource type="Script" path="res://Interactables/dummy.gd" id="1_5ttgm"]
+[ext_resource type="PackedScene" uid="uid://ct0asw0hbjxjs" path="res://Components/health_component.tscn" id="2_ynel1"]
+[ext_resource type="PackedScene" uid="uid://boeput6aolbwp" path="res://Components/hitbox_component.tscn" id="3_suh7q"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_sxj66"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_85nb1"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_i38sd"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_h81jh"]
+
+[node name="Dummy" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.429008, 0)
+script = ExtResource("1_5ttgm")
+
+[node name="Physics collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CylinderShape3D_sxj66")
+
+[node name="Health component" parent="." instance=ExtResource("2_ynel1")]
+MAX_HEALTH = 1000
+
+[node name="Hitbox component" parent="." node_paths=PackedStringArray("health_component") instance=ExtResource("3_suh7q")]
+health_component = NodePath("../Health component")
+
+[node name="Hitbox collision" type="CollisionShape3D" parent="Hitbox component"]
+transform = Transform3D(1.025, 0, 0, 0, 1.025, 0, 0, 0, 1.025, 0, 1, 0)
+shape = SubResource("CylinderShape3D_85nb1")
+
+[node name="Body mesh" type="MeshInstance3D" parent="Hitbox component"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CylinderMesh_i38sd")
+
+[node name="Stand" type="MeshInstance3D" parent="Hitbox component/Body mesh"]
+transform = Transform3D(0.49041, 0, 0, 0, 0.234318, 0, 0, 0, 0.49041, 0, -1.19594, 0)
+mesh = SubResource("CylinderMesh_h81jh")
+
+[node name="Health label" type="Label3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 2.50335, 0)
+text = "1000"

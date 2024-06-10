@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://jrroq7wi8bhm"]
+[gd_scene load_steps=8 format=3 uid="uid://jrroq7wi8bhm"]
 
 [ext_resource type="Material" uid="uid://bk8ewcvmq6bvu" path="res://Textures/GridTexture1.tres" id="1_enji8"]
 [ext_resource type="Script" path="res://Items/item_component.gd" id="1_yrwij"]
 [ext_resource type="PackedScene" uid="uid://b64ovwa3oxmk5" path="res://Characters/player.tscn" id="2_q6ukj"]
 [ext_resource type="PackedScene" uid="uid://cxsts7lsgjqk3" path="res://Items/coin.tscn" id="4_n1usy"]
 [ext_resource type="PackedScene" uid="uid://58ojuf7581rj" path="res://Interactables/jumppad.tscn" id="5_qo6t7"]
+[ext_resource type="PackedScene" uid="uid://cdw25ygsbdxln" path="res://Interactables/dummy.tscn" id="6_0c2wx"]
 
 [sub_resource type="Environment" id="Environment_d866r"]
 background_energy_multiplier = 2.0
@@ -39,5 +40,22 @@ light_energy = 0.322
 [node name="Player" parent="." instance=ExtResource("2_q6ukj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.16253, 0)
 
-[node name="Coin" parent="." instance=ExtResource("4_n1usy")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.630128, -2.94644)
+[node name="Dummy" parent="." instance=ExtResource("6_0c2wx")]
+transform = Transform3D(0.867679, 0, -0.497125, 0, 1, 0, 0.497125, 0, 0.867679, -7.92069, 1.13562, 5.96041)
+
+[node name="Coin group" type="Node3D" parent="."]
+
+[node name="Coin" parent="Coin group" instance=ExtResource("4_n1usy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.40424, 0.630128, -10.2356)
+
+[node name="Coin2" parent="Coin group" instance=ExtResource("4_n1usy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.40424, 0.630128, -10.2356)
+
+[node name="Coin3" parent="Coin group" instance=ExtResource("4_n1usy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.40424, 0.630128, -10.2356)
+
+[node name="Coin4" parent="Coin group" instance=ExtResource("4_n1usy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.40424, 0.630128, -10.2356)
+
+[node name="Coin5" parent="Coin group" instance=ExtResource("4_n1usy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.40424, 0.630128, -10.2356)

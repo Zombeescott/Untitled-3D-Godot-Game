@@ -3,34 +3,38 @@ extends CharacterBody3D
 
 const SPEED = 7.0
 const JUMP_VELOCITY = 4.5
-const accel = 8.0
-var GRAVITY = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-#@onready var pivot = $CamOrigin
-@onready var y_pivot = $CamOrigin/y_axis
-@onready var x_pivot = $CamOrigin/y_axis/x_axis
-@onready var t_wall_sens = $"CamOrigin/y_axis/Top Wall Sensor"
-@onready var b_wall_sens = $"CamOrigin/y_axis/Bottom Wall Sensor"
-@onready var model = $star
+@onready var y_pivot = $Camera/y_axis
+@onready var x_pivot = $Camera/y_axis/x_axis
+@onready var t_wall_sens = $"Camera/y_axis/Top Wall Sensor"
+@onready var b_wall_sens = $"Camera/y_axis/Bottom Wall Sensor"
+@onready var model = $PlayerModel
 
 @export var sens = 0.01
 @export var rotate_speed = 12.0
+@export var ground_accel = 10.0
+@export var air_accel = 2.0
 
-var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
+var const_gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+var gravity: float
 var aiming: bool = false
 var sprinting: bool = false
 var crouching: bool = false
 var groundPound: bool = false
-
+# Spin attack
+var spun: bool = false
+var spinning: bool = false
+# Jumping
 var jumpPad: bool = false
 var doubleJump: bool = false
-
+# Wall hanging
 var wallHang: bool = false
 var wallPoint: Vector3
 
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	gravity = const_gravity
 
 
 func _input(event: InputEvent) -> void:
@@ -46,12 +50,18 @@ func _input(event: InputEvent) -> void:
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
-	if not is_on_floor() and !wallHang:
+	if !is_on_floor() and !wallHang and !spinning:
 		velocity.y -= gravity * delta
+	elif spinning:
+		velocity.y -= (gravity * delta) / 2
 	else:
+		# On the ground
 		if groundPound:
-			$star/PlayerAnimation.play("recover")
-		doubleJump = false
+			$PlayerModel/PlayerAnimation.play("recover")
+		if spun:
+			spun = false
+		if doubleJump:
+			doubleJump = false
 	
 	# Handle actions.
 	if Input.is_action_just_pressed("jump"):
@@ -62,7 +72,7 @@ func _physics_process(delta: float) -> void:
 			wallHang = true
 			velocity.y = 0
 			wallPoint = b_wall_sens.get_collision_point()
-		elif !doubleJump:
+		elif !doubleJump and !groundPound:
 			if wallHang:
 				wallHang = false
 				wallPoint = Vector3.ZERO
@@ -75,20 +85,31 @@ func _physics_process(delta: float) -> void:
 		aiming = false
 	# Sprint
 	if Input.is_action_just_pressed("sprint"):
+		#TODO don't allow sprinting mid-air when other features are complete
 		sprinting = true
 	if Input.is_action_just_released("sprint"):
 		sprinting = false
 	# Crouch
 	if Input.is_action_just_pressed("crouch"):
-		if !is_on_floor():
+		if !is_on_floor() and !groundPound and !wallHang:
+			if spinning:
+				$PlayerModel/PlayerAnimation.stop()
+				spinning = false
 			groundPound = true
 			velocity = Vector3.ZERO
 			gravity = 0
-			$star/PlayerAnimation.play("start_ground_pound")
+			$PlayerModel/PlayerAnimation.play("start_ground_pound")
 		else:
 			crouching = true
 	if Input.is_action_just_released("crouch"):
 		crouching = false
+	if Input.is_action_just_pressed("attack"):
+		if !spun and !spinning and !groundPound:
+			if !is_on_floor():
+				spun = true
+			spinning = true
+			$PlayerModel/PlayerAnimation.play("spin_attack")
+			velocity.y = 0
 	
 	# Get the input direction and handle the movement/deceleration.
 	var speed_multiplier = 1
@@ -103,13 +124,16 @@ func _physics_process(delta: float) -> void:
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y))
 	direction = direction.rotated(Vector3.UP, y_pivot.rotation.y).normalized()
 	# Make player accelerate
-	velocity = lerp(velocity, direction * SPEED * speed_multiplier, accel * delta)
+	if is_on_floor() or spinning:
+		velocity = lerp(velocity, direction * SPEED * speed_multiplier, ground_accel * delta)
+	else:
+		velocity = lerp(velocity, direction * SPEED * speed_multiplier, air_accel * delta)
 	velocity.y = vy
 	
 	# Direction provided
 	if direction and !groundPound:
-		$star/AnimationPlayer.speed_scale = speed_multiplier
-		$star/AnimationPlayer.play("Walking")
+		$PlayerModel/AnimationPlayer.speed_scale = speed_multiplier
+		$PlayerModel/AnimationPlayer.play("Walking")
 		
 		if wallHang:
 			if position.distance_to(wallPoint) >= 1:
@@ -121,19 +145,13 @@ func _physics_process(delta: float) -> void:
 		
 	# No direction input
 	elif !groundPound:
-		# Trying to add friction (Add is_on_floor for momentum midair)
-		#if velocity.length() >= (friction * delta):
-		#	velocity -= velocity.normalized() * (friction * delta)
 		if wallHang and wallPoint != Vector3.ZERO:
-			# Makes return to point move smoother
+			# Makes return to wallpoint smoother after moving
 			direction = (wallPoint - position).normalized()
 			position.x += direction.x * SPEED * delta
 			position.z += direction.z * SPEED * delta
 		else:
-			$star/AnimationPlayer.play("Rest")
-			# 1.5 since model will misbehave after sprinting (only for stopping on a dime)
-			#velocity.x = move_toward(velocity.x, 0, SPEED * 1.5)
-			#velocity.z = move_toward(velocity.z, 0, SPEED * 1.5)
+			$PlayerModel/AnimationPlayer.play("Rest")
 
 	move_and_slide()
 	
@@ -149,7 +167,6 @@ func _physics_process(delta: float) -> void:
 
 func item_collected() -> void:
 	$"User Interface".update_ui()
-	
 
 func interaction_occured(action: String) -> void:
 	match action:
@@ -158,7 +175,8 @@ func interaction_occured(action: String) -> void:
 			# Refresh without touching ground
 			doubleJump = false
 			groundPound = false
-			gravity = GRAVITY
+			spun = false
+			gravity = const_gravity
 
 
 func _on_player_animation_animation_finished(anim_name: StringName) -> void:
@@ -168,4 +186,6 @@ func _on_player_animation_animation_finished(anim_name: StringName) -> void:
 			velocity.y -= 5
 		"recover":
 			groundPound = false
-			gravity = GRAVITY
+			gravity = const_gravity
+		"spin_attack":
+			spinning = false

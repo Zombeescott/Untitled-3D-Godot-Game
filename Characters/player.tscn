@@ -1,9 +1,14 @@
-[gd_scene load_steps=24 format=3 uid="uid://b64ovwa3oxmk5"]
+[gd_scene load_steps=30 format=3 uid="uid://b64ovwa3oxmk5"]
 
 [ext_resource type="Script" path="res://Characters/Player.gd" id="1_cye5l"]
+[ext_resource type="PackedScene" uid="uid://boeput6aolbwp" path="res://Components/hitbox_component.tscn" id="2_vkfhd"]
+[ext_resource type="PackedScene" uid="uid://ct0asw0hbjxjs" path="res://Components/health_component.tscn" id="3_al0my"]
 [ext_resource type="PackedScene" uid="uid://dbwckmuvocqrr" path="res://user_interface.tscn" id="3_gp6i2"]
+[ext_resource type="PackedScene" uid="uid://da0u1sw1ccqqy" path="res://Components/attack_component.tscn" id="4_yqbq5"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3o36h"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_32cv8"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_570wx"]
 resource_name = "Body"
@@ -487,6 +492,62 @@ _data = {
 "Walking": SubResource("Animation_pgysp")
 }
 
+[sub_resource type="Animation" id="Animation_u3rn4"]
+resource_name = "recover"
+length = 0.7
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.04, 0.17, 0.35, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1.56917, 2.07053, 1),
+"update": 0,
+"values": [Vector3(0.429649, 0.429649, 0.429649), Vector3(0.43, 0.025, 0.43), Vector3(0.43, 0.12, 0.43), Vector3(0.43, 0.25, 0.43), Vector3(0.429649, 0.429649, 0.429649)]
+}
+
+[sub_resource type="Animation" id="Animation_n4lhr"]
+resource_name = "spin_attack"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 12.5664, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Spin attack component/Attack circle:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Armature:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.7, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(1.2, 0.95, 1.2), Vector3(1.2, 0.95, 1.2), Vector3(1, 1, 1)]
+}
+
 [sub_resource type="Animation" id="Animation_mjh7u"]
 resource_name = "start_ground_pound"
 length = 0.5
@@ -515,44 +576,41 @@ tracks/1/keys = {
 "values": [Vector3(0, 0, 0), Vector3(0, 1, 1), Vector3(0, 2, 0), Vector3(0, 1, -1), Vector3(0, 0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_u3rn4"]
-resource_name = "recover"
-length = 0.7
-step = 0.01
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.04, 0.17, 0.35, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1.56917, 2.07053, 1),
-"update": 0,
-"values": [Vector3(0.429649, 0.429649, 0.429649), Vector3(0.43, 0.025, 0.43), Vector3(0.43, 0.12, 0.43), Vector3(0.43, 0.25, 0.43), Vector3(0.429649, 0.429649, 0.429649)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_7di2k"]
 _data = {
 "recover": SubResource("Animation_u3rn4"),
+"spin_attack": SubResource("Animation_n4lhr"),
 "start_ground_pound": SubResource("Animation_mjh7u")
 }
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_tcx8h"]
+height = 1.0
+radius = 1.25
 
 [sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_b72ty"]
 
 [node name="Player" type="CharacterBody3D" groups=["entity", "player"]]
 script = ExtResource("1_cye5l")
 
-[node name="BodyCol" type="CollisionShape3D" parent="."]
+[node name="Physics collision" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_3o36h")
 
-[node name="star" type="Node3D" parent="."]
-transform = Transform3D(0.429649, 0, 0, 0, 0.429649, 7.51223e-08, 0, -7.51223e-08, 0.429649, 0, 0, 0)
+[node name="Hitbox component" parent="." node_paths=PackedStringArray("health_component") instance=ExtResource("2_vkfhd")]
+health_component = NodePath("../Health component")
 
-[node name="Armature" type="Node3D" parent="star"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox component"]
+transform = Transform3D(1.02469, 0, 0, 0, 1.02469, 0, 0, 0, 1.02469, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_32cv8")
 
-[node name="Skeleton3D" type="Skeleton3D" parent="star/Armature"]
+[node name="Health component" parent="." instance=ExtResource("3_al0my")]
+
+[node name="PlayerModel" type="Node3D" parent="."]
+transform = Transform3D(0.429649, 0, 0, 0, 0.429649, 0, 0, 0, 0.429649, 0, 0, 0)
+
+[node name="Armature" type="Node3D" parent="PlayerModel"]
+
+[node name="Skeleton3D" type="Skeleton3D" parent="PlayerModel/Armature"]
 bones/0/name = "Base"
 bones/0/parent = -1
 bones/0/rest = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -0.0526446, 1.68292, 0.5153)
@@ -565,7 +623,7 @@ bones/1/parent = 0
 bones/1/rest = Transform3D(0.996766, 0.0801884, 0.00526729, -0.0166123, 0.141479, 0.989802, 0.0786254, -0.986688, 0.142353, 0.425657, 1.01196, -0.843771)
 bones/1/enabled = true
 bones/1/position = Vector3(0.425657, 1.01196, -0.843771)
-bones/1/rotation = Quaternion(-0.654395, -0.0242881, -0.0320497, 0.755082)
+bones/1/rotation = Quaternion(-0.654396, -0.0242881, -0.0320497, 0.755082)
 bones/1/scale = Vector3(1, 1, 1)
 bones/2/name = "Bone.002"
 bones/2/parent = 1
@@ -607,7 +665,7 @@ bones/7/parent = 6
 bones/7/rest = Transform3D(0.926001, -0.375844, 0.0355445, 0.376517, 0.912574, -0.159512, 0.0275147, 0.161092, 0.986556, 0, 0.630593, 5.99321e-08)
 bones/7/enabled = true
 bones/7/position = Vector3(0, 0.630593, 5.99321e-08)
-bones/7/rotation = Quaternion(0.0819625, 0.00205283, 0.192342, 0.977897)
+bones/7/rotation = Quaternion(0.0819625, 0.00205282, 0.192341, 0.977897)
 bones/7/scale = Vector3(1, 1, 1)
 bones/8/name = "Leg Right"
 bones/8/parent = 0
@@ -621,69 +679,77 @@ bones/9/parent = 8
 bones/9/rest = Transform3D(0.983613, -0.17726, 0.0329417, 0.176879, 0.913332, -0.366794, 0.0349311, 0.36661, 0.929719, -3.6438e-08, 0.606402, -5.21541e-08)
 bones/9/enabled = true
 bones/9/position = Vector3(-3.6438e-08, 0.606402, -5.21541e-08)
-bones/9/rotation = Quaternion(0.187458, -0.000508492, 0.0905176, 0.978093)
+bones/9/rotation = Quaternion(0.187458, -0.000508487, 0.0905176, 0.978093)
 bones/9/scale = Vector3(1, 1, 1)
 
-[node name="Body" type="MeshInstance3D" parent="star/Armature/Skeleton3D"]
+[node name="Body" type="MeshInstance3D" parent="PlayerModel/Armature/Skeleton3D"]
 mesh = SubResource("ArrayMesh_vo5tt")
 skin = SubResource("Skin_pg2l2")
 
-[node name="Eye Left" type="MeshInstance3D" parent="star/Armature/Skeleton3D"]
+[node name="Eye Left" type="MeshInstance3D" parent="PlayerModel/Armature/Skeleton3D"]
 mesh = SubResource("ArrayMesh_3mb3x")
 skin = SubResource("Skin_pg2l2")
 
-[node name="Eye Right" type="MeshInstance3D" parent="star/Armature/Skeleton3D"]
+[node name="Eye Right" type="MeshInstance3D" parent="PlayerModel/Armature/Skeleton3D"]
 mesh = SubResource("ArrayMesh_p1q1o")
 skin = SubResource("Skin_pg2l2")
 
-[node name="Tooth Left" type="MeshInstance3D" parent="star/Armature/Skeleton3D"]
+[node name="Tooth Left" type="MeshInstance3D" parent="PlayerModel/Armature/Skeleton3D"]
 mesh = SubResource("ArrayMesh_gdjb2")
 skin = SubResource("Skin_pg2l2")
 
-[node name="Tooth Right" type="MeshInstance3D" parent="star/Armature/Skeleton3D"]
+[node name="Tooth Right" type="MeshInstance3D" parent="PlayerModel/Armature/Skeleton3D"]
 mesh = SubResource("ArrayMesh_777dn")
 skin = SubResource("Skin_pg2l2")
 
-[node name="Tounge" type="MeshInstance3D" parent="star/Armature/Skeleton3D"]
+[node name="Tounge" type="MeshInstance3D" parent="PlayerModel/Armature/Skeleton3D"]
 mesh = SubResource("ArrayMesh_0tomb")
 skin = SubResource("Skin_pg2l2")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="star"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PlayerModel"]
 libraries = {
 "": SubResource("AnimationLibrary_w7b3e")
 }
 autoplay = "Rest"
 
-[node name="PlayerAnimation" type="AnimationPlayer" parent="star"]
+[node name="PlayerAnimation" type="AnimationPlayer" parent="PlayerModel"]
 libraries = {
 "": SubResource("AnimationLibrary_7di2k")
 }
 speed_scale = 1.5
 
-[node name="CamOrigin" type="Node3D" parent="."]
+[node name="Spin attack component" parent="PlayerModel" instance=ExtResource("4_yqbq5")]
+transform = Transform3D(2.32748, 0, 0, 0, 2.32748, -4.0695e-07, 0, 4.0695e-07, 2.32748, 0, 0, 0)
+
+[node name="Attack circle" type="CollisionShape3D" parent="PlayerModel/Spin attack component"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.952965, 0)
+shape = SubResource("CylinderShape3D_tcx8h")
+disabled = true
+
+[node name="Camera" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 
-[node name="y_axis" type="Node3D" parent="CamOrigin"]
+[node name="y_axis" type="Node3D" parent="Camera"]
 
-[node name="x_axis" type="Node3D" parent="CamOrigin/y_axis"]
+[node name="x_axis" type="Node3D" parent="Camera/y_axis"]
 
-[node name="SpringArm3D" type="SpringArm3D" parent="CamOrigin/y_axis/x_axis"]
+[node name="SpringArm3D" type="SpringArm3D" parent="Camera/y_axis/x_axis"]
 transform = Transform3D(1, 0, 0, 0, 0.995757, 0.092023, 0, -0.092023, 0.995757, 0, 0, 0)
 shape = SubResource("SeparationRayShape3D_b72ty")
 spring_length = 4.0
 margin = 0.5
 
-[node name="Camera3D" type="Camera3D" parent="CamOrigin/y_axis/x_axis/SpringArm3D"]
+[node name="Camera3D" type="Camera3D" parent="Camera/y_axis/x_axis/SpringArm3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 1.49012e-08, 0, -7.45058e-09, 1, 0, 0, 4)
 
-[node name="Top Wall Sensor" type="RayCast3D" parent="CamOrigin/y_axis"]
+[node name="Top Wall Sensor" type="RayCast3D" parent="Camera/y_axis"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.661607, 0)
 target_position = Vector3(0, 0, -1)
 
-[node name="Bottom Wall Sensor" type="RayCast3D" parent="CamOrigin/y_axis"]
+[node name="Bottom Wall Sensor" type="RayCast3D" parent="Camera/y_axis"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
 target_position = Vector3(0, 0, -1)
 
 [node name="User Interface" parent="." instance=ExtResource("3_gp6i2")]
 
-[connection signal="animation_finished" from="star/PlayerAnimation" to="." method="_on_player_animation_animation_finished"]
+[connection signal="animation_finished" from="PlayerModel/PlayerAnimation" to="." method="_on_player_animation_animation_finished"]
