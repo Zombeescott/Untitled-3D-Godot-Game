@@ -52,6 +52,7 @@ func _input(event: InputEvent) -> void:
 		x_pivot.rotation.x = clamp(x_pivot.rotation.x, deg_to_rad(-89), deg_to_rad(45))
 		y_pivot.rotation.y -= event.relative.x * sens
 		y_pivot.rotation.y = wrapf(y_pivot.rotation.y, deg_to_rad(0), deg_to_rad(360))
+		
 
 
 func _physics_process(delta: float) -> void:
@@ -70,6 +71,19 @@ func _physics_process(delta: float) -> void:
 			doubleJump = false
 	
 	# Handle actions.
+	
+	# Thumbstick movement
+	if InputEventJoypadMotion:
+		if Input.is_action_pressed("camera_left"):
+			y_pivot.rotation.y += Input.get_action_strength("camera_left") * sens * 3
+		if Input.is_action_pressed("camera_right"):
+			y_pivot.rotation.y -= Input.get_action_strength("camera_right") * sens * 3
+		if Input.is_action_pressed("camera_up"):
+			x_pivot.rotation.x += Input.get_action_strength("camera_up") * sens * 3
+		if Input.is_action_pressed("camera_down"):
+			x_pivot.rotation.x -= Input.get_action_strength("camera_down") * sens * 3
+		y_pivot.rotation.y = wrapf(y_pivot.rotation.y, deg_to_rad(0), deg_to_rad(360))
+		x_pivot.rotation.x = clamp(x_pivot.rotation.x, deg_to_rad(-89), deg_to_rad(45))
 	if Input.is_action_pressed("jump"):
 		if Input.is_action_just_pressed("jump"):
 			if is_on_floor():
