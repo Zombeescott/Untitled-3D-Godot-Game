@@ -6,7 +6,6 @@ class_name HitboxComponent
 
 
 func damage_dealt(attack : AttackComponent):
-	#print("attack entered hitbox")
 	if health_component:
 		health_component.take_damage(attack)
 

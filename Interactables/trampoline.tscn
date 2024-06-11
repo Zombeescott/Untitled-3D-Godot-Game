@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://dlmbjbdw0ka2b"]
+
+[ext_resource type="PackedScene" uid="uid://olsjtcsrhd0b" path="res://Interactables/jumppad_component.tscn" id="1_xwc0x"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ifthw"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_pvoxp"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_i5l45"]
+
+[node name="Trampoline" type="Node3D"]
+
+[node name="Jumppad Component" parent="." instance=ExtResource("1_xwc0x")]
+type = "trampoline"
+strength = 9.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Jumppad Component"]
+transform = Transform3D(1.66919, 0, 0, 0, 1.66919, 0, 0, 0, 1.66919, 0, 0, 0)
+shape = SubResource("SphereShape3D_ifthw")
+
+[node name="Cushion" type="MeshInstance3D" parent="Jumppad Component"]
+transform = Transform3D(1.79184, 0, 0, 0, 1.79184, 0, 0, 0, 1.79184, 0, 0, 0)
+mesh = SubResource("SphereMesh_pvoxp")
+skeleton = NodePath("")
+
+[node name="Box" type="MeshInstance3D" parent="Jumppad Component/Cushion"]
+transform = Transform3D(1, 0, 0, 0, 0.656273, 0, 0, 0, 1, 0, -0.195381, 0)
+mesh = SubResource("BoxMesh_i5l45")

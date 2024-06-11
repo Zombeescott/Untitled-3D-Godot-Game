@@ -88,7 +88,7 @@ func _physics_process(delta: float) -> void:
 		if Input.is_action_just_pressed("jump"):
 			if is_on_floor():
 				jumping = true
-				velocity.y = initial_jump_velo
+				velocity.y = initial_jump_velo * 2.0
 				curr_jump_velo = initial_jump_velo
 			elif !wallHang and !t_wall_sens.is_colliding() and b_wall_sens.is_colliding():
 				# Check if player can hang off a wall
@@ -101,7 +101,7 @@ func _physics_process(delta: float) -> void:
 					wallHang = false
 					wallPoint = Vector3.ZERO
 				# Less velocity for double jump
-				velocity.y = initial_jump_velo / 1.25
+				velocity.y = (initial_jump_velo / 1.25) * 1.5
 				curr_jump_velo = initial_jump_velo / 1.25
 				doubleJump = true
 		else:
@@ -201,10 +201,17 @@ func _physics_process(delta: float) -> void:
 func item_collected() -> void:
 	$"User Interface".update_ui()
 
-func interaction_occured(action: String) -> void:
-	match action:
-		"jumppad":
-			velocity.y = JUMP_VELOCITY * 2
+func interaction_occured(action) -> void:
+	match action.type:
+		"trampoline":
+			velocity.y = action.strength
+			# Refresh without touching ground
+			doubleJump = false
+			groundPound = false
+			spun = false
+			gravity = const_gravity
+		"bubble":
+			velocity.y = action.strength
 			# Refresh without touching ground
 			doubleJump = false
 			groundPound = false

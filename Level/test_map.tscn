@@ -1,11 +1,27 @@
-[gd_scene load_steps=8 format=3 uid="uid://jrroq7wi8bhm"]
+[gd_scene load_steps=10 format=3 uid="uid://jrroq7wi8bhm"]
 
 [ext_resource type="Material" uid="uid://bk8ewcvmq6bvu" path="res://Textures/GridTexture1.tres" id="1_enji8"]
 [ext_resource type="Script" path="res://Items/item_component.gd" id="1_yrwij"]
 [ext_resource type="PackedScene" uid="uid://b64ovwa3oxmk5" path="res://Characters/player.tscn" id="2_q6ukj"]
+[ext_resource type="PackedScene" uid="uid://dex7654wh24he" path="res://Interactables/bubble.tscn" id="4_3q60y"]
 [ext_resource type="PackedScene" uid="uid://cxsts7lsgjqk3" path="res://Items/coin.tscn" id="4_n1usy"]
-[ext_resource type="PackedScene" uid="uid://58ojuf7581rj" path="res://Interactables/jumppad.tscn" id="5_qo6t7"]
+[ext_resource type="PackedScene" uid="uid://dlmbjbdw0ka2b" path="res://Interactables/trampoline.tscn" id="5_qo6t7"]
 [ext_resource type="PackedScene" uid="uid://cdw25ygsbdxln" path="res://Interactables/dummy.tscn" id="6_0c2wx"]
+
+[sub_resource type="GDScript" id="GDScript_10oj1"]
+script/source = "extends Node3D
+class_name BounceComponent
+
+
+@export var type: String
+@export var strength: float
+
+
+func _on_area_3d_body_entered(body: Node3D) -> void:
+	print(\"blah entered\")
+	if body.get_groups().has(\"entity\"):
+		body.interaction_occured(self)
+"
 
 [sub_resource type="Environment" id="Environment_d866r"]
 background_energy_multiplier = 2.0
@@ -16,6 +32,7 @@ script = ExtResource("1_yrwij")
 
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
 use_collision = true
+script = SubResource("GDScript_10oj1")
 
 [node name="Floor" type="CSGBox3D" parent="CSGCombiner3D"]
 transform = Transform3D(23.1742, 0, 0, 0, 1, 0, 0, 0, 23.5646, 0, 0, 0)
@@ -27,8 +44,11 @@ transform = Transform3D(10.7879, 0, 0, 0, 3.28404, 0, 0, 0, 4.59982, 4.134, 1.87
 [node name="Wall2" type="CSGBox3D" parent="CSGCombiner3D"]
 transform = Transform3D(7.30747, 0, 3.38379, 0, 3.28404, 0, -7.93597, 0, 3.11581, -6.70456, 1.87675, -8.03187)
 
-[node name="Jumppad" parent="CSGCombiner3D" instance=ExtResource("5_qo6t7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.83923, 0.731078, 0.490157)
+[node name="Trampoline" parent="CSGCombiner3D" instance=ExtResource("5_qo6t7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0.697042, 0)
+
+[node name="Bubble" parent="CSGCombiner3D" instance=ExtResource("4_3q60y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.67216, 1.76997, -4.27438)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_d866r")

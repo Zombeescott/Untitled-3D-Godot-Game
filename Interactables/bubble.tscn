@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://dex7654wh24he"]
+
+[ext_resource type="PackedScene" uid="uid://olsjtcsrhd0b" path="res://Interactables/jumppad_component.tscn" id="1_00ver"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ignp8"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_jc1n3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_63edv"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+
+[node name="Bubble" type="Node3D"]
+
+[node name="Jumppad Component" parent="." instance=ExtResource("1_00ver")]
+type = "bubble"
+strength = 7.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Jumppad Component"]
+shape = SubResource("SphereShape3D_ignp8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Jumppad Component"]
+mesh = SubResource("SphereMesh_jc1n3")
+surface_material_override/0 = SubResource("StandardMaterial3D_63edv")
