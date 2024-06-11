@@ -145,7 +145,9 @@ func _physics_process(delta: float) -> void:
 	
 	# Handle the movement/deceleration.
 	var speed_multiplier = 1
-	if crouching:
+	if spinning:
+		speed_multiplier = 2
+	elif crouching:
 		speed_multiplier = .5
 	elif sprinting:
 		speed_multiplier = 1.5
@@ -200,6 +202,7 @@ func _physics_process(delta: float) -> void:
 
 func item_collected() -> void:
 	$"User Interface".update_ui()
+
 
 func interaction_occured(action) -> void:
 	match action.type:

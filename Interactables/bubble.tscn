@@ -13,9 +13,10 @@ cull_mode = 2
 
 [node name="Bubble" type="Node3D"]
 
-[node name="Jumppad Component" parent="." instance=ExtResource("1_00ver")]
+[node name="Jumppad Component" parent="." node_paths=PackedStringArray("pop_timer") instance=ExtResource("1_00ver")]
 type = "bubble"
 strength = 7.0
+pop_timer = NodePath("Timer")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Jumppad Component"]
 shape = SubResource("SphereShape3D_ignp8")
@@ -23,3 +24,9 @@ shape = SubResource("SphereShape3D_ignp8")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Jumppad Component"]
 mesh = SubResource("SphereMesh_jc1n3")
 surface_material_override/0 = SubResource("StandardMaterial3D_63edv")
+
+[node name="Timer" type="Timer" parent="Jumppad Component"]
+wait_time = 3.0
+one_shot = true
+
+[connection signal="timeout" from="Jumppad Component/Timer" to="Jumppad Component" method="_on_timer_timeout"]

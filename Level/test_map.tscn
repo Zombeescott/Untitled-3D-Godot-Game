@@ -45,10 +45,10 @@ transform = Transform3D(10.7879, 0, 0, 0, 3.28404, 0, 0, 0, 4.59982, 4.134, 1.87
 transform = Transform3D(7.30747, 0, 3.38379, 0, 3.28404, 0, -7.93597, 0, 3.11581, -6.70456, 1.87675, -8.03187)
 
 [node name="Trampoline" parent="CSGCombiner3D" instance=ExtResource("5_qo6t7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0.697042, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.60609, 0.697042, 0)
 
 [node name="Bubble" parent="CSGCombiner3D" instance=ExtResource("4_3q60y")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.67216, 1.76997, -4.27438)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.67216, 1.76997, -5.27438)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_d866r")
