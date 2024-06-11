@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://b64ovwa3oxmk5"]
+[gd_scene load_steps=31 format=3 uid="uid://b64ovwa3oxmk5"]
 
 [ext_resource type="Script" path="res://Characters/Player.gd" id="1_cye5l"]
 [ext_resource type="PackedScene" uid="uid://boeput6aolbwp" path="res://Components/hitbox_component.tscn" id="2_vkfhd"]
@@ -583,6 +583,8 @@ _data = {
 "start_ground_pound": SubResource("Animation_mjh7u")
 }
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_f0fyh"]
+
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_tcx8h"]
 height = 1.0
 radius = 1.25
@@ -717,6 +719,14 @@ libraries = {
 "": SubResource("AnimationLibrary_7di2k")
 }
 speed_scale = 1.5
+
+[node name="GP attack component" parent="PlayerModel" instance=ExtResource("4_yqbq5")]
+transform = Transform3D(2.32748, 0, 0, 0, 2.32748, 0, 0, 0, 2.32748, 0, 0, 0)
+
+[node name="Butt square" type="CollisionShape3D" parent="PlayerModel/GP attack component"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.270242, 0)
+shape = SubResource("BoxShape3D_f0fyh")
+disabled = true
 
 [node name="Spin attack component" parent="PlayerModel" instance=ExtResource("4_yqbq5")]
 transform = Transform3D(2.32748, 0, 0, 0, 2.32748, -4.0695e-07, 0, 4.0695e-07, 2.32748, 0, 0, 0)

@@ -227,8 +227,10 @@ func _on_player_animation_animation_finished(anim_name: StringName) -> void:
 		"start_ground_pound":
 			gravity = 25
 			velocity.y -= 5
+			$"PlayerModel/GP attack component/Butt square".disabled = false
 		"recover":
 			groundPound = false
 			gravity = const_gravity
+			$"PlayerModel/GP attack component/Butt square".disabled = true
 		"spin_attack":
 			spinning = false
