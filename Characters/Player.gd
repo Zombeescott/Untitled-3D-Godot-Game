@@ -8,12 +8,12 @@ const JUMP_VELOCITY = 4.5
 @onready var x_pivot = $Camera/y_axis/x_axis
 @onready var t_wall_sens = $"Camera/y_axis/Top Wall Sensor"
 @onready var b_wall_sens = $"Camera/y_axis/Bottom Wall Sensor"
-@onready var model = $PlayerModel
+@onready var model = $"Physics collision/PlayerModel"
 
 @export var sens = 0.01
 @export var rotate_speed = 12.0
 @export var ground_accel = 10.0
-@export var air_accel = 9.5
+@export var air_accel = 1.5
 
 @export var initial_jump_velo: float = 1
 @export var jump_velo_rate: float = 1.15
@@ -22,7 +22,6 @@ var curr_jump_velo: float
 #var const_gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var const_gravity = 12
 var gravity: float
-var aiming: bool = false
 var sprinting: bool = false
 var crouching: bool = false
 var groundPound: bool = false
@@ -33,6 +32,9 @@ var spinning: bool = false
 var jumpPad: bool = false
 var jumping: bool = false
 var doubleJump: bool = false
+# Dsahing
+var dashed = false
+var initial_dash = false
 # Wall hanging
 var wallHang: bool = false
 var wallPoint: Vector3
@@ -64,11 +66,14 @@ func _physics_process(delta: float) -> void:
 	else:
 		# On the ground
 		if groundPound:
-			$PlayerModel/PlayerAnimation.play("recover")
+			$"Physics collision/PlayerModel/PlayerAnimation".play("recover")
 		if spun:
 			spun = false
 		if doubleJump:
 			doubleJump = false
+		if dashed:
+			dashed = false
+			initial_dash = false
 	
 	# Handle actions.
 	
@@ -112,9 +117,14 @@ func _physics_process(delta: float) -> void:
 				velocity.y += curr_jump_velo
 	# Aim
 	if Input.is_action_just_pressed("aim"):
-		aiming = true
-	if Input.is_action_just_released("aim"):
-		aiming = false
+		if !spinning and !groundPound and !dashed:
+			#$"Physics collision/PlayerModel/AnimationPlayer".play("dash")
+			if is_on_floor():
+				velocity.y = 4
+			else:
+				velocity.y = -2.5
+			dashed = true
+		
 	# Sprint
 	if Input.is_action_just_pressed("sprint"):
 		#TODO don't allow sprinting mid-air when other features are complete
@@ -125,12 +135,12 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("crouch"):
 		if !is_on_floor() and !groundPound and !wallHang:
 			if spinning:
-				$PlayerModel/PlayerAnimation.stop()
+				$"Physics collision/PlayerModel/PlayerAnimation".stop()
 				spinning = false
 			groundPound = true
 			velocity = Vector3.ZERO
 			gravity = 0
-			$PlayerModel/PlayerAnimation.play("start_ground_pound")
+			$"Physics collision/PlayerModel/PlayerAnimation".play("start_ground_pound")
 		else:
 			crouching = true
 	if Input.is_action_just_released("crouch"):
@@ -140,12 +150,16 @@ func _physics_process(delta: float) -> void:
 			if !is_on_floor():
 				spun = true
 			spinning = true
-			$PlayerModel/PlayerAnimation.play("spin_attack")
+			$"Physics collision/PlayerModel/PlayerAnimation".play("spin_attack")
 			velocity.y = 0
 	
 	# Handle the movement/deceleration.
 	var speed_multiplier = 1
-	if spinning:
+	
+	if dashed and !initial_dash:
+		speed_multiplier = 7
+		#$"Physics collision/PlayerModel/AnimationPlayer".play("dash_end")
+	elif spinning:
 		speed_multiplier = 2
 	elif crouching:
 		speed_multiplier = .5
@@ -159,16 +173,20 @@ func _physics_process(delta: float) -> void:
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y))
 	direction = direction.rotated(Vector3.UP, y_pivot.rotation.y).normalized()
 	# Make player accelerate
-	if is_on_floor() or spinning:
-		velocity = lerp(velocity, direction * SPEED * speed_multiplier, ground_accel * delta)
-	else:
+	if dashed and initial_dash:
+		# Restrict movement while dashing
 		velocity = lerp(velocity, direction * SPEED * speed_multiplier, air_accel * delta)
+	else:
+		velocity = lerp(velocity, direction * SPEED * speed_multiplier, ground_accel * delta)
+		# Make hard to change direction after giving dash boost
+		if dashed and !initial_dash:
+			initial_dash = true
 	velocity.y = vy
 	
 	# Direction provided
 	if direction and !groundPound:
-		$PlayerModel/AnimationPlayer.speed_scale = speed_multiplier
-		$PlayerModel/AnimationPlayer.play("Walking")
+		$"Physics collision/PlayerModel/AnimationPlayer".speed_scale = speed_multiplier
+		$"Physics collision/PlayerModel/AnimationPlayer".play("Walking")
 		
 		if wallHang:
 			if position.distance_to(wallPoint) >= 1:
@@ -186,15 +204,11 @@ func _physics_process(delta: float) -> void:
 			position.x += direction.x * SPEED * delta
 			position.z += direction.z * SPEED * delta
 		else:
-			$PlayerModel/AnimationPlayer.play("Rest")
+			$"Physics collision/PlayerModel/AnimationPlayer".play("Rest")
 
 	move_and_slide()
 	
-	# Change direction model is facing while moving
-	if aiming:
-		# Move model in direction of camera
-		model.rotation.y = lerp_angle(model.rotation.y, y_pivot.rotation.y, rotate_speed * delta)
-	elif Vector3(velocity.x, 0, velocity.z).length() >= 1:
+	if Vector3(velocity.x, 0, velocity.z).length() >= 1:
 		# Move model in direction of keys
 		var look_dir = Vector2(velocity.z, velocity.x)
 		model.rotation.y = lerp_angle(model.rotation.y, look_dir.angle() + deg_to_rad(180), rotate_speed * delta)
@@ -212,6 +226,7 @@ func interaction_occured(action) -> void:
 			doubleJump = false
 			groundPound = false
 			spun = false
+			dashed = false
 			gravity = const_gravity
 		"bubble":
 			velocity.y = action.strength
@@ -219,6 +234,7 @@ func interaction_occured(action) -> void:
 			doubleJump = false
 			groundPound = false
 			spun = false
+			dashed = false
 			gravity = const_gravity
 
 
@@ -227,10 +243,16 @@ func _on_player_animation_animation_finished(anim_name: StringName) -> void:
 		"start_ground_pound":
 			gravity = 25
 			velocity.y -= 5
-			$"PlayerModel/GP attack component/Butt square".disabled = false
+			$"Physics collision/PlayerModel/GP attack component/Butt square".disabled = false
 		"recover":
 			groundPound = false
 			gravity = const_gravity
-			$"PlayerModel/GP attack component/Butt square".disabled = true
+			$"Physics collision/PlayerModel/GP attack component/Butt square".disabled = true
 		"spin_attack":
 			spinning = false
+		"dash":
+			pass
+			$"Physics collision".rotate(-90)
+		"dash_end":
+			pass
+			$"Physics collision".rotate(180)
