@@ -64,9 +64,9 @@ func _input(event: InputEvent) -> void:
 # Ran when an action can be performed again and auto activiates a saved action
 func buffer_check(action_ended : String) -> void:
 	if buffer_counter > 0:
-		buffer_used = true
-		print("Buffer ", buffer_action)
+		#print("Buffer ", buffer_action)
 		if buffer_action == "jump" and action_ended != "spinning":
+			buffer_used = true
 			jump()
 		if buffer_action == "dash":
 			dash()
@@ -79,13 +79,13 @@ func buffer_check(action_ended : String) -> void:
 
 
 func buffer_set(action : String) -> void:
-	print("Set buffer")
+	#print("Set buffer")
 	buffer_counter = input_buffer
 	buffer_action = action
 
 
 # Returns false if buffer_used was true and sets it back to false
-# Used to let actions perform normally if a buffer action isn't going to play
+# Only used for jump function but maybe useful somewhere else idk idc
 func buffer_used_reset() -> bool:
 	if buffer_used:
 		buffer_used = false
@@ -133,8 +133,7 @@ func _physics_process(delta: float) -> void:
 		if buffer_used_reset():
 			jump()
 	if Input.is_action_just_pressed("dash"):
-		if buffer_used_reset():
-			dash()
+		dash()
 	# Sprint
 	if Input.is_action_just_pressed("sprint"):
 		#TODO don't allow sprinting mid-air when other features are complete
@@ -157,8 +156,7 @@ func _physics_process(delta: float) -> void:
 		crouching = false
 	# Attacks
 	if Input.is_action_just_pressed("attack"):
-		if buffer_used_reset():
-			spin()
+		spin()
 	
 	# Modify the movement/deceleration.
 	var speed_multiplier = 1.5
