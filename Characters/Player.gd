@@ -19,7 +19,7 @@ const JUMP_VELOCITY = 4.5
 @export var jump_velo_rate: float = 1.15
 var curr_jump_velo: float
 # Input Buffer
-@export var input_buffer: int = 10
+@export var input_buffer: int = 20
 var buffer_counter: int
 var buffer_action: String
 var buffer_used: bool = false 
@@ -93,6 +93,136 @@ func buffer_used_reset() -> bool:
 	return true
 
 
+func _physics_process(delta: float) -> void:
+	# Gravity and floor detection
+	if !is_on_floor() and !wallHang and !spinning:
+		velocity.y -= gravity * delta
+	elif spinning:
+		velocity.y -= (gravity * delta) / 2
+	else:
+		# On the ground
+		if groundPound:
+			$"Physics collision/PlayerModel/PlayerAnimation".play("recover")
+		if spun:
+			spun = false
+		if doubleJump:
+			doubleJump = false
+		if dashed:
+			dashed = false
+			initial_dash = false
+		# Check for any saved actions
+		buffer_check("air")
+	if buffer_counter > 0:
+		#print(buffer_counter)
+		buffer_counter -= 1
+	
+	# Basic movement
+	if InputEventJoypadMotion:
+		var joySens = 5
+		if Input.is_action_pressed("camera_left"):
+			y_pivot.rotation.y += Input.get_action_strength("camera_left") * sens * joySens
+		if Input.is_action_pressed("camera_right"):
+			y_pivot.rotation.y -= Input.get_action_strength("camera_right") * sens * joySens
+		if Input.is_action_pressed("camera_up"):
+			x_pivot.rotation.x += Input.get_action_strength("camera_up") * sens * joySens
+		if Input.is_action_pressed("camera_down"):
+			x_pivot.rotation.x -= Input.get_action_strength("camera_down") * sens * 3
+		y_pivot.rotation.y = wrapf(y_pivot.rotation.y, deg_to_rad(0), deg_to_rad(360))
+		x_pivot.rotation.x = clamp(x_pivot.rotation.x, deg_to_rad(-89), deg_to_rad(45))
+	if Input.is_action_pressed("jump"):
+		if buffer_used_reset():
+			jump()
+	if Input.is_action_just_pressed("dash"):
+		if buffer_used_reset():
+			dash()
+	# Sprint
+	if Input.is_action_just_pressed("sprint"):
+		#TODO don't allow sprinting mid-air when other features are complete
+		sprinting = true
+	if Input.is_action_just_released("sprint"):
+		sprinting = false
+	# Crouch / Ground pound
+	if Input.is_action_just_pressed("crouch"):
+		if !is_on_floor() and !groundPound and !wallHang:
+			if spinning:
+				$"Physics collision/PlayerModel/PlayerAnimation".stop()
+				spinning = false
+			groundPound = true
+			velocity = Vector3.ZERO
+			gravity = 0
+			$"Physics collision/PlayerModel/PlayerAnimation".play("start_ground_pound")
+		else:
+			crouching = true
+	if Input.is_action_just_released("crouch"):
+		crouching = false
+	# Attacks
+	if Input.is_action_just_pressed("attack"):
+		if buffer_used_reset():
+			spin()
+	
+	# Modify the movement/deceleration.
+	var speed_multiplier = 1.5
+	if dashed and !initial_dash:
+		speed_multiplier = 7
+		#$"Physics collision/PlayerModel/AnimationPlayer".play("dash_end")
+	elif spinning:
+		speed_multiplier = 2
+	elif crouching:
+		speed_multiplier = .5
+	elif sprinting:
+		speed_multiplier = 1
+	
+	# Make player move
+	var vy = velocity.y
+	velocity.y = 0
+	var input_dir := Input.get_vector("left", "right", "forward", "back")
+	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y))
+	direction = direction.rotated(Vector3.UP, y_pivot.rotation.y).normalized()
+	# Make player accelerate
+	if dashed and initial_dash:
+		# Restrict movement while dashing
+		velocity = lerp(velocity, direction * SPEED * speed_multiplier, air_accel * delta)
+	else:
+		velocity = lerp(velocity, direction * SPEED * speed_multiplier, ground_accel * delta)
+		# Make hard to change direction after giving dash boost
+		if dashed and !initial_dash:
+			initial_dash = true
+	velocity.y = vy
+	
+	# Direction provided
+	if direction and !groundPound:
+		$"Physics collision/PlayerModel/AnimationPlayer".speed_scale = speed_multiplier
+		$"Physics collision/PlayerModel/AnimationPlayer".play("Walking")
+		
+		if wallHang:
+			if position.distance_to(wallPoint) >= 1:
+				velocity = Vector3()
+			if position.y >= wallPoint.y + .1 or position.y <= wallPoint.y - .1:
+				# If moving up/down stop wall hang
+				wallHang = false
+				wallPoint = Vector3.ZERO
+		
+	# No direction input
+	elif !groundPound:
+		if wallHang and wallPoint != Vector3.ZERO:
+			# Makes return to wallpoint smoother after moving
+			direction = (wallPoint - position).normalized()
+			position.x += direction.x * SPEED * delta
+			position.z += direction.z * SPEED * delta
+		else:
+			$"Physics collision/PlayerModel/AnimationPlayer".play("Rest")
+
+	move_and_slide()
+	
+	# Move model in direction of keys
+	if Vector3(velocity.x, 0, velocity.z).length() >= 1:
+		var look_dir = Vector2(velocity.z, velocity.x)
+		model.rotation.y = lerp_angle(model.rotation.y, look_dir.angle() + deg_to_rad(180), rotate_speed * delta)
+
+
+# Abilities -----------
+
+
 func jump() -> void:
 	if Input.is_action_just_pressed("jump") or buffer_used:
 		if is_on_floor():
@@ -150,139 +280,15 @@ func spin() -> void:
 		buffer_set("spin")
 
 
-func _physics_process(delta: float) -> void:
-	# Add the gravity.
-	if !is_on_floor() and !wallHang and !spinning:
-		velocity.y -= gravity * delta
-	elif spinning:
-		velocity.y -= (gravity * delta) / 2
-	else:
-		# On the ground
-		if groundPound:
-			$"Physics collision/PlayerModel/PlayerAnimation".play("recover")
-		if spun:
-			spun = false
-		if doubleJump:
-			doubleJump = false
-		if dashed:
-			dashed = false
-			initial_dash = false
-		# Check for any saved actions
-		buffer_check("air")
-	if buffer_counter > 0:
-		#print(buffer_counter)
-		buffer_counter -= 1
-	
-	# Thumbstick movement
-	if InputEventJoypadMotion:
-		var joySens = 5
-		if Input.is_action_pressed("camera_left"):
-			y_pivot.rotation.y += Input.get_action_strength("camera_left") * sens * joySens
-		if Input.is_action_pressed("camera_right"):
-			y_pivot.rotation.y -= Input.get_action_strength("camera_right") * sens * joySens
-		if Input.is_action_pressed("camera_up"):
-			x_pivot.rotation.x += Input.get_action_strength("camera_up") * sens * joySens
-		if Input.is_action_pressed("camera_down"):
-			x_pivot.rotation.x -= Input.get_action_strength("camera_down") * sens * 3
-		y_pivot.rotation.y = wrapf(y_pivot.rotation.y, deg_to_rad(0), deg_to_rad(360))
-		x_pivot.rotation.x = clamp(x_pivot.rotation.x, deg_to_rad(-89), deg_to_rad(45))
-	if Input.is_action_pressed("jump"):
-		if buffer_used_reset():
-			jump()
-	# Aim
-	if Input.is_action_just_pressed("dash"):
-		if buffer_used_reset():
-			dash()
-	# Sprint
-	if Input.is_action_just_pressed("sprint"):
-		#TODO don't allow sprinting mid-air when other features are complete
-		sprinting = true
-	if Input.is_action_just_released("sprint"):
-		sprinting = false
-	# Crouch
-	if Input.is_action_just_pressed("crouch"):
-		if !is_on_floor() and !groundPound and !wallHang:
-			if spinning:
-				$"Physics collision/PlayerModel/PlayerAnimation".stop()
-				spinning = false
-			groundPound = true
-			velocity = Vector3.ZERO
-			gravity = 0
-			$"Physics collision/PlayerModel/PlayerAnimation".play("start_ground_pound")
-		else:
-			crouching = true
-	if Input.is_action_just_released("crouch"):
-		crouching = false
-	if Input.is_action_just_pressed("attack"):
-		if buffer_used_reset():
-			spin()
-	
-	# Handle the movement/deceleration.
-	var speed_multiplier = 1.5
-	if dashed and !initial_dash:
-		speed_multiplier = 7
-		#$"Physics collision/PlayerModel/AnimationPlayer".play("dash_end")
-	elif spinning:
-		speed_multiplier = 2
-	elif crouching:
-		speed_multiplier = .5
-	elif sprinting:
-		speed_multiplier = 1
-	
-	# Make player move
-	var vy = velocity.y
-	velocity.y = 0
-	var input_dir := Input.get_vector("left", "right", "forward", "back")
-	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y))
-	direction = direction.rotated(Vector3.UP, y_pivot.rotation.y).normalized()
-	# Make player accelerate
-	if dashed and initial_dash:
-		# Restrict movement while dashing
-		velocity = lerp(velocity, direction * SPEED * speed_multiplier, air_accel * delta)
-	else:
-		velocity = lerp(velocity, direction * SPEED * speed_multiplier, ground_accel * delta)
-		# Make hard to change direction after giving dash boost
-		if dashed and !initial_dash:
-			initial_dash = true
-	velocity.y = vy
-	
-	# Direction provided
-	if direction and !groundPound:
-		$"Physics collision/PlayerModel/AnimationPlayer".speed_scale = speed_multiplier
-		$"Physics collision/PlayerModel/AnimationPlayer".play("Walking")
-		
-		if wallHang:
-			if position.distance_to(wallPoint) >= 1:
-				velocity = Vector3()
-			if position.y >= wallPoint.y + .1 or position.y <= wallPoint.y - .1:
-				# If moving up/down stop wall hang
-				wallHang = false
-				wallPoint = Vector3.ZERO
-		
-	# No direction input
-	elif !groundPound:
-		if wallHang and wallPoint != Vector3.ZERO:
-			# Makes return to wallpoint smoother after moving
-			direction = (wallPoint - position).normalized()
-			position.x += direction.x * SPEED * delta
-			position.z += direction.z * SPEED * delta
-		else:
-			$"Physics collision/PlayerModel/AnimationPlayer".play("Rest")
-
-	move_and_slide()
-	
-	if Vector3(velocity.x, 0, velocity.z).length() >= 1:
-		# Move model in direction of keys
-		var look_dir = Vector2(velocity.z, velocity.x)
-		model.rotation.y = lerp_angle(model.rotation.y, look_dir.angle() + deg_to_rad(180), rotate_speed * delta)
-
-
 func refresh_abilities() -> void: 
 	doubleJump = false
 	groundPound = false
 	spun = false
 	dashed = false
 	gravity = const_gravity
+
+
+# Signals / Called from other scripts -----------
 
 
 func item_collected() -> void:
