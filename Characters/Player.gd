@@ -126,17 +126,13 @@ func _physics_process(delta: float) -> void:
 		if Input.is_action_pressed("camera_up"):
 			x_pivot.rotation.x += Input.get_action_strength("camera_up") * sens * joySens
 		if Input.is_action_pressed("camera_down"):
-			x_pivot.rotation.x -= Input.get_action_strength("camera_down") * sens * 3
+			x_pivot.rotation.x -= Input.get_action_strength("camera_down") * sens * joySens
 		y_pivot.rotation.y = wrapf(y_pivot.rotation.y, deg_to_rad(0), deg_to_rad(360))
 		x_pivot.rotation.x = clamp(x_pivot.rotation.x, deg_to_rad(-89), deg_to_rad(45))
-	if Input.is_action_pressed("jump"):
-		if buffer_used_reset():
-			jump()
 	if Input.is_action_just_pressed("dash"):
 		dash()
 	# Sprint
 	if Input.is_action_just_pressed("sprint"):
-		#TODO don't allow sprinting mid-air when other features are complete
 		sprinting = true
 	if Input.is_action_just_released("sprint"):
 		sprinting = false
@@ -154,9 +150,12 @@ func _physics_process(delta: float) -> void:
 			crouching = true
 	if Input.is_action_just_released("crouch"):
 		crouching = false
-	# Attacks
+	# Attack
 	if Input.is_action_just_pressed("attack"):
 		spin()
+	if Input.is_action_pressed("jump"):
+		if buffer_used_reset():
+			jump()
 	
 	# Modify the movement/deceleration.
 	var speed_multiplier = 1.5
@@ -225,7 +224,10 @@ func jump() -> void:
 	if Input.is_action_just_pressed("jump") or buffer_used:
 		if is_on_floor():
 			jumping = true
-			velocity.y = initial_jump_velo * 2.0
+			if crouching:
+				velocity.y = initial_jump_velo * 2.0 * 2
+			else:
+				velocity.y = initial_jump_velo * 2.0
 			curr_jump_velo = initial_jump_velo
 		elif !wallHang and !t_wall_sens.is_colliding() and b_wall_sens.is_colliding():
 			# Check if player can hang off a wall
