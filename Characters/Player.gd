@@ -14,10 +14,15 @@ const JUMP_VELOCITY = 4.5
 @export var rotate_speed = 12.0
 @export var ground_accel = 10.0
 @export var air_accel = 1.5
-
+# Jumping
 @export var initial_jump_velo: float = 1
 @export var jump_velo_rate: float = 1.15
 var curr_jump_velo: float
+# Input Buffer
+@export var input_buffer: int = 10
+var buffer_counter: int
+var buffer_action: String
+var buffer_used: bool = false 
 
 #var const_gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var const_gravity = 12
@@ -32,7 +37,7 @@ var spinning: bool = false
 var jumpPad: bool = false
 var jumping: bool = false
 var doubleJump: bool = false
-# Dsahing
+# Dashing
 var dashed = false
 var initial_dash = false
 # Wall hanging
@@ -56,6 +61,61 @@ func _input(event: InputEvent) -> void:
 		y_pivot.rotation.y = wrapf(y_pivot.rotation.y, deg_to_rad(0), deg_to_rad(360))
 		
 
+func buffer_check() -> void:
+	#return buffer_counter > 0
+	if buffer_counter > 0:
+		buffer_used = true
+		if buffer_action == "jump":
+			print("Buffer Jump")
+			jump()
+		if buffer_action == "dash":
+			pass
+		if buffer_action == "spin":
+			pass
+		
+		# Reset buffer
+		buffer_counter = 0
+		buffer_action = ""
+	
+
+
+func buffer_set(action : String) -> void:
+	print("Set buffer")
+	buffer_counter = input_buffer
+	buffer_action = action
+
+
+func jump() -> void:
+	#print("Jump funciton entered")
+	if Input.is_action_just_pressed("jump") or buffer_used:
+		if is_on_floor():
+			jumping = true
+			velocity.y = initial_jump_velo * 2.0
+			curr_jump_velo = initial_jump_velo
+		elif !wallHang and !t_wall_sens.is_colliding() and b_wall_sens.is_colliding():
+			# Check if player can hang off a wall
+			wallHang = true
+			velocity.y = 0
+			wallPoint = b_wall_sens.get_collision_point()
+		elif !doubleJump and !groundPound:
+			# Double jumping
+			if wallHang:
+				wallHang = false
+				wallPoint = Vector3.ZERO
+			# Less velocity for double jump
+			velocity.y = (initial_jump_velo / 1.25) * 1.5
+			curr_jump_velo = initial_jump_velo / 1.25
+			doubleJump = true
+		else:
+			# Input buffer
+			buffer_set("jump")
+	else:
+		# Holding down jump
+		if velocity.y >= 0 and !wallHang and !groundPound:
+			# Slow jump down longer jump button is held
+			curr_jump_velo /= jump_velo_rate
+			velocity.y += curr_jump_velo
+
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -74,57 +134,44 @@ func _physics_process(delta: float) -> void:
 		if dashed:
 			dashed = false
 			initial_dash = false
-	
-	# Handle actions.
+		# Check for any saved actions
+		buffer_check()
+	if buffer_counter > 0:
+		#print(buffer_counter)
+		buffer_counter -= 1
 	
 	# Thumbstick movement
 	if InputEventJoypadMotion:
+		var joySens = 5
 		if Input.is_action_pressed("camera_left"):
-			y_pivot.rotation.y += Input.get_action_strength("camera_left") * sens * 3
+			y_pivot.rotation.y += Input.get_action_strength("camera_left") * sens * joySens
 		if Input.is_action_pressed("camera_right"):
-			y_pivot.rotation.y -= Input.get_action_strength("camera_right") * sens * 3
+			y_pivot.rotation.y -= Input.get_action_strength("camera_right") * sens * joySens
 		if Input.is_action_pressed("camera_up"):
-			x_pivot.rotation.x += Input.get_action_strength("camera_up") * sens * 3
+			x_pivot.rotation.x += Input.get_action_strength("camera_up") * sens * joySens
 		if Input.is_action_pressed("camera_down"):
 			x_pivot.rotation.x -= Input.get_action_strength("camera_down") * sens * 3
 		y_pivot.rotation.y = wrapf(y_pivot.rotation.y, deg_to_rad(0), deg_to_rad(360))
 		x_pivot.rotation.x = clamp(x_pivot.rotation.x, deg_to_rad(-89), deg_to_rad(45))
 	if Input.is_action_pressed("jump"):
-		if Input.is_action_just_pressed("jump"):
-			if is_on_floor():
-				jumping = true
-				velocity.y = initial_jump_velo * 2.0
-				curr_jump_velo = initial_jump_velo
-			elif !wallHang and !t_wall_sens.is_colliding() and b_wall_sens.is_colliding():
-				# Check if player can hang off a wall
-				wallHang = true
-				velocity.y = 0
-				wallPoint = b_wall_sens.get_collision_point()
-			elif !doubleJump and !groundPound:
-				# Double jumping
-				if wallHang:
-					wallHang = false
-					wallPoint = Vector3.ZERO
-				# Less velocity for double jump
-				velocity.y = (initial_jump_velo / 1.25) * 1.5
-				curr_jump_velo = initial_jump_velo / 1.25
-				doubleJump = true
+		#print("Pressed Jump")
+		if !buffer_used:
+			jump()
 		else:
-			# Holding down jump
-			if velocity.y >= 0 and !wallHang and !groundPound:
-				# Slow jump down longer jump button is held
-				curr_jump_velo /= jump_velo_rate
-				velocity.y += curr_jump_velo
+			buffer_used = false
 	# Aim
-	if Input.is_action_just_pressed("aim"):
+	if Input.is_action_just_pressed("dash"):
 		if !spinning and !groundPound and !dashed:
+			# Dash
 			#$"Physics collision/PlayerModel/AnimationPlayer".play("dash")
 			if is_on_floor():
 				velocity.y = 4
 			else:
 				velocity.y = -2.5
 			dashed = true
-		
+		else:
+			# Input buffer
+			buffer_set("dash")
 	# Sprint
 	if Input.is_action_just_pressed("sprint"):
 		#TODO don't allow sprinting mid-air when other features are complete
