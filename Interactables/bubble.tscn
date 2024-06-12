@@ -14,7 +14,7 @@ cull_mode = 2
 [node name="Bubble" type="Node3D"]
 
 [node name="Jumppad Component" parent="." node_paths=PackedStringArray("pop_timer") instance=ExtResource("1_00ver")]
-type = "bubble"
+type = "jumppad"
 strength = 7.0
 pop_timer = NodePath("Timer")
 

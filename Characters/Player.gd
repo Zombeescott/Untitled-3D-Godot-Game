@@ -59,24 +59,23 @@ func _input(event: InputEvent) -> void:
 		x_pivot.rotation.x = clamp(x_pivot.rotation.x, deg_to_rad(-89), deg_to_rad(45))
 		y_pivot.rotation.y -= event.relative.x * sens
 		y_pivot.rotation.y = wrapf(y_pivot.rotation.y, deg_to_rad(0), deg_to_rad(360))
-		
 
-func buffer_check() -> void:
-	#return buffer_counter > 0
+
+# Ran when an action can be performed again and auto activiates a saved action
+func buffer_check(action_ended : String) -> void:
 	if buffer_counter > 0:
 		buffer_used = true
-		if buffer_action == "jump":
-			print("Buffer Jump")
+		print("Buffer ", buffer_action)
+		if buffer_action == "jump" and action_ended != "spinning":
 			jump()
 		if buffer_action == "dash":
-			pass
+			dash()
 		if buffer_action == "spin":
-			pass
+			spin()
 		
 		# Reset buffer
 		buffer_counter = 0
 		buffer_action = ""
-	
 
 
 func buffer_set(action : String) -> void:
@@ -85,8 +84,16 @@ func buffer_set(action : String) -> void:
 	buffer_action = action
 
 
+# Returns false if buffer_used was true and sets it back to false
+# Used to let actions perform normally if a buffer action isn't going to play
+func buffer_used_reset() -> bool:
+	if buffer_used:
+		buffer_used = false
+		return false
+	return true
+
+
 func jump() -> void:
-	#print("Jump funciton entered")
 	if Input.is_action_just_pressed("jump") or buffer_used:
 		if is_on_floor():
 			jumping = true
@@ -117,6 +124,32 @@ func jump() -> void:
 			velocity.y += curr_jump_velo
 
 
+func dash() -> void:
+	if !spinning and !groundPound and !dashed:
+		# Dash
+		#$"Physics collision/PlayerModel/AnimationPlayer".play("dash")
+		if is_on_floor():
+			velocity.y = 4
+		else:
+			velocity.y = -2.5
+		dashed = true
+	else:
+		# Input buffer
+		buffer_set("dash")
+
+
+func spin() -> void:
+	if !spun and !spinning and !groundPound:
+		if !is_on_floor():
+			spun = true
+		spinning = true
+		$"Physics collision/PlayerModel/PlayerAnimation".play("spin_attack")
+		velocity.y = 0
+	else:
+		# Input buffer
+		buffer_set("spin")
+
+
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if !is_on_floor() and !wallHang and !spinning:
@@ -135,7 +168,7 @@ func _physics_process(delta: float) -> void:
 			dashed = false
 			initial_dash = false
 		# Check for any saved actions
-		buffer_check()
+		buffer_check("air")
 	if buffer_counter > 0:
 		#print(buffer_counter)
 		buffer_counter -= 1
@@ -154,24 +187,12 @@ func _physics_process(delta: float) -> void:
 		y_pivot.rotation.y = wrapf(y_pivot.rotation.y, deg_to_rad(0), deg_to_rad(360))
 		x_pivot.rotation.x = clamp(x_pivot.rotation.x, deg_to_rad(-89), deg_to_rad(45))
 	if Input.is_action_pressed("jump"):
-		#print("Pressed Jump")
-		if !buffer_used:
+		if buffer_used_reset():
 			jump()
-		else:
-			buffer_used = false
 	# Aim
 	if Input.is_action_just_pressed("dash"):
-		if !spinning and !groundPound and !dashed:
-			# Dash
-			#$"Physics collision/PlayerModel/AnimationPlayer".play("dash")
-			if is_on_floor():
-				velocity.y = 4
-			else:
-				velocity.y = -2.5
-			dashed = true
-		else:
-			# Input buffer
-			buffer_set("dash")
+		if buffer_used_reset():
+			dash()
 	# Sprint
 	if Input.is_action_just_pressed("sprint"):
 		#TODO don't allow sprinting mid-air when other features are complete
@@ -193,16 +214,11 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_released("crouch"):
 		crouching = false
 	if Input.is_action_just_pressed("attack"):
-		if !spun and !spinning and !groundPound:
-			if !is_on_floor():
-				spun = true
-			spinning = true
-			$"Physics collision/PlayerModel/PlayerAnimation".play("spin_attack")
-			velocity.y = 0
+		if buffer_used_reset():
+			spin()
 	
 	# Handle the movement/deceleration.
-	var speed_multiplier = 1
-	
+	var speed_multiplier = 1.5
 	if dashed and !initial_dash:
 		speed_multiplier = 7
 		#$"Physics collision/PlayerModel/AnimationPlayer".play("dash_end")
@@ -211,7 +227,7 @@ func _physics_process(delta: float) -> void:
 	elif crouching:
 		speed_multiplier = .5
 	elif sprinting:
-		speed_multiplier = 1.5
+		speed_multiplier = 1
 	
 	# Make player move
 	var vy = velocity.y
@@ -261,28 +277,23 @@ func _physics_process(delta: float) -> void:
 		model.rotation.y = lerp_angle(model.rotation.y, look_dir.angle() + deg_to_rad(180), rotate_speed * delta)
 
 
+func refresh_abilities() -> void: 
+	doubleJump = false
+	groundPound = false
+	spun = false
+	dashed = false
+	gravity = const_gravity
+
+
 func item_collected() -> void:
 	$"User Interface".update_ui()
 
 
 func interaction_occured(action) -> void:
 	match action.type:
-		"trampoline":
+		"jumppad":
 			velocity.y = action.strength
-			# Refresh without touching ground
-			doubleJump = false
-			groundPound = false
-			spun = false
-			dashed = false
-			gravity = const_gravity
-		"bubble":
-			velocity.y = action.strength
-			# Refresh without touching ground
-			doubleJump = false
-			groundPound = false
-			spun = false
-			dashed = false
-			gravity = const_gravity
+			refresh_abilities()
 
 
 func _on_player_animation_animation_finished(anim_name: StringName) -> void:
@@ -297,6 +308,7 @@ func _on_player_animation_animation_finished(anim_name: StringName) -> void:
 			$"Physics collision/PlayerModel/GP attack component/Butt square".disabled = true
 		"spin_attack":
 			spinning = false
+			buffer_check("spinning")
 		"dash":
 			pass
 			$"Physics collision".rotate(-90)

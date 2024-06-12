@@ -11,7 +11,7 @@
 [node name="Trampoline" type="Node3D"]
 
 [node name="Jumppad Component" parent="." instance=ExtResource("1_xwc0x")]
-type = "trampoline"
+type = "jumppad"
 strength = 9.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Jumppad Component"]
