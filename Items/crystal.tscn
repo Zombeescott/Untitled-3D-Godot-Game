@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://dhbkmhl4khthm"]
+
+[ext_resource type="PackedScene" uid="uid://d15l4khtosi1u" path="res://Components/item_component.tscn" id="1_4xham"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yunvw"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_gscaw"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a3r61"]
+blend_mode = 1
+cull_mode = 2
+albedo_color = Color(0.942417, 0.435021, 1, 1)
+
+[node name="Crystal" type="Node3D"]
+
+[node name="Item Component" parent="." instance=ExtResource("1_4xham")]
+item_type = "crystal"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Item Component"]
+shape = SubResource("BoxShape3D_yunvw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Item Component"]
+mesh = SubResource("BoxMesh_gscaw")
+surface_material_override/0 = SubResource("StandardMaterial3D_a3r61")

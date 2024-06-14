@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dex7654wh24he"]
 
-[ext_resource type="PackedScene" uid="uid://olsjtcsrhd0b" path="res://Interactables/jumppad_component.tscn" id="1_00ver"]
+[ext_resource type="PackedScene" uid="uid://olsjtcsrhd0b" path="res://Components/jumppad_component.tscn" id="1_00ver"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ignp8"]
 

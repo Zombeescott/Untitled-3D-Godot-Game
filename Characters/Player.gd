@@ -193,8 +193,8 @@ func _physics_process(delta: float) -> void:
 		
 		if wallHang:
 			if position.distance_to(wallPoint) >= 1:
-				velocity = Vector3()
-			if position.y >= wallPoint.y + .1 or position.y <= wallPoint.y - .1:
+				velocity = Vector3.ZERO
+			if position.y >= wallPoint.y + 1 or position.y <= wallPoint.y - 1:
 				# If moving up/down stop wall hang
 				wallHang = false
 				wallPoint = Vector3.ZERO
@@ -286,6 +286,8 @@ func refresh_abilities() -> void:
 	spun = false
 	dashed = false
 	gravity = const_gravity
+	$"Physics collision/PlayerModel/GP attack component/Butt square".disabled = true
+
 
 
 # Signals / Called from other scripts -----------

@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://olsjtcsrhd0b"]
+
+[ext_resource type="Script" path="res://Components/jumppad_component.gd" id="1_i2166"]
+
+[node name="Jumppad Component" type="Area3D"]
+script = ExtResource("1_i2166")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
