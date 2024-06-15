@@ -287,7 +287,8 @@ func spin() -> void:
 			spun = true
 		spinning = true
 		$"Physics collision/PlayerModel/PlayerAnimation".play("spin_attack")
-		#velocity.y = 0
+		if velocity.y < 0:
+			velocity.y = 0
 	else:
 		# Input buffer
 		buffer_set("spin")

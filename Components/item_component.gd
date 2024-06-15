@@ -18,4 +18,4 @@ func _on_body_entered(body: Node3D) -> void:
 			Global.item_collected(item_type)
 		body.item_collected() # Update UI
 		
-		queue_free()
+		self.get_parent().queue_free()

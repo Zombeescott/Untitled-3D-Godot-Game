@@ -1,13 +1,15 @@
 extends Node3D
 
 
-var num_coins : int = 1
-var coins_collected : int = 10
+var num_coins : int = 9
+var coins_collected : int = 0
 
 @export var num_crystals : int = 6
 var found_crystals : Array[bool]
 
+# Found in the middle in the air
 @export var crystal_0 : Node3D
+# Collect all the coins
 @export var crystal_1 : Node3D
 
 

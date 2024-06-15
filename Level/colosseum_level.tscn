@@ -290,7 +290,31 @@ shape = SubResource("ConcavePolygonShape3D_jopto")
 [node name="Coins" type="Node3D" parent="."]
 
 [node name="Coin" parent="Coins" instance=ExtResource("3_6aprr")]
-transform = Transform3D(-0.301873, 0, 0.953348, 0, 1, 0, -0.953348, 0, -0.301873, 10, -1.83904, 5)
+transform = Transform3D(-0.301873, 0, 0.953348, 0, 1, 0, -0.953348, 0, -0.301873, 17, -0.567416, 4)
+
+[node name="Coin2" parent="Coins" instance=ExtResource("3_6aprr")]
+transform = Transform3D(-0.301873, 0, 0.953348, 0, 1, 0, -0.953348, 0, -0.301873, 16.4373, -0.567416, -3.83144)
+
+[node name="Coin3" parent="Coins" instance=ExtResource("3_6aprr")]
+transform = Transform3D(-0.301873, 0, 0.953348, 0, 1, 0, -0.953348, 0, -0.301873, 13.5318, -0.567416, -12.9891)
+
+[node name="Coin4" parent="Coins" instance=ExtResource("3_6aprr")]
+transform = Transform3D(-0.301873, 0, 0.953348, 0, 1, 0, -0.953348, 0, -0.301873, 0.795574, -0.567416, -15.7451)
+
+[node name="Coin5" parent="Coins" instance=ExtResource("3_6aprr")]
+transform = Transform3D(-0.301873, 0, 0.953348, 0, 1, 0, -0.953348, 0, -0.301873, -12.8226, -0.567416, -13.1178)
+
+[node name="Coin6" parent="Coins" instance=ExtResource("3_6aprr")]
+transform = Transform3D(-0.301873, 0, 0.953348, 0, 1, 0, -0.953348, 0, -0.301873, -14.7813, -0.567416, -0.0474019)
+
+[node name="Coin7" parent="Coins" instance=ExtResource("3_6aprr")]
+transform = Transform3D(-0.301873, 0, 0.953348, 0, 1, 0, -0.953348, 0, -0.301873, -12.1667, -0.567416, 12.0393)
+
+[node name="Coin8" parent="Coins" instance=ExtResource("3_6aprr")]
+transform = Transform3D(-0.301873, 0, 0.953348, 0, 1, 0, -0.953348, 0, -0.301873, -3.83382, -0.567416, 15.3192)
+
+[node name="Coin9" parent="Coins" instance=ExtResource("3_6aprr")]
+transform = Transform3D(-0.301873, 0, 0.953348, 0, 1, 0, -0.953348, 0, -0.301873, 6.39787, -0.567416, 15.7667)
 
 [node name="Crystals" type="Node3D" parent="."]
 
