@@ -4,11 +4,12 @@ extends CharacterBody3D
 const SPEED = 7.0
 const JUMP_VELOCITY = 4.5
 
+@onready var model = $"Physics collision/PlayerModel"
 @onready var y_pivot = $Camera/y_axis
 @onready var x_pivot = $Camera/y_axis/x_axis
 @onready var t_wall_sens = $"Camera/y_axis/Top Wall Sensor"
 @onready var b_wall_sens = $"Camera/y_axis/Bottom Wall Sensor"
-@onready var model = $"Physics collision/PlayerModel"
+@onready var shadowRay = $ShadowCast
 
 @export var sens = 0.01
 @export var rotate_speed = 12.0
@@ -115,6 +116,18 @@ func _physics_process(delta: float) -> void:
 	if buffer_counter > 0:
 		#print(buffer_counter)
 		buffer_counter -= 1
+	# Cast shadow under player
+	if shadowRay.is_colliding():
+		if $ShadowCast/Shadow.visible == false:
+			$ShadowCast/Shadow.visible = true
+		$ShadowCast/Shadow.global_position.y = float("%.4f" % shadowRay.get_collision_point().y)
+		if velocity.y < 0:
+			# make sure shadow shows up when player is going downwards
+			$ShadowCast/Shadow.global_position.y += (abs(velocity.y) * .02) + .01
+		else:
+			$ShadowCast/Shadow.global_position.y += .015
+	else:
+		$ShadowCast/Shadow.visible = false
 	
 	# Basic movement
 	if InputEventJoypadMotion:
@@ -289,7 +302,6 @@ func refresh_abilities() -> void:
 	$"Physics collision/PlayerModel/GP attack component/Butt square".disabled = true
 
 
-
 # Signals / Called from other scripts -----------
 
 
@@ -301,7 +313,7 @@ func interaction_occured(action) -> void:
 	match action.type:
 		"jumppad":
 			velocity.y = action.strength
-			refresh_abilities()
+			call_deferred("refresh_abilities")
 
 
 func _on_player_animation_animation_finished(anim_name: StringName) -> void:

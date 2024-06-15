@@ -1,10 +1,11 @@
-[gd_scene load_steps=33 format=3 uid="uid://b64ovwa3oxmk5"]
+[gd_scene load_steps=36 format=3 uid="uid://b64ovwa3oxmk5"]
 
 [ext_resource type="Script" path="res://Characters/Player.gd" id="1_cye5l"]
 [ext_resource type="PackedScene" uid="uid://boeput6aolbwp" path="res://Components/hitbox_component.tscn" id="2_vkfhd"]
 [ext_resource type="PackedScene" uid="uid://ct0asw0hbjxjs" path="res://Components/health_component.tscn" id="3_al0my"]
 [ext_resource type="PackedScene" uid="uid://dbwckmuvocqrr" path="res://user_interface.tscn" id="3_gp6i2"]
 [ext_resource type="PackedScene" uid="uid://da0u1sw1ccqqy" path="res://Components/attack_component.tscn" id="4_yqbq5"]
+[ext_resource type="Texture2D" uid="uid://b0vjhct050bye" path="res://Textures/Shadow.png" id="6_xgcbk"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3o36h"]
 
@@ -625,6 +626,15 @@ _data = {
 
 [sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_b72ty"]
 
+[sub_resource type="PlaneMesh" id="PlaneMesh_nkf5h"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lwiv6"]
+transparency = 1
+cull_mode = 2
+depth_draw_mode = 1
+diffuse_mode = 3
+albedo_texture = ExtResource("6_xgcbk")
+
 [node name="Player" type="CharacterBody3D" groups=["entity", "player"]]
 script = ExtResource("1_cye5l")
 
@@ -797,5 +807,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
 target_position = Vector3(0, 0, -1)
 
 [node name="User Interface" parent="." instance=ExtResource("3_gp6i2")]
+
+[node name="ShadowCast" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 20, 0, 0, 0, 1, 0, 0.05, 0)
+collide_with_areas = true
+
+[node name="Shadow" type="MeshInstance3D" parent="ShadowCast"]
+transform = Transform3D(0.672, 0, 0, 0, 0.0336, 0, 0, 0, 0.64, 0, -0.002, 0)
+mesh = SubResource("PlaneMesh_nkf5h")
+surface_material_override/0 = SubResource("StandardMaterial3D_lwiv6")
 
 [connection signal="animation_finished" from="Physics collision/PlayerModel/PlayerAnimation" to="." method="_on_player_animation_animation_finished"]
