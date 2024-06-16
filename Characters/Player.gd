@@ -40,7 +40,7 @@ var jumping: bool = false
 var doubleJump: bool = false
 # Dashing
 var dashed: bool = false
-#var down_dash: bool = false
+var down_dash: bool = false
 var initial_dash: bool = false
 # Wall hanging
 var wallHang: bool = false
@@ -109,8 +109,9 @@ func _physics_process(delta: float) -> void:
 			spun = false
 		if doubleJump:
 			doubleJump = false
-		if dashed:
+		if dashed or down_dash:
 			dashed = false
+			down_dash = false
 			initial_dash = false
 		# Check for any saved actions
 		buffer_check("air")
@@ -173,7 +174,7 @@ func _physics_process(delta: float) -> void:
 	
 	# Modify the movement/deceleration.
 	var speed_multiplier = 1.5
-	if dashed and !initial_dash:
+	if (dashed or down_dash) and !initial_dash:
 		speed_multiplier = 7
 		#$"Physics collision/PlayerModel/AnimationPlayer".play("dash_end")
 	elif spinning:
@@ -190,13 +191,13 @@ func _physics_process(delta: float) -> void:
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y))
 	direction = direction.rotated(Vector3.UP, y_pivot.rotation.y).normalized()
 	# Make player accelerate
-	if dashed and initial_dash:
+	if (dashed or down_dash) and initial_dash:
 		# Restrict movement while dashing
 		velocity = lerp(velocity, direction * SPEED * speed_multiplier, air_accel * delta)
 	else:
 		velocity = lerp(velocity, direction * SPEED * speed_multiplier, ground_accel * delta)
 		# Make hard to change direction after giving dash boost
-		if dashed and !initial_dash:
+		if (dashed or down_dash) and !initial_dash:
 			initial_dash = true
 	velocity.y = vy
 	
@@ -269,14 +270,14 @@ func jump() -> void:
 
 
 func dash() -> void:
-	if !spinning and !groundPound and !dashed:
-		# Dash
+	if !spinning and !groundPound:
 		#$"Physics collision/PlayerModel/AnimationPlayer".play("dash")
-		if is_on_floor():
+		if is_on_floor() and !dashed:
 			velocity.y = 4
-		else:
+			dashed = true
+		elif !is_on_floor() and !down_dash:
 			velocity.y = -2.5
-		dashed = true
+			down_dash = true
 	else:
 		# Input buffer
 		buffer_set("dash")
@@ -300,6 +301,7 @@ func refresh_abilities() -> void:
 	groundPound = false
 	spun = false
 	dashed = false
+	down_dash = false
 	gravity = const_gravity
 	$"Physics collision/PlayerModel/GP attack component/Butt square".disabled = true
 
