@@ -14,6 +14,8 @@ var broken_barrels : int = 0
 @export var crystal_1 : Node3D
 # Break all the barrels
 @export var crystal_2 : Node3D
+# Collect all green coins
+@export var crystal_3 : Node3D
 
 
 # Called when the node enters the scene tree for the first time.
@@ -24,16 +26,13 @@ func _ready() -> void:
 	# Crystals will be invisible by default in the future
 	set_item_invisible(crystal_1)
 	set_item_invisible(crystal_2)
+	set_item_invisible(crystal_3)
 
 
 func set_item_invisible(item: Node3D) -> void:
 	item.get_child(0).monitoring = false
 	item.get_child(0).monitorable = false
 	item.visible = false
-
-
-func set_item_visible(item: Node3D) -> void:
-	pass
 
 
 func item_collected(item_type: String, id: int) -> void:
@@ -57,6 +56,9 @@ func interaction_occured(event : String) -> void:
 			if num_barrels <= broken_barrels:
 				# TODO make appear at the last barrel broke?
 				crystal_2.crystal_appear()
+		"green":
+			if !found_crystals[3]:
+				crystal_3.crystal_appear()
 	
 
 

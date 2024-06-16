@@ -1,11 +1,16 @@
-[gd_scene load_steps=8 format=3 uid="uid://cxsts7lsgjqk3"]
+[gd_scene load_steps=9 format=3 uid="uid://cxsts7lsgjqk3"]
 
 [ext_resource type="Script" path="res://Items/coin.gd" id="1_ibdmh"]
 [ext_resource type="Material" uid="uid://4pwfmho6bh5h" path="res://Textures/shadow.tres" id="2_r44x2"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_tkulc"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7wrtt"]
+albedo_color = Color(0.554471, 0.390069, 0.193441, 1)
+metallic = 0.3
+
 [sub_resource type="CylinderMesh" id="CylinderMesh_ot7w1"]
+material = SubResource("StandardMaterial3D_7wrtt")
 
 [sub_resource type="Animation" id="Animation_kv8gl"]
 resource_name = "Spin"

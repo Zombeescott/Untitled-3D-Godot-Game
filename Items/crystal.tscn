@@ -48,8 +48,8 @@ _data = {
 script = ExtResource("1_kltte")
 camera = NodePath("Camera3D")
 cam_timer = NodePath("Timer")
-area = NodePath("Area3D")
 item_type = "crystal"
+area = NodePath("Area3D")
 
 [node name="Area3D" type="Area3D" parent="."]
 
