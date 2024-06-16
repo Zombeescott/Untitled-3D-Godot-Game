@@ -1,6 +1,7 @@
 extends ItemBase
 
 
+@export var id : int
 @export var camera : Camera3D
 @export var cam_timer : Timer
 

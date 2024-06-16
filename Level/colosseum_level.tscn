@@ -329,15 +329,15 @@ transform = Transform3D(-0.301873, 0, 0.953348, 0, 1, 0, -0.953348, 0, -0.301873
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15, 0)
 
 [node name="Crystal 1" parent="Crystals" instance=ExtResource("5_m1oyn")]
-item_id = 1
+id = 1
 
 [node name="Crystal 2" parent="Crystals" instance=ExtResource("5_m1oyn")]
 transform = Transform3D(0.932475, 0, 0.361234, 0, 1, 0, -0.361234, 0, 0.932475, -18.225, 12.8264, -20.8128)
-item_id = 2
+id = 2
 
 [node name="Crystal 3" parent="Crystals" instance=ExtResource("5_m1oyn")]
 transform = Transform3D(0.865659, 0, 0.500635, 0, 1, 0, -0.500635, 0, 0.865659, -6.12398, 1.74942, -18.257)
-item_id = 3
+id = 3
 
 [node name="Barrels" type="Node3D" parent="."]
 

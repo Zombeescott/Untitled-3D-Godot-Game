@@ -21,7 +21,7 @@ func set_curr_scene(scene: Node3D) -> void:
 	curr_level = scene
 
 
-func item_collected(item: String) -> void:
+func item_collected(item: ItemBase) -> void:
 	match item:
 		"coin":
 			coin_count += 1

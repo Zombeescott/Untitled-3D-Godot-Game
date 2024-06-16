@@ -29,18 +29,18 @@ func _ready() -> void:
 	crystal_3.hide_item()
 
 
-func item_collected(item_type: String, id: int) -> void:
-	match item_type:
+func item_collected(item: ItemBase) -> void:
+	match item.item_type:
 		"crystal":
-			if !found_crystals[id]:
-				found_crystals[id] = true
-				print("Crystal ", id, " found!")
+			if !found_crystals[item.id]:
+				found_crystals[item.id] = true
+				print("Crystal ", item.id, " found!")
 		"coin":
 			coins_collected += 1
 			if coins_collected >= num_coins:
 				crystal_1.crystal_appear()
 		
-	Global.item_collected(item_type)
+	Global.item_collected(item)
 
 
 func interaction_occured(event : String) -> void:
