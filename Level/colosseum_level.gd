@@ -34,7 +34,6 @@ func set_item_invisible(item: Node3D) -> void:
 
 func set_item_visible(item: Node3D) -> void:
 	pass
-	#item.get
 
 
 func item_collected(item_type: String, id: int) -> void:

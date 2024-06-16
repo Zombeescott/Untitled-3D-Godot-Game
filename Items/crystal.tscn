@@ -1,6 +1,5 @@
-[gd_scene load_steps=8 format=3 uid="uid://dhbkmhl4khthm"]
+[gd_scene load_steps=7 format=3 uid="uid://dhbkmhl4khthm"]
 
-[ext_resource type="PackedScene" uid="uid://d15l4khtosi1u" path="res://Components/item_component.tscn" id="1_4xham"]
 [ext_resource type="Script" path="res://Items/crystal.gd" id="1_kltte"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_yunvw"]
@@ -12,13 +11,13 @@ blend_mode = 1
 cull_mode = 2
 albedo_color = Color(0.942417, 0.435021, 1, 1)
 
-[sub_resource type="Animation" id="Animation_rd4fl"]
+[sub_resource type="Animation" id="Animation_xnmwo"]
 resource_name = "spin"
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("MeshInstance3D:position")
+tracks/0/path = NodePath(".:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -30,7 +29,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("MeshInstance3D:rotation")
+tracks/1/path = NodePath(".:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -40,30 +39,32 @@ tracks/1/keys = {
 "values": [Vector3(0, 0, 0), Vector3(0, 3.14159, 0)]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_dhqiq"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kwx1g"]
 _data = {
-"spin": SubResource("Animation_rd4fl")
+"spin": SubResource("Animation_xnmwo")
 }
 
-[node name="Crystal" type="Node3D" node_paths=PackedStringArray("camera", "cam_timer")]
+[node name="Crystal" type="Node3D" node_paths=PackedStringArray("camera", "cam_timer", "area")]
 script = ExtResource("1_kltte")
 camera = NodePath("Camera3D")
 cam_timer = NodePath("Timer")
-
-[node name="Item Component" parent="." instance=ExtResource("1_4xham")]
+area = NodePath("Area3D")
 item_type = "crystal"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Item Component"]
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("BoxShape3D_yunvw")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Item Component"]
-transform = Transform3D(-0.957887, 0, 0.287146, 0, 1, 0, -0.287146, 0, -0.957887, 0, 0.0370826, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
 mesh = SubResource("BoxMesh_gscaw")
+skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a3r61")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Item Component"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Area3D"]
 libraries = {
-"": SubResource("AnimationLibrary_dhqiq")
+"": SubResource("AnimationLibrary_kwx1g")
 }
 autoplay = "spin"
 speed_scale = 0.5
@@ -76,4 +77,6 @@ fov = 105.0
 wait_time = 2.0
 one_shot = true
 
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

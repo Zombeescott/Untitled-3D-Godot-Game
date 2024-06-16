@@ -51,7 +51,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.16253, 0)
 transform = Transform3D(0.867679, 0, -0.497125, 0, 1, 0, 0.497125, 0, 0.867679, -7.92069, 1.13562, 5.96041)
 
 [node name="Coin group" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.035, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0223999, -1.06072, -0.016427)
 
 [node name="Coin" parent="Coin group" instance=ExtResource("4_n1usy")]
 transform = Transform3D(-0.999463, 0, 0.0327521, 0, 1, 0, -0.0327521, 0, -0.999463, 0, 1.7, -13)

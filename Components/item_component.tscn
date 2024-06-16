@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://d15l4khtosi1u"]
-
-[ext_resource type="Script" path="res://Components/item_component.gd" id="1_nxw4q"]
-
-[node name="Item Component" type="Area3D"]
-script = ExtResource("1_nxw4q")
-
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]

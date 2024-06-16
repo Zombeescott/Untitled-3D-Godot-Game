@@ -1,18 +1,27 @@
-extends Node3D
+extends ItemBase
 
 
 @export var camera : Camera3D
-@export var item_id : int = 0
 @export var cam_timer : Timer
+@export var area : Area3D
 
 
 func crystal_appear() -> void:
-	self.get_child(0).monitoring = true
-	self.get_child(0).monitorable = true
+	area.monitoring = true
+	#area.monitorable = true
 	self.visible = true
 	self.camera.current = true
 	cam_timer.start()
 
+func hide_crystal() -> void:
+	area.monitoring = false
+	#area.monitorable = false
+	visible = false
+
 
 func _on_timer_timeout() -> void:
 	self.camera.current = false
+
+
+func _on_area_3d_body_entered(body: Node3D) -> void:
+	body_entered(body)
