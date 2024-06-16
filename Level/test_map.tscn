@@ -11,6 +11,8 @@
 [sub_resource type="Environment" id="Environment_d866r"]
 background_energy_multiplier = 2.0
 ambient_light_color = Color(1, 1, 1, 1)
+ssao_enabled = true
+ssil_enabled = true
 
 [node name="Test Map" type="Node3D"]
 
@@ -39,6 +41,7 @@ environment = SubResource("Environment_d866r")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.707107, 0.5, 0.5, -0.612372, 0.0794593, 0.786566, 0.353553, -0.862372, 0.362372, 14, 17, 13)
 light_energy = 0.322
+shadow_enabled = true
 
 [node name="Player" parent="." instance=ExtResource("2_q6ukj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.16253, 0)

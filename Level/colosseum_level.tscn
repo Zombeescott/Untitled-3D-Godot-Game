@@ -231,8 +231,10 @@ crystal_2 = NodePath("Crystals/Crystal 2")
 environment = SubResource("Environment_kyyqh")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.965926, -0.0669873, 0.25, -0.258819, -0.25, 0.933013, 0, -0.965926, -0.258819, 18, 49, -4)
+transform = Transform3D(0.965926, -0.0669873, 0.25, -0.258819, -0.25, 0.933013, 0, -0.965926, -0.258819, 13.8608, 49, -4)
 light_energy = 0.568
+shadow_enabled = true
+shadow_opacity = 0.6
 
 [node name="SpotLight3D" type="SpotLight3D" parent="."]
 transform = Transform3D(0.707107, -0.183013, 0.683013, 0, 0.965926, 0.258819, -0.707107, -0.183013, 0.683013, -7, 15, -9)
@@ -248,23 +250,6 @@ omni_range = 8.682
 
 [node name="Player" parent="." instance=ExtResource("1_gp10b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1, 13)
-
-[node name="Bubbles" type="Node3D" parent="."]
-
-[node name="Bubble" parent="Bubbles" instance=ExtResource("2_g58c0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 7, 12)
-
-[node name="Bubble2" parent="Bubbles" instance=ExtResource("2_g58c0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23, 3, 16)
-
-[node name="Bubble3" parent="Bubbles" instance=ExtResource("2_g58c0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 3, 11)
-
-[node name="Bubble4" parent="Bubbles" instance=ExtResource("2_g58c0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 4, 19)
-
-[node name="Bubble5" parent="Bubbles" instance=ExtResource("2_g58c0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 8, 18)
 
 [node name="Colosseum_level" type="Node3D" parent="."]
 transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)
@@ -288,6 +273,23 @@ skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Colosseum_level/Floor/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_jopto")
+
+[node name="Bubbles" type="Node3D" parent="."]
+
+[node name="Bubble" parent="Bubbles" instance=ExtResource("2_g58c0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 7, 12)
+
+[node name="Bubble2" parent="Bubbles" instance=ExtResource("2_g58c0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23, 3, 16)
+
+[node name="Bubble3" parent="Bubbles" instance=ExtResource("2_g58c0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 3, 11)
+
+[node name="Bubble4" parent="Bubbles" instance=ExtResource("2_g58c0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 4, 19)
+
+[node name="Bubble5" parent="Bubbles" instance=ExtResource("2_g58c0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 8, 18)
 
 [node name="Coins" type="Node3D" parent="."]
 
@@ -327,7 +329,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15, 0)
 item_id = 1
 
 [node name="Crystal 2" parent="Crystals" instance=ExtResource("5_m1oyn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.225, 12.8264, -20.8128)
+transform = Transform3D(0.932475, 0, 0.361234, 0, 1, 0, -0.361234, 0, 0.932475, -18.225, 12.8264, -20.8128)
 item_id = 2
 
 [node name="Barrels" type="Node3D" parent="."]

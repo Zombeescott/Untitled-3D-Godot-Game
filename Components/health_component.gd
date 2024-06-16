@@ -13,7 +13,8 @@ func _ready() -> void:
 
 func take_damage(attack : AttackComponent):
 	health -= attack.damage
-	Global.curr_level.interaction_occured(group)
+	if Global.curr_level:
+		Global.curr_level.interaction_occured(group)
 	
 	# Tell parent it was hit
 	if get_parent().has_method("update"):

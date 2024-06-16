@@ -33,9 +33,8 @@ func set_item_invisible(item: Node3D) -> void:
 
 
 func set_item_visible(item: Node3D) -> void:
-	item.get_child(0).monitoring = true
-	#item.get_child(0).monitorable = true
-	item.visible = true
+	pass
+	#item.get
 
 
 func item_collected(item_type: String, id: int) -> void:
@@ -47,7 +46,7 @@ func item_collected(item_type: String, id: int) -> void:
 		"coin":
 			coins_collected += 1
 			if coins_collected >= num_coins:
-				set_item_visible(crystal_1)
+				crystal_1.crystal_appear()
 		
 	Global.item_collected(item_type)
 
@@ -58,5 +57,7 @@ func interaction_occured(event : String) -> void:
 			broken_barrels += 1
 			if num_barrels <= broken_barrels:
 				# TODO make appear at the last barrel broke?
-				set_item_visible(crystal_2)
+				crystal_2.crystal_appear()
 	
+
+

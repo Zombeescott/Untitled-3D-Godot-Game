@@ -39,8 +39,9 @@ var jumpPad: bool = false
 var jumping: bool = false
 var doubleJump: bool = false
 # Dashing
-var dashed = false
-var initial_dash = false
+var dashed: bool = false
+#var down_dash: bool = false
+var initial_dash: bool = false
 # Wall hanging
 var wallHang: bool = false
 var wallPoint: Vector3

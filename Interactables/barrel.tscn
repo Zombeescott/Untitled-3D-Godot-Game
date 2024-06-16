@@ -40,12 +40,14 @@ collision_bounce = 0.35
 material = ExtResource("4_xpgbj")
 size = Vector3(0.26, 0.28, 0.23)
 
-[node name="Barrel" type="Node3D"]
+[node name="Barrel" type="Node3D" node_paths=PackedStringArray("label")]
 script = ExtResource("1_ul231")
+label = NodePath("Label3D")
 
 [node name="Hitbox Component" parent="." node_paths=PackedStringArray("health_component", "particles") instance=ExtResource("2_cce7s")]
 health_component = NodePath("../Health Component")
 particles = NodePath("../GPUParticles3D")
+label = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Hitbox Component"]
 mesh = SubResource("CylinderMesh_v66x3")
@@ -63,11 +65,15 @@ MAX_HEALTH = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.415746, 0)
 emitting = false
 amount = 15
-lifetime = 3.85
+lifetime = 3.0
 one_shot = true
 explosiveness = 1.0
 visibility_aabb = AABB(-10, -10, -10, 20, 20, 20)
 process_material = SubResource("ParticleProcessMaterial_xj26r")
 draw_pass_1 = SubResource("PrismMesh_44mqd")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1.905, 0, 0, 0, 1.905, 0, 0, 0, 1.905, 0, 1.60651, 0)
+billboard = 1
 
 [connection signal="finished" from="GPUParticles3D" to="." method="_on_gpu_particles_3d_finished"]

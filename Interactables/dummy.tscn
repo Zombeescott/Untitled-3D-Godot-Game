@@ -40,4 +40,5 @@ mesh = SubResource("CylinderMesh_h81jh")
 
 [node name="Health label" type="Label3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 2.50335, 0)
+billboard = 2
 text = "1000"
