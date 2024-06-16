@@ -24,15 +24,9 @@ func _ready() -> void:
 	# load from save file in future
 	found_crystals = [false, false, false, false, false, false]
 	# Crystals will be invisible by default in the future
-	set_item_invisible(crystal_1)
-	set_item_invisible(crystal_2)
-	set_item_invisible(crystal_3)
-
-
-func set_item_invisible(item: Node3D) -> void:
-	item.get_child(0).monitoring = false
-	item.get_child(0).monitorable = false
-	item.visible = false
+	crystal_1.hide_item()
+	crystal_2.hide_item()
+	crystal_3.hide_item()
 
 
 func item_collected(item_type: String, id: int) -> void:

@@ -9,6 +9,8 @@ albedo_color = Color(0.411765, 0.741176, 0.392157, 1)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_ke2be"]
 material = SubResource("StandardMaterial3D_j1h8t")
+radial_segments = 14
+rings = 1
 
 [sub_resource type="Animation" id="Animation_kv8gl"]
 resource_name = "Spin"
@@ -52,6 +54,7 @@ item_type = "green"
 area = NodePath("Area3D")
 
 [node name="Area3D" type="Area3D" parent="."]
+collision_layer = 0
 monitoring = false
 monitorable = false
 

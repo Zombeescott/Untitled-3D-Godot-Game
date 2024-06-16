@@ -11,6 +11,8 @@ metallic = 0.3
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_ot7w1"]
 material = SubResource("StandardMaterial3D_7wrtt")
+radial_segments = 14
+rings = 1
 
 [sub_resource type="Animation" id="Animation_kv8gl"]
 resource_name = "Spin"
