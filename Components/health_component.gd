@@ -2,6 +2,7 @@ extends Node3D
 class_name HealthComponent
 
 
+@export var group: String = ""
 @export var MAX_HEALTH:  int = 100
 var health : float
 
@@ -12,9 +13,10 @@ func _ready() -> void:
 
 func take_damage(attack : AttackComponent):
 	health -= attack.damage
+	Global.curr_level.interaction_occured(group)
 	
 	# Tell parent it was hit
 	if get_parent().has_method("update"):
 		get_parent().update(self)
-	if health <= 0:
-		get_parent().queue_free()
+	#else:
+	#	get_parent().queue_free()
