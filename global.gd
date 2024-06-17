@@ -1,11 +1,9 @@
 extends Node
 
 
-var pause = preload("res://User Interface/pause_menu.tscn")
-var user = preload("res://User Interface/user_interface.tscn")
-
 var coin_count = 0
 var crystal_count = 0
+var player : Node3D
 var curr_level : Node3D
 
 
@@ -14,8 +12,9 @@ func _ready() -> void:
 	pass # Replace with function body.
 
 
-func set_curr_scene(scene: Node3D) -> void:
+func set_curr_scene(scene: Node3D, player: Node3D) -> void:
 	curr_level = scene
+	self.player = player
 
 
 func item_collected(item: ItemBase) -> void:

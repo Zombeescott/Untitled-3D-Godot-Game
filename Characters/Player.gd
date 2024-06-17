@@ -64,11 +64,13 @@ func _input(event: InputEvent) -> void:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 			$"Pause Menu".grab_focus
 			Global.pause_entities()
+			#get_tree().paused = true
 		else:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 			$"Pause Menu".get_child(0).hide()
 			$"User Interface".grab_focus
 			Global.unpause_entities()
+			#get_tree().paused = false
 	if event is InputEventMouseMotion:
 		# Mouse movement
 		x_pivot.rotation.x -= event.relative.y * sens

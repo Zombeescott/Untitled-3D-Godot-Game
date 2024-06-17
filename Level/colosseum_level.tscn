@@ -229,6 +229,8 @@ data = PackedVector3Array(-0.6779, -0.1204, 0.1478, -0.0191, -0.1211, -0.035, -0
 
 [node name="Colosseum Level" type="Node3D" node_paths=PackedStringArray("crystal_0", "crystal_1", "crystal_2", "crystal_3")]
 script = ExtResource("1_83dof")
+num_crystals = null
+num_barrels = null
 crystal_0 = NodePath("Crystals/Crystal 0")
 crystal_1 = NodePath("Crystals/Crystal 1")
 crystal_2 = NodePath("Crystals/Crystal 2")

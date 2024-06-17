@@ -2,9 +2,10 @@ extends Control
 
 
 func _on_resume_pressed() -> void:
-	self.visible = false
+	self.get_child(0).visible = false
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	#Global.user.grab_focus
+	Global.unpause_entities()
+	Global.player.get_node("User Interface").grab_focus
 
 
 func _on_settings_pressed() -> void:
