@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="3D Game 2"
-run/main_scene="res://Level/test_map.tscn"
+config/name="Star Game"
+run/main_scene="res://Level/colosseum_level.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 
 [autoload]

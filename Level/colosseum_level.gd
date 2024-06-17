@@ -3,7 +3,7 @@ extends Node3D
 
 var num_coins : int = 9
 var coins_collected : int = 0
-@export var num_crystals : int = 6
+@export var num_crystals : int = 4
 var found_crystals : Array[bool]
 @export var num_barrels : int = 6
 var broken_barrels : int = 0

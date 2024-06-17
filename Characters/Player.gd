@@ -51,13 +51,24 @@ var wallPoint: Vector3
 
 
 func _ready() -> void:
+	$"Pause Menu".get_child(0).hide()
+	$"User Interface".grab_focus
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	gravity = const_gravity
 
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("quit"):
-		get_tree().quit()
+		if $"Pause Menu".get_child(0).visible == false:
+			$"Pause Menu".get_child(0).show()
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+			$"Pause Menu".grab_focus
+			Global.pause_entities()
+		else:
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+			$"Pause Menu".get_child(0).hide()
+			$"User Interface".grab_focus
+			Global.unpause_entities()
 	if event is InputEventMouseMotion:
 		# Mouse movement
 		x_pivot.rotation.x -= event.relative.y * sens
@@ -128,14 +139,11 @@ func _physics_process(delta: float) -> void:
 		floor_buffer_counter = 0 # reset counter
 		# Check for any saved actions
 		buffer_check("air")
+	# Buffers
 	if buffer_counter > 0:
-		#print(buffer_counter)
 		buffer_counter -= 1
 	if !is_on_floor() and floor_buffer_counter < floor_buffer:
 		floor_buffer_counter += 1
-		if !floor_buffer_counter <= 0:
-			print("florr")
-			
 	# Cast shadow under player
 	if shadowRay.is_colliding():
 		if $ShadowCast/Shadow.visible == false:
@@ -231,7 +239,6 @@ func _physics_process(delta: float) -> void:
 				# If moving up/down stop wall hang
 				wallHang = false
 				wallPoint = Vector3.ZERO
-		
 	# No direction input
 	elif !groundPound:
 		if wallHang and wallPoint != Vector3.ZERO:
@@ -241,7 +248,7 @@ func _physics_process(delta: float) -> void:
 			position.z += direction.z * SPEED * delta
 		else:
 			$"Physics collision/PlayerModel/AnimationPlayer".play("Rest")
-
+	
 	move_and_slide()
 	
 	# Move model in direction of keys
