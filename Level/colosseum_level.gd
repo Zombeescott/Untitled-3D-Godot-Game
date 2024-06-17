@@ -21,6 +21,7 @@ var broken_barrels : int = 0
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Global.set_curr_scene(self)
+	%Player.item_collected() # Update UI
 	# load from save file in future
 	found_crystals = [false, false, false, false, false, false]
 	# Crystals will be invisible by default in the future

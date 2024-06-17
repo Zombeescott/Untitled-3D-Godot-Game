@@ -11,8 +11,12 @@
 
 [sub_resource type="Environment" id="Environment_kyyqh"]
 background_mode = 1
-background_color = Color(0.407843, 0.635294, 1, 0.513726)
+background_color = Color(0.482353, 0.682353, 1, 0.627451)
 background_energy_multiplier = 0.96
+fog_enabled = true
+fog_light_color = Color(0.438392, 0.67342, 1, 1)
+fog_light_energy = 1.45
+fog_density = 0.002
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ur5pl"]
 resource_name = "Base Shell"
@@ -252,6 +256,7 @@ light_specular = 3.235
 omni_range = 8.682
 
 [node name="Player" parent="." instance=ExtResource("1_gp10b")]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1, 13)
 
 [node name="Colosseum_level" type="Node3D" parent="."]

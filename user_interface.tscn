@@ -18,5 +18,13 @@ offset_left = 24.0
 offset_top = 22.0
 offset_right = 85.0
 offset_bottom = 45.0
-theme_override_font_sizes/font_size = 46
+theme_override_font_sizes/font_size = 30
 text = "Coins: 0"
+
+[node name="Crystal Count" type="Label" parent="CanvasLayer"]
+offset_left = 24.0
+offset_top = 65.0
+offset_right = 251.0
+offset_bottom = 129.0
+theme_override_font_sizes/font_size = 30
+text = "Crystals: 0"

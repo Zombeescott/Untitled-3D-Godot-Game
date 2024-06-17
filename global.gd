@@ -2,10 +2,9 @@ extends Node
 
 
 var coin_count = 0
-var star_count = 0
+var crystal_count = 0
 var curr_level : Node3D
 
-signal update_ui
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -22,10 +21,8 @@ func set_curr_scene(scene: Node3D) -> void:
 
 
 func item_collected(item: ItemBase) -> void:
-	match item:
+	match item.item_type:
 		"coin":
 			coin_count += 1
 		"crystal":
-			star_count += 1
-	
-	#update_ui.emit()
+			crystal_count += 1
