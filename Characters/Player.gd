@@ -24,6 +24,9 @@ var curr_jump_velo: float
 var buffer_counter: int
 var buffer_action: String
 var buffer_used: bool = false 
+# Floor Buffer
+@export var floor_buffer: int = 5
+var floor_buffer_counter: int
 
 #var const_gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var const_gravity = 12
@@ -95,6 +98,15 @@ func buffer_used_reset() -> bool:
 	return true
 
 
+# Returns true if player is on floor or is in a reasonable window after leaving the floor
+func floor_check() -> bool:
+	if is_on_floor():
+		return true
+	elif floor_buffer_counter < floor_buffer:
+		return true
+	return false
+
+
 func _physics_process(delta: float) -> void:
 	# Gravity and floor detection
 	if !is_on_floor() and !wallHang and !spinning:
@@ -113,11 +125,17 @@ func _physics_process(delta: float) -> void:
 			dashed = false
 			down_dash = false
 			initial_dash = false
+		floor_buffer_counter = 0 # reset counter
 		# Check for any saved actions
 		buffer_check("air")
 	if buffer_counter > 0:
 		#print(buffer_counter)
 		buffer_counter -= 1
+	if !is_on_floor() and floor_buffer_counter < floor_buffer:
+		floor_buffer_counter += 1
+		if !floor_buffer_counter <= 0:
+			print("florr")
+			
 	# Cast shadow under player
 	if shadowRay.is_colliding():
 		if $ShadowCast/Shadow.visible == false:
@@ -237,7 +255,7 @@ func _physics_process(delta: float) -> void:
 
 func jump() -> void:
 	if Input.is_action_just_pressed("jump") or buffer_used:
-		if is_on_floor():
+		if floor_check():
 			jumping = true
 			if crouching:
 				velocity.y = initial_jump_velo * 2.0 * 2
@@ -272,10 +290,10 @@ func jump() -> void:
 func dash() -> void:
 	if !spinning and !groundPound:
 		#$"Physics collision/PlayerModel/AnimationPlayer".play("dash")
-		if is_on_floor() and !dashed:
+		if floor_check() and !dashed:
 			velocity.y = 4
 			dashed = true
-		elif !is_on_floor() and !down_dash:
+		elif !floor_check() and !down_dash:
 			velocity.y = -2.5
 			down_dash = true
 	else:
@@ -285,7 +303,7 @@ func dash() -> void:
 
 func spin() -> void:
 	if !spun and !spinning and !groundPound:
-		if !is_on_floor():
+		if !floor_check():
 			spun = true
 		spinning = true
 		$"Physics collision/PlayerModel/PlayerAnimation".play("spin_attack")
