@@ -51,26 +51,10 @@ var wallPoint: Vector3
 
 
 func _ready() -> void:
-	$"Pause Menu".get_child(0).hide()
-	$"User Interface".grab_focus
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	gravity = const_gravity
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("quit"):
-		if $"Pause Menu".get_child(0).visible == false:
-			$"Pause Menu".get_child(0).show()
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-			$"Pause Menu".grab_focus
-			Global.pause_entities()
-			#get_tree().paused = true
-		else:
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-			$"Pause Menu".get_child(0).hide()
-			$"User Interface".grab_focus
-			Global.unpause_entities()
-			#get_tree().paused = false
 	if event is InputEventMouseMotion:
 		# Mouse movement
 		x_pivot.rotation.x -= event.relative.y * sens
@@ -334,10 +318,6 @@ func refresh_abilities() -> void:
 
 
 # Signals / Called from other scripts -----------
-
-
-func item_collected() -> void:
-	$"User Interface".update_ui()
 
 
 func interaction_occured(action) -> void:

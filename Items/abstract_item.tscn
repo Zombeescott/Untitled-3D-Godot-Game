@@ -4,4 +4,3 @@
 
 [node name="Abstract Item" type="Node3D"]
 script = ExtResource("1_txobp")
-item_type = null

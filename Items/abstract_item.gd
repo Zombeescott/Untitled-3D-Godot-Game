@@ -12,7 +12,6 @@ func body_entered(body: Node3D) -> void:
 			Global.curr_level.item_collected(self)
 		else:
 			Global.item_collected(self)
-		body.item_collected() # Update UI
 
 
 func appear() -> void:
