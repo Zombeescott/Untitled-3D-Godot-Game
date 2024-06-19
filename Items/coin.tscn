@@ -6,8 +6,8 @@
 [sub_resource type="SphereShape3D" id="SphereShape3D_tkulc"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7wrtt"]
-albedo_color = Color(0.554471, 0.390069, 0.193441, 1)
-metallic = 0.3
+albedo_color = Color(0.745098, 0.537255, 0.211765, 1)
+metallic_specular = 0.25
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_ot7w1"]
 material = SubResource("StandardMaterial3D_7wrtt")
@@ -75,6 +75,7 @@ speed_scale = 0.5
 
 [node name="Shadow" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.111364, 0, 0.32004, 0, 0.338862, 0, -0.32004, 0, 0.111364, 0, -0.157364, 0)
+visible = false
 mesh = SubResource("PlaneMesh_pqxh4")
 skeleton = NodePath("")
 surface_material_override/0 = ExtResource("2_r44x2")

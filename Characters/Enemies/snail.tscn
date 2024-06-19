@@ -1,0 +1,77 @@
+[gd_scene load_steps=11 format=3 uid="uid://expy3arbt4i6"]
+
+[ext_resource type="Script" path="res://Characters/Enemies/snail.gd" id="1_iflre"]
+[ext_resource type="PackedScene" uid="uid://ct0asw0hbjxjs" path="res://Components/health_component.tscn" id="2_cjktq"]
+[ext_resource type="PackedScene" uid="uid://da0u1sw1ccqqy" path="res://Components/attack_component.tscn" id="3_2tpc8"]
+[ext_resource type="PackedScene" uid="uid://boeput6aolbwp" path="res://Components/hitbox_component.tscn" id="4_hu87a"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_78van"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_4b3xv"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_qcjhk"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_xsmxq"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_d61rv"]
+radius = 0.548412
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_lsi70"]
+height = 1.36107
+radius = 0.540066
+
+[node name="Snail" type="CharacterBody3D" groups=["enemy", "entity"]]
+script = ExtResource("1_iflre")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+visible = false
+shape = SubResource("SphereShape3D_78van")
+
+[node name="Shell" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, -0.255949, 0, 1, -1.11879e-08, 0, 0, 0, 1, 0, 0.474328, 0.163339)
+mesh = SubResource("CylinderMesh_4b3xv")
+
+[node name="Body" type="MeshInstance3D" parent="Shell"]
+transform = Transform3D(0.168229, 0, 0, -1.77636e-15, 1, 0, 0, 0, 1.35525, -0.440899, 7.52977e-08, -0.128324)
+mesh = SubResource("BoxMesh_qcjhk")
+
+[node name="Right Leg" type="MeshInstance3D" parent="Shell"]
+transform = Transform3D(-4.75519e-09, -0.0157127, 0.471123, -2.7004e-09, 0.422362, 0.267544, -0.109929, -2.31322e-23, -2.08098e-08, -0.752958, -0.417305, 0.0716843)
+mesh = SubResource("BoxMesh_qcjhk")
+
+[node name="Left Leg" type="MeshInstance3D" parent="Shell"]
+transform = Transform3D(1.38731e-09, -0.0157693, 0.471087, 1.83806e-08, -0.42233, -0.268508, 0.109929, 4.825e-09, -3.00403e-09, -0.752958, 0.547145, 0.0716843)
+mesh = SubResource("BoxMesh_qcjhk")
+
+[node name="Left Arm" type="MeshInstance3D" parent="Shell"]
+transform = Transform3D(-0.0918438, -0.0515623, 0.133956, 0.126775, -0.348859, -0.920219, 0.0509535, -0.03608, 0.391443, -0.507878, 0.940988, -0.365842)
+mesh = SubResource("BoxMesh_qcjhk")
+
+[node name="Left Arm2" type="MeshInstance3D" parent="Shell"]
+transform = Transform3D(-0.0918317, -0.0516297, 0.133618, 0.235323, -0.28803, 0.919483, -0.00486197, 0.0619093, 0.391672, -0.507878, -0.801126, -0.365842)
+mesh = SubResource("BoxMesh_qcjhk")
+
+[node name="Left Eye" type="MeshInstance3D" parent="Shell"]
+transform = Transform3D(0.649933, -0.017014, 0, 0.721281, 0.234026, 0, 0, 0, 0.0573123, -0.0578116, 0.664258, -0.747767)
+mesh = SubResource("BoxMesh_xsmxq")
+
+[node name="Right Eye" type="MeshInstance3D" parent="Shell"]
+transform = Transform3D(0.649794, -0.0170589, -2.19012e-16, -0.723187, -0.233976, -1.95758e-08, 1.61818e-08, 5.23539e-09, -0.0573123, -0.0578116, -0.694117, -0.747767)
+mesh = SubResource("BoxMesh_xsmxq")
+
+[node name="Health Component" parent="." instance=ExtResource("2_cjktq")]
+MAX_HEALTH = 1
+
+[node name="Attack Component" parent="." instance=ExtResource("3_2tpc8")]
+transform = Transform3D(1.19495, 0, 0, 0, 1.19495, 0, 0, 0, 1.19495, 0, 0, 0)
+
+[node name="DamageArea" type="CollisionShape3D" parent="Attack Component"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0816762, 0)
+shape = SubResource("SphereShape3D_d61rv")
+
+[node name="Hitbox Component" parent="." node_paths=PackedStringArray("health_component") instance=ExtResource("4_hu87a")]
+health_component = NodePath("../Health Component")
+
+[node name="Hitbox" type="CollisionShape3D" parent="Hitbox Component"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.168415, 0)
+shape = SubResource("CylinderShape3D_lsi70")

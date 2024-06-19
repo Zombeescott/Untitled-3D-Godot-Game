@@ -45,10 +45,12 @@ var doubleJump: bool = false
 var dashed: bool = false
 var down_dash: bool = false
 var initial_dash: bool = false
+var dash_cam: bool = false
 # Wall hanging
 var wallHang: bool = false
 var wallPoint: Vector3
-
+# Settings
+var controller: bool = false
 
 func _ready() -> void:
 	gravity = const_gravity
@@ -56,6 +58,8 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
+		if controller:
+			controller = false
 		# Mouse movement
 		x_pivot.rotation.x -= event.relative.y * sens
 		x_pivot.rotation.x = clamp(x_pivot.rotation.x, deg_to_rad(-89), deg_to_rad(45))
@@ -122,6 +126,7 @@ func _physics_process(delta: float) -> void:
 			dashed = false
 			down_dash = false
 			initial_dash = false
+			dash_cam = false
 		floor_buffer_counter = 0 # reset counter
 		# Check for any saved actions
 		buffer_check("air")
@@ -144,7 +149,12 @@ func _physics_process(delta: float) -> void:
 		$ShadowCast/Shadow.visible = false
 	
 	# Basic movement
-	if InputEventJoypadMotion:
+	if Input.is_action_just_pressed("pair_controller"):
+		if controller:
+			controller = false
+		else:
+			controller = true
+	if controller and  InputEventJoypadMotion:
 		var joySens = 5
 		if Input.is_action_pressed("camera_left"):
 			y_pivot.rotation.y += Input.get_action_strength("camera_left") * sens * joySens
@@ -164,7 +174,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_released("sprint"):
 		sprinting = false
 	# Crouch / Ground pound
-	if Input.is_action_just_pressed("crouch"):
+	if Input.is_action_pressed("crouch"):
 		if !is_on_floor() and !groundPound and !wallHang:
 			if spinning:
 				$"Physics collision/PlayerModel/PlayerAnimation".stop()
@@ -173,8 +183,9 @@ func _physics_process(delta: float) -> void:
 			velocity = Vector3.ZERO
 			gravity = 0
 			$"Physics collision/PlayerModel/PlayerAnimation".play("start_ground_pound")
-		else:
-			crouching = true
+		elif !groundPound or $"Physics collision/PlayerModel/PlayerAnimation".current_animation == "recover":
+			if !crouching:
+				crouching = true
 	if Input.is_action_just_released("crouch"):
 		crouching = false
 	# Attack
@@ -192,7 +203,8 @@ func _physics_process(delta: float) -> void:
 	elif spinning:
 		speed_multiplier = 2
 	elif crouching:
-		speed_multiplier = .5
+		#speed_multiplier = .5
+		speed_multiplier = .2
 	elif sprinting:
 		speed_multiplier = 1
 	
@@ -237,10 +249,16 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 	
+	var look_dir = Vector2(velocity.z, velocity.x).angle() + deg_to_rad(180)
+	# Dashing moves camera in direction of the player
+	if (dash_cam or crouching) and controller:
+		if crouching:
+			y_pivot.rotation.y = lerp_angle(y_pivot.rotation.y, look_dir, (rotate_speed / 3) * delta)
+		else:
+			y_pivot.rotation.y = lerp_angle(y_pivot.rotation.y, look_dir, (rotate_speed / 1.5) * delta)
 	# Move model in direction of keys
 	if Vector3(velocity.x, 0, velocity.z).length() >= 1:
-		var look_dir = Vector2(velocity.z, velocity.x)
-		model.rotation.y = lerp_angle(model.rotation.y, look_dir.angle() + deg_to_rad(180), rotate_speed * delta)
+		model.rotation.y = lerp_angle(model.rotation.y, look_dir, rotate_speed * delta)
 
 
 # Abilities -----------
@@ -281,14 +299,20 @@ func jump() -> void:
 
 
 func dash() -> void:
-	if !spinning and !groundPound:
+	if !spinning and !groundPound and (!dashed or !down_dash):
 		#$"Physics collision/PlayerModel/AnimationPlayer".play("dash")
 		if floor_check() and !dashed:
 			velocity.y = 4
 			dashed = true
+		elif velocity.y < 0 and shadowRay.global_transform.origin.distance_to(shadowRay.get_collision_point()) < 1:
+			# If close to ground, don't downdash even if available, just buffer
+			buffer_set("dash")
+			return
 		elif !floor_check() and !down_dash:
 			velocity.y = -2.5
 			down_dash = true
+		# Set dash camera
+		dash_cam = true
 	else:
 		# Input buffer
 		buffer_set("dash")
@@ -302,6 +326,9 @@ func spin() -> void:
 		$"Physics collision/PlayerModel/PlayerAnimation".play("spin_attack")
 		if velocity.y < 0:
 			velocity.y = 0
+		# disable dash_cam because spin/spun
+		if dash_cam:
+			dash_cam = false
 	else:
 		# Input buffer
 		buffer_set("spin")
@@ -313,6 +340,7 @@ func refresh_abilities() -> void:
 	spun = false
 	dashed = false
 	down_dash = false
+	dash_cam = false
 	gravity = const_gravity
 	$"Physics collision/PlayerModel/GP attack component/Butt square".disabled = true
 
@@ -330,6 +358,7 @@ func interaction_occured(action) -> void:
 func _on_player_animation_animation_finished(anim_name: StringName) -> void:
 	match anim_name:
 		"start_ground_pound":
+			groundPound = true # In case of jumppad assign again
 			gravity = 25
 			velocity.y -= 5
 			$"Physics collision/PlayerModel/GP attack component/Butt square".disabled = false
@@ -342,7 +371,9 @@ func _on_player_animation_animation_finished(anim_name: StringName) -> void:
 			buffer_check("spinning")
 		"dash":
 			pass
-			$"Physics collision".rotate(-90)
+			model.rotate(-90)
 		"dash_end":
 			pass
-			$"Physics collision".rotate(180)
+			model.rotate(180)
+
+
