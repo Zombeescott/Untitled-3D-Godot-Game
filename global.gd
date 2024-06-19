@@ -40,20 +40,22 @@ func _input(event: InputEvent) -> void:
 
 
 func pause_scene() -> void:
-	pause.get_child(0).show()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	pause.get_child(0).show()
 	pause.grab_focus
-	self._set_processing(curr_level, false)
+	if curr_level:
+		self._set_processing(curr_level, false)
 
 
 func unpause_scene() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	pause.get_child(0).hide()
 	interface.grab_focus
-	self._set_processing(curr_level, true)
+	if curr_level:
+		self._set_processing(curr_level, true)
 
 
-# Halts a node and all their children
+# Halts a node and all their children (Could be optimitzed)
 func _set_processing(node, enabled):
 	if node.get_groups().has("entity"):
 		node.set_process(enabled)

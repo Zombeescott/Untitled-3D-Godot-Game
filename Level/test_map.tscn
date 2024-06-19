@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://jrroq7wi8bhm"]
+[gd_scene load_steps=11 format=3 uid="uid://jrroq7wi8bhm"]
 
 [ext_resource type="Material" uid="uid://bk8ewcvmq6bvu" path="res://Textures/GridTexture1.tres" id="1_enji8"]
 [ext_resource type="PackedScene" uid="uid://b64ovwa3oxmk5" path="res://Characters/player.tscn" id="2_q6ukj"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cdw25ygsbdxln" path="res://Interactables/dummy.tscn" id="6_0c2wx"]
 [ext_resource type="PackedScene" uid="uid://dhbkmhl4khthm" path="res://Items/crystal.tscn" id="7_lt6tp"]
 [ext_resource type="PackedScene" uid="uid://daerkarjrbb7o" path="res://Interactables/button.tscn" id="8_s8ep4"]
+[ext_resource type="PackedScene" uid="uid://expy3arbt4i6" path="res://Characters/Enemies/snail.tscn" id="9_6nox0"]
 
 [sub_resource type="Environment" id="Environment_d866r"]
 background_energy_multiplier = 2.0
@@ -73,3 +74,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.55555, 4.96928, -8.04138)
 
 [node name="Button" parent="." instance=ExtResource("8_s8ep4")]
 transform = Transform3D(1.88965, 0, 0, 0, 1.55334, 0, 0, 0, 1.88965, 0, 0.41586, -7.37441)
+
+[node name="Snail" parent="." instance=ExtResource("9_6nox0")]
+transform = Transform3D(0.484672, 0, -0.874696, 0, 1, 0, 0.874696, 0, 0.484672, -15.0948, 1.07839, 5.22279)

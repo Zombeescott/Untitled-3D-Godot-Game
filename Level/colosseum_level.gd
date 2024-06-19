@@ -12,7 +12,7 @@ var broken_barrels : int = 0
 @export var crystal_0 : Node3D
 # Collect all the coins
 @export var crystal_1 : Node3D
-# Break all the barrels
+# Break all the barrelsd
 @export var crystal_2 : Node3D
 # Collect all green coins
 @export var crystal_3 : Node3D

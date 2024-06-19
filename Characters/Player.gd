@@ -352,6 +352,8 @@ func interaction_occured(action) -> void:
 	match action.type:
 		"jumppad":
 			velocity.y = action.strength
+			if $"Physics collision/PlayerModel/PlayerAnimation".current_animation == "start_ground_pound":
+				$"Physics collision/PlayerModel/PlayerAnimation".stop()
 			call_deferred("refresh_abilities")
 
 
