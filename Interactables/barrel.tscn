@@ -43,9 +43,10 @@ collision_bounce = 0.35
 material = ExtResource("4_xpgbj")
 size = Vector3(0.26, 0.28, 0.23)
 
-[node name="Barrel" type="Node3D" node_paths=PackedStringArray("label")]
+[node name="Barrel" type="Node3D" node_paths=PackedStringArray("label", "hitbox")]
 script = ExtResource("1_ul231")
 label = NodePath("Label3D")
+hitbox = NodePath("Hitbox Component")
 
 [node name="Hitbox Component" parent="." node_paths=PackedStringArray("health_component", "particles") instance=ExtResource("2_cce7s")]
 health_component = NodePath("../Health Component")

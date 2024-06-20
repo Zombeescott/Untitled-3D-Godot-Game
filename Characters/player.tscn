@@ -8,8 +8,6 @@
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3o36h"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_32cv8"]
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_570wx"]
 resource_name = "Body"
 cull_mode = 2
@@ -623,6 +621,8 @@ _data = {
 "start_ground_pound": SubResource("Animation_mjh7u")
 }
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_32cv8"]
+
 [sub_resource type="PlaneMesh" id="PlaneMesh_nkf5h"]
 
 [sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_b72ty"]
@@ -633,17 +633,6 @@ script = ExtResource("1_cye5l")
 [node name="Physics collision" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_3o36h")
-
-[node name="Hitbox component" parent="Physics collision" node_paths=PackedStringArray("health_component") instance=ExtResource("2_vkfhd")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
-health_component = NodePath("../Health component")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Physics collision/Hitbox component"]
-transform = Transform3D(1.02469, 0, 0, 0, 1.02469, 0, 0, 0, 1.02469, 0, 1, 0)
-shape = SubResource("CapsuleShape3D_32cv8")
-
-[node name="Health component" parent="Physics collision" instance=ExtResource("3_al0my")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 
 [node name="PlayerModel" type="Node3D" parent="Physics collision"]
 transform = Transform3D(0.429649, 0, 0, 0, 0.429649, 0, 0, 0, 0.429649, 0, -1, 0)
@@ -773,6 +762,17 @@ libraries = {
 "": SubResource("AnimationLibrary_7di2k")
 }
 speed_scale = 1.5
+
+[node name="Hitbox component" parent="." node_paths=PackedStringArray("health_component") instance=ExtResource("2_vkfhd")]
+health_component = NodePath("../Health component")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox component"]
+transform = Transform3D(1.02469, 0, 0, 0, 1.02469, 0, 0, 0, 1.02469, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_32cv8")
+
+[node name="Health component" parent="." instance=ExtResource("3_al0my")]
+group = "player"
+MAX_HEALTH = 3
 
 [node name="ShadowCast" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 20, 0, 0, 0, 1, 0, 0.05, 0)

@@ -4,6 +4,9 @@ class_name HitboxComponent
 
 @export var health_component : HealthComponent
 @export var particles : GPUParticles3D
+
+@export var type: String
+@export var strength: float
 @export var label : bool
 
 
@@ -16,5 +19,8 @@ func damage_dealt(attack : AttackComponent):
 		if label:
 			get_parent().update_label()
 		
-		if health_component.health <= 0:
-			queue_free()
+
+
+
+func _on_body_entered(body: Node3D) -> void:
+	print("here 2")

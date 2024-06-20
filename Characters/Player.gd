@@ -348,13 +348,20 @@ func refresh_abilities() -> void:
 # Signals / Called from other scripts -----------
 
 
+func update(health : HealthComponent) -> void:
+	if health.health < 0:
+		print("Bro dead ", health.health)
+	else:
+		print("Bro got hit ", health.health)
+
+
 func interaction_occured(action) -> void:
-	match action.type:
-		"jumppad":
-			velocity.y = action.strength
-			if $"Physics collision/PlayerModel/PlayerAnimation".current_animation == "start_ground_pound":
-				$"Physics collision/PlayerModel/PlayerAnimation".stop()
-			call_deferred("refresh_abilities")
+	#match action.type:
+	#	"jumppad":
+	velocity.y = action.strength
+	if $"Physics collision/PlayerModel/PlayerAnimation".current_animation == "start_ground_pound":
+		$"Physics collision/PlayerModel/PlayerAnimation".stop()
+	call_deferred("refresh_abilities")
 
 
 func _on_player_animation_animation_finished(anim_name: StringName) -> void:

@@ -16,7 +16,9 @@ func _physics_process(delta: float) -> void:
 	# Handle jump.
 	#velocity.y = JUMP_VELOCITY
 	
-	path.progress += delta + SPEED
+	if animate and path:
+		if animate.current_animation != "Die":
+			path.get_parent().progress += delta + SPEED
 	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
@@ -32,6 +34,14 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 
-func update(health : HealthComponent):
-	if health.health <= 0:
-		self.queue_free()
+
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	anim_complete(anim_name)
+
+
+func _on_hitbox_component_body_entered(body: Node3D) -> void:
+	
+	print("here")
+	pass
+	#if body.get_groups().has("player"):
+	#	body.interaction_occured(self).

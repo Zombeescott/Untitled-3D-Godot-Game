@@ -2,12 +2,17 @@ extends Node3D
 
 
 @export var label: Label3D
+@export var hitbox: HitboxComponent
 
 
 func _process(delta: float) -> void:
 	# When text is set, the size slowly increases
 	if label.text:
 		label.scale *= 1.001
+
+
+func update(health: HealthComponent) -> void:
+	hitbox.queue_free()
 
 
 func update_label() -> void:

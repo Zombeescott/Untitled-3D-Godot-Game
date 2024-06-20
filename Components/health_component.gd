@@ -19,5 +19,3 @@ func take_damage(attack : AttackComponent):
 	# Tell parent it was hit
 	if get_parent().has_method("update"):
 		get_parent().update(self)
-	#else:
-	#	get_parent().queue_free()

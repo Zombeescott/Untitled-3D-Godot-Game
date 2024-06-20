@@ -63,11 +63,11 @@ func _set_processing(node, enabled):
 		node.set_process_input(enabled)
 		#node.set_process_unhandled_input(enabled)
 		#node.set_process_unhandled_key_input(enabled)
-	if node is AnimationPlayer and node.is_playing():
-		if enabled:
-			node.play()
-		else:
-			node.pause()
+	#if node is AnimationPlayer and node.is_playing():
+	#	if enabled:
+	#		node.play()
+	#	else:
+	#		node.pause()
 	if node is Timer:
 		node.paused = !enabled
 	for child in node.get_children():

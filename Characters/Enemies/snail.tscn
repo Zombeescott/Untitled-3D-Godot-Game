@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://expy3arbt4i6"]
+[gd_scene load_steps=13 format=3 uid="uid://expy3arbt4i6"]
 
 [ext_resource type="Script" path="res://Characters/Enemies/snail.gd" id="1_iflre"]
 [ext_resource type="PackedScene" uid="uid://ct0asw0hbjxjs" path="res://Components/health_component.tscn" id="2_cjktq"]
@@ -16,15 +16,52 @@
 [sub_resource type="SphereShape3D" id="SphereShape3D_d61rv"]
 radius = 0.548412
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_lsi70"]
-height = 1.36107
-radius = 0.540066
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_43yo3"]
+radius = 0.58378
+height = 1.60121
 
-[node name="Snail" type="CharacterBody3D" groups=["enemy", "entity"]]
+[sub_resource type="Animation" id="Animation_wkg6m"]
+resource_name = "Die"
+length = 0.9
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Shell:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.7, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0.474328, 0.163339), Vector3(0, 3, 1), Vector3(0, 3.5, 2), Vector3(0, 3, 2.5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Shell:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 1.5708), Vector3(1.5708, 0, 1.5708), Vector3(3.14159, 0, 1.5708), Vector3(4.71239, 0, 1.5708), Vector3(6.28319, 0, 1.5708), Vector3(6.98132, 0, 1.5708)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bsqko"]
+_data = {
+"Die": SubResource("Animation_wkg6m")
+}
+
+[node name="Snail" type="CharacterBody3D" node_paths=PackedStringArray("attack", "animate") groups=["enemy", "entity"]]
 script = ExtResource("1_iflre")
+attack = NodePath("Attack Component")
+type = "enemy"
+jump_strength = 5.0
+animate = NodePath("AnimationPlayer")
 
 [node name="Collision" type="CollisionShape3D" parent="."]
-visible = false
 shape = SubResource("SphereShape3D_78van")
 
 [node name="Shell" type="MeshInstance3D" parent="."]
@@ -73,5 +110,13 @@ shape = SubResource("SphereShape3D_d61rv")
 health_component = NodePath("../Health Component")
 
 [node name="Hitbox" type="CollisionShape3D" parent="Hitbox Component"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.168415, 0)
-shape = SubResource("CylinderShape3D_lsi70")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.242955, 0)
+shape = SubResource("CapsuleShape3D_43yo3")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_bsqko")
+}
+
+[connection signal="body_entered" from="Hitbox Component" to="." method="_on_hitbox_component_body_entered"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
