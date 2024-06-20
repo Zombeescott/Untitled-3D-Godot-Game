@@ -353,6 +353,7 @@ func update(health : HealthComponent) -> void:
 		print("Bro dead ", health.health)
 	else:
 		print("Bro got hit ", health.health)
+	Global.update_health(health)
 
 
 func interaction_occured(action) -> void:

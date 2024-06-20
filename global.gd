@@ -22,6 +22,10 @@ func set_curr_scene(scene: Node3D, player: Node3D) -> void:
 	self.player = player
 
 
+func update_health(health : HealthComponent) -> void:
+	interface.update_health(health)
+
+
 func item_collected(item: ItemBase) -> void:
 	match item.item_type:
 		"coin":
