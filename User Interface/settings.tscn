@@ -1,0 +1,69 @@
+[gd_scene load_steps=2 format=3 uid="uid://dqok5lafvyqh2"]
+
+[ext_resource type="Script" path="res://User Interface/settings.gd" id="1_oyjxy"]
+
+[node name="Settings" type="Control" node_paths=PackedStringArray("sens_slider", "wall_box")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_oyjxy")
+sens_slider = NodePath("CanvasLayer/VBoxContainer/HSlider")
+wall_box = NodePath("CanvasLayer/VBoxContainer/Wall Hang/CheckBox")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Background" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(0.47451, 0.756863, 1, 0.741176)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.0
+offset_top = -42.5
+offset_right = 46.0
+offset_bottom = 42.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sensitivity" type="Label" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+text = "Sensitvity:"
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+max_value = 3.0
+step = 0.01
+value = 1.0
+tick_count = 10
+ticks_on_borders = true
+
+[node name="Wall Hang" type="HBoxContainer" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Sensitivity" type="Label" parent="CanvasLayer/VBoxContainer/Wall Hang"]
+layout_mode = 2
+text = "Wall Hanging:"
+
+[node name="CheckBox" type="CheckBox" parent="CanvasLayer/VBoxContainer/Wall Hang"]
+layout_mode = 2
+button_pressed = true
+
+[node name="Save Button" type="Button" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+text = "Save"
+
+[connection signal="pressed" from="CanvasLayer/VBoxContainer/Save Button" to="." method="_on_save_button_pressed"]

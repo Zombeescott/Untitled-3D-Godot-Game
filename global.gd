@@ -6,13 +6,15 @@ var crystal_count = 0
 var player : Node3D
 var curr_level : Node3D
 
-@onready var interface : Control = $"User Interface"
-@onready var pause : Control = $"Pause Menu"
+@export var interface : Control
+@export var pause : Control
+@export var settings : Control
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pause.get_child(0).hide()
+	settings.get_child(0).hide()
 	interface.grab_focus
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
@@ -20,10 +22,6 @@ func _ready() -> void:
 func set_curr_scene(scene: Node3D, player: Node3D) -> void:
 	curr_level = scene
 	self.player = player
-
-
-func update_health(health : HealthComponent) -> void:
-	interface.update_health(health)
 
 
 func item_collected(item: ItemBase) -> void:
@@ -35,9 +33,13 @@ func item_collected(item: ItemBase) -> void:
 	interface.update_ui()
 
 
+func update_health(health : HealthComponent) -> void:
+	interface.update_health(health)
+
+
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("quit"):
-		if pause.get_child(0).visible == false:
+		if pause.get_child(0).visible == false and settings.get_child(0).visible == false:
 			pause_scene()
 		else:
 			unpause_scene()
@@ -53,10 +55,23 @@ func pause_scene() -> void:
 
 func unpause_scene() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	stop_settings_scene() # just in case
 	pause.get_child(0).hide()
 	interface.grab_focus
 	if curr_level:
 		self._set_processing(curr_level, true)
+
+
+func settings_scene() -> void:
+	pause.get_child(0).hide()
+	settings.get_child(0).show()
+	settings.grab_focus
+
+
+func stop_settings_scene() -> void:
+	settings.get_child(0).hide()
+	pause.get_child(0).show()
+	pause.grab_focus
 
 
 # Halts a node and all their children (Could be optimitzed)

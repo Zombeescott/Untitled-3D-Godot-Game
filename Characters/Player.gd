@@ -11,7 +11,7 @@ const JUMP_VELOCITY = 4.5
 @onready var b_wall_sens = $"Camera/y_axis/Bottom Wall Sensor"
 @onready var shadowRay = $ShadowCast
 
-@export var sens = 0.01
+@export var sens = 1
 @export var rotate_speed = 12.0
 @export var ground_accel = 10.0
 @export var air_accel = 1.5
@@ -61,9 +61,9 @@ func _input(event: InputEvent) -> void:
 		if controller:
 			controller = false
 		# Mouse movement
-		x_pivot.rotation.x -= event.relative.y * sens
+		x_pivot.rotation.x -= event.relative.y * sens * .01
 		x_pivot.rotation.x = clamp(x_pivot.rotation.x, deg_to_rad(-89), deg_to_rad(45))
-		y_pivot.rotation.y -= event.relative.x * sens
+		y_pivot.rotation.y -= event.relative.x * sens * .01
 		y_pivot.rotation.y = wrapf(y_pivot.rotation.y, deg_to_rad(0), deg_to_rad(360))
 
 

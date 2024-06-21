@@ -13,7 +13,8 @@ class_name EnemyBase
 func update(health : HealthComponent):
 	if health.health <= 0:
 		# Disable ability to damage
-		attack.queue_free()
+		if attack:
+			attack.queue_free()
 		if animate:
 			animate.play("Die")
 		else:
