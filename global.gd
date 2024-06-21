@@ -37,6 +37,14 @@ func update_health(health : HealthComponent) -> void:
 	interface.update_health(health)
 
 
+func update_timer(time : float) -> void:
+	interface.update_timer(time)
+
+
+func timer_remove() -> void:
+	interface.timer_remove()
+
+
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("quit"):
 		if pause.get_child(0).visible == false and settings.get_child(0).visible == false:

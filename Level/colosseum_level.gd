@@ -3,7 +3,7 @@ extends Node3D
 
 var num_coins : int = 9
 var coins_collected : int = 0
-@export var num_crystals : int = 4
+@export var num_crystals : int = 5
 var found_crystals : Array[bool]
 @export var num_barrels : int = 6
 var broken_barrels : int = 0
@@ -16,6 +16,8 @@ var broken_barrels : int = 0
 @export var crystal_2 : Node3D
 # Collect all green coins
 @export var crystal_3 : Node3D
+# Finish race
+@export var crystal_4 : Node3D
 
 
 # Called when the node enters the scene tree for the first time.
@@ -28,6 +30,7 @@ func _ready() -> void:
 	crystal_1.hide_item()
 	crystal_2.hide_item()
 	crystal_3.hide_item()
+	#crystal_4.hide_item()
 
 
 func item_collected(item: ItemBase) -> void:
@@ -54,6 +57,10 @@ func interaction_occured(event : String) -> void:
 		"green":
 			if !found_crystals[3]:
 				crystal_3.crystal_appear()
+		"race":
+			if !found_crystals[4]:
+				crystal_4.crystal_appear()
+			
 	
 
 

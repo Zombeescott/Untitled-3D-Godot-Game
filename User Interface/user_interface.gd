@@ -21,3 +21,18 @@ func update_health(health : HealthComponent) -> void:
 			health_container.get_child(i).texture = heart
 		else:
 			health_container.get_child(i).texture = empty_heart
+
+
+func update_timer(time : float) -> void:
+	if $CanvasLayer/Timer.visible == false:
+		$CanvasLayer/Timer.visible = true
+	# TODO If whole #, it just says 2 instead 2.00 and I don wanna fix it rn
+	$CanvasLayer/Timer.text = str(time)
+
+
+func timer_remove() -> void:
+	$Timer.start()
+
+
+func _on_timer_timeout() -> void:
+	$CanvasLayer/Timer.visible = false

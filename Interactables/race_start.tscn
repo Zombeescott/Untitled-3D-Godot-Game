@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://cduuyllwhe4nw"]
+
+[ext_resource type="Script" path="res://Interactables/race_start.gd" id="1_dkmgt"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_sqvdp"]
+height = 0.263494
+radius = 0.970765
+
+[sub_resource type="TorusMesh" id="TorusMesh_4vpyc"]
+inner_radius = 0.93
+outer_radius = 1.09
+rings = 11
+ring_segments = 3
+
+[sub_resource type="TorusMesh" id="TorusMesh_u1ewf"]
+inner_radius = 0.797
+outer_radius = 0.85
+rings = 7
+ring_segments = 4
+
+[node name="Race Start" type="Node3D"]
+script = ExtResource("1_dkmgt")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("CylinderShape3D_sqvdp")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("TorusMesh_4vpyc")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D/MeshInstance3D"]
+mesh = SubResource("TorusMesh_u1ewf")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

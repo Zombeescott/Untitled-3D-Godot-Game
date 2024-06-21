@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://jrroq7wi8bhm"]
+[gd_scene load_steps=13 format=3 uid="uid://jrroq7wi8bhm"]
 
 [ext_resource type="Material" uid="uid://bk8ewcvmq6bvu" path="res://Textures/GridTexture1.tres" id="1_enji8"]
 [ext_resource type="PackedScene" uid="uid://b64ovwa3oxmk5" path="res://Characters/player.tscn" id="2_q6ukj"]
@@ -9,6 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://dhbkmhl4khthm" path="res://Items/crystal.tscn" id="7_lt6tp"]
 [ext_resource type="PackedScene" uid="uid://daerkarjrbb7o" path="res://Interactables/button.tscn" id="8_s8ep4"]
 [ext_resource type="PackedScene" uid="uid://expy3arbt4i6" path="res://Characters/Enemies/snail.tscn" id="9_6nox0"]
+[ext_resource type="PackedScene" uid="uid://cduuyllwhe4nw" path="res://Interactables/race_start.tscn" id="10_5b7ao"]
+[ext_resource type="PackedScene" uid="uid://bb8t4oat50ixt" path="res://Interactables/race_checkpoint.tscn" id="11_w4l35"]
 
 [sub_resource type="Environment" id="Environment_d866r"]
 background_energy_multiplier = 2.0
@@ -77,3 +79,13 @@ transform = Transform3D(1.88965, 0, 0, 0, 1.55334, 0, 0, 0, 1.88965, 0, 0.41586,
 
 [node name="Snail" parent="." instance=ExtResource("9_6nox0")]
 transform = Transform3D(0.484672, 0, -0.874696, 0, 1, 0, 0.874696, 0, 0.484672, -15.0948, 1.07839, 5.22279)
+
+[node name="Race Start" parent="." node_paths=PackedStringArray("checkpoints") instance=ExtResource("10_5b7ao")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.862, 2.5628, 2.97416)
+checkpoints = [NodePath("Race Checkpoint"), NodePath("Race Checkpoint2")]
+
+[node name="Race Checkpoint" parent="Race Start" instance=ExtResource("11_w4l35")]
+transform = Transform3D(0.799894, 0, -0.600141, 0, 1, 0, 0.600141, 0, 0.799894, -2.44752, 0, 11.9204)
+
+[node name="Race Checkpoint2" parent="Race Start" instance=ExtResource("11_w4l35")]
+transform = Transform3D(0.0673884, 0, -0.997727, 0, 1, 0, 0.997727, 0, 0.0673884, -17.2004, 0, 12.1416)
