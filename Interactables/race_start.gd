@@ -2,6 +2,9 @@ extends Node3D
 
 
 @export var checkpoints : Array[Node3D]
+@export var win_time : float
+@export var dev_time : float
+
 var curr_point : int
 var started : bool = false
 var elapsed_time : float = 0
@@ -43,9 +46,9 @@ func checkpoint_entered() -> void:
 		curr_point = 0
 		Global.timer_remove()
 		if Global.curr_level:
-			if elapsed_time <= 20 and elapsed_time > 15:
+			if elapsed_time <= win_time and elapsed_time > dev_time:
 				Global.interface.set_timer_color("green")
-			elif elapsed_time <= 15:
+			elif elapsed_time <= dev_time:
 				Global.interface.set_timer_color("blue")
 			else:
 				Global.interface.set_timer_color("red")
