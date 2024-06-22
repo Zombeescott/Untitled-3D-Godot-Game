@@ -19,6 +19,7 @@ rings = 7
 ring_segments = 4
 
 [node name="Race Start" type="Node3D"]
+transform = Transform3D(1.28684, 0, 0, 0, 1.28684, 0, 0, 0, 1.28684, 0, 0, 0)
 script = ExtResource("1_dkmgt")
 
 [node name="Area3D" type="Area3D" parent="."]

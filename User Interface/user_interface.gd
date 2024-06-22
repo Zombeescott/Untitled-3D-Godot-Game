@@ -5,6 +5,8 @@ extends Control
 @onready var heart = load("res://Textures/Shadow.png")
 @onready var empty_heart = load("res://Textures/Tile_07-128x128.png")
 
+@onready var timer_label = $CanvasLayer/Timer
+
 
 func update_ui() -> void:
 	if Global.curr_level:
@@ -24,10 +26,22 @@ func update_health(health : HealthComponent) -> void:
 
 
 func update_timer(time : float) -> void:
-	if $CanvasLayer/Timer.visible == false:
-		$CanvasLayer/Timer.visible = true
+	if timer_label.visible == false:
+		timer_label.visible = true
 	# TODO If whole #, it just says 2 instead 2.00 and I don wanna fix it rn
-	$CanvasLayer/Timer.text = str(time)
+	timer_label.text = str(time)
+
+
+func set_timer_color(color : String) -> void:
+	match color:
+		"white": 
+			timer_label.add_theme_color_override("font_color", Color(1, 1, 1))
+		"red": 
+			timer_label.add_theme_color_override("font_color", Color(1, 0, 0))
+		"green": 
+			timer_label.add_theme_color_override("font_color", Color(0, 1, 0))
+		"blue": 
+			timer_label.add_theme_color_override("font_color", Color(0, 0, 1))
 
 
 func timer_remove() -> void:
@@ -36,3 +50,4 @@ func timer_remove() -> void:
 
 func _on_timer_timeout() -> void:
 	$CanvasLayer/Timer.visible = false
+	set_timer_color("white")

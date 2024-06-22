@@ -30,7 +30,7 @@ func _ready() -> void:
 	crystal_1.hide_item()
 	crystal_2.hide_item()
 	crystal_3.hide_item()
-	#crystal_4.hide_item()
+	crystal_4.hide_item()
 
 
 func item_collected(item: ItemBase) -> void:

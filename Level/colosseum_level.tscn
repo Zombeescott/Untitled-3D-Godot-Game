@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://bldhi8u685csf"]
+[gd_scene load_steps=26 format=3 uid="uid://bldhi8u685csf"]
 
 [ext_resource type="Script" path="res://Level/colosseum_level.gd" id="1_83dof"]
 [ext_resource type="PackedScene" uid="uid://b64ovwa3oxmk5" path="res://Characters/player.tscn" id="1_gp10b"]
@@ -9,6 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://daerkarjrbb7o" path="res://Interactables/button.tscn" id="7_eho2g"]
 [ext_resource type="PackedScene" uid="uid://prm444wo48m7" path="res://Items/green_coin.tscn" id="8_6bjek"]
 [ext_resource type="PackedScene" uid="uid://expy3arbt4i6" path="res://Characters/Enemies/snail.tscn" id="9_hdch4"]
+[ext_resource type="PackedScene" uid="uid://cduuyllwhe4nw" path="res://Interactables/race_start.tscn" id="10_rhqee"]
+[ext_resource type="PackedScene" uid="uid://bb8t4oat50ixt" path="res://Interactables/race_checkpoint.tscn" id="11_0e32k"]
 
 [sub_resource type="Environment" id="Environment_kyyqh"]
 background_mode = 1
@@ -234,12 +236,13 @@ _data = {
 }
 point_count = 8
 
-[node name="Colosseum Level" type="Node3D" node_paths=PackedStringArray("crystal_0", "crystal_1", "crystal_2", "crystal_3")]
+[node name="Colosseum Level" type="Node3D" node_paths=PackedStringArray("crystal_0", "crystal_1", "crystal_2", "crystal_3", "crystal_4")]
 script = ExtResource("1_83dof")
 crystal_0 = NodePath("Crystals/Crystal 0")
 crystal_1 = NodePath("Crystals/Crystal 1")
 crystal_2 = NodePath("Crystals/Crystal 2")
 crystal_3 = NodePath("Crystals/Crystal 3")
+crystal_4 = NodePath("Crystals/Crystal 4")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_kyyqh")
@@ -351,6 +354,10 @@ id = 2
 transform = Transform3D(0.865659, 0, 0.500635, 0, 1, 0, -0.500635, 0, 0.865659, -6.12398, 1.74942, -18.257)
 id = 3
 
+[node name="Crystal 4" parent="Crystals" instance=ExtResource("5_m1oyn")]
+transform = Transform3D(0.865659, 0, 0.500635, 0, 1, 0, -0.500635, 0, 0.865659, 9.25428, 13.3979, -9.1805)
+id = 4
+
 [node name="Barrels" type="Node3D" parent="."]
 
 [node name="Barrel" parent="Barrels" instance=ExtResource("6_4css8")]
@@ -425,3 +432,24 @@ progress = 50.0
 remote_path = NodePath("../../../Snails/Snail3")
 
 [node name="Snail" parent="." instance=ExtResource("9_hdch4")]
+
+[node name="Race Start" parent="." instance=ExtResource("10_rhqee")]
+transform = Transform3D(-0.00972137, 0, -0.999953, 0, 1, 0, 0.999953, 0, -0.00972137, -0.760494, 1.17917, 19.4141)
+
+[node name="Race Checkpoint" parent="Race Start" instance=ExtResource("11_0e32k")]
+transform = Transform3D(0.0147126, 0, -0.999892, 0, 1, 0, 0.999892, 0, 0.0147126, -18.9724, 0, 17.2629)
+
+[node name="Race Checkpoint2" parent="Race Start" instance=ExtResource("11_0e32k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.0896, 1.90735e-06, -0.788595)
+
+[node name="Race Checkpoint3" parent="Race Start" instance=ExtResource("11_0e32k")]
+transform = Transform3D(0.0147126, 0, -0.999892, 0, 1, 0, 0.999892, 0, 0.0147126, -19.3302, 0, -19.5376)
+
+[node name="Race Checkpoint4" parent="Race Start" instance=ExtResource("11_0e32k")]
+transform = Transform3D(-0.921117, 0, -0.389284, 0, 1, 0, 0.389284, 0, -0.921117, 2.98742, 10.0555, -10.6038)
+
+[node name="Race Checkpoint5" parent="Race Start" instance=ExtResource("11_0e32k")]
+transform = Transform3D(-0.921117, 0, -0.389284, 0, 1, 0, 0.389284, 0, -0.921117, -15.5034, 10.0012, 19.4396)
+
+[node name="Race Checkpoint6" parent="Race Start" instance=ExtResource("11_0e32k")]
+transform = Transform3D(-0.921116, 0, -0.389284, 0, 1, 0, 0.389284, 0, -0.921116, -32.3324, 10.2322, -17.2812)

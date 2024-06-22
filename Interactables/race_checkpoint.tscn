@@ -13,6 +13,7 @@ rings = 11
 ring_segments = 3
 
 [node name="Race Checkpoint" type="Node3D"]
+transform = Transform3D(1.17347, 0, 0, 0, 1.17347, 0, 0, 0, 1.17347, 0, 0, 0)
 visible = false
 script = ExtResource("1_7jvnn")
 

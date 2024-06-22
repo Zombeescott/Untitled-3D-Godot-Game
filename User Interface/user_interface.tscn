@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://dbwckmuvocqrr"]
+[gd_scene load_steps=4 format=3 uid="uid://dbwckmuvocqrr"]
 
 [ext_resource type="Script" path="res://User Interface/user_interface.gd" id="1_1o05m"]
 [ext_resource type="Texture2D" uid="uid://b0vjhct050bye" path="res://Textures/Shadow.png" id="2_6qr6b"]
+
+[sub_resource type="Theme" id="Theme_lc113"]
 
 [node name="User Interface" type="Control" node_paths=PackedStringArray("health_container")]
 layout_mode = 3
@@ -73,6 +75,8 @@ anchor_top = 0.0324074
 anchor_right = 0.568576
 anchor_bottom = 0.162037
 grow_horizontal = 2
+theme = SubResource("Theme_lc113")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 61
 text = "00:00"
 metadata/_edit_use_anchors_ = true
