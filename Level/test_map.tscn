@@ -17,6 +17,8 @@ background_energy_multiplier = 2.0
 ambient_light_color = Color(1, 1, 1, 1)
 ssao_enabled = true
 ssil_enabled = true
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0
 
 [node name="Test Map" type="Node3D"]
 
@@ -48,7 +50,7 @@ light_energy = 0.322
 shadow_enabled = true
 
 [node name="Player" parent="." instance=ExtResource("2_q6ukj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.16253, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.41665, 0)
 
 [node name="Dummy" parent="." instance=ExtResource("6_0c2wx")]
 transform = Transform3D(0.867679, 0, -0.497125, 0, 1, 0, 0.497125, 0, 0.867679, -7.92069, 1.13562, 5.96041)

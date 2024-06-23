@@ -43,7 +43,7 @@ func item_collected(item: ItemBase) -> void:
 			coins_collected += 1
 			if coins_collected >= num_coins:
 				crystal_1.crystal_appear()
-		
+	
 	Global.item_collected(item)
 
 
@@ -60,7 +60,3 @@ func interaction_occured(event : String) -> void:
 		"race":
 			if !found_crystals[4]:
 				crystal_4.crystal_appear()
-			
-	
-
-

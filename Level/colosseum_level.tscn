@@ -16,9 +16,10 @@
 background_mode = 1
 background_color = Color(0.482353, 0.682353, 1, 0.627451)
 background_energy_multiplier = 0.96
+fog_enabled = true
 fog_light_color = Color(0.438392, 0.67342, 1, 1)
 fog_light_energy = 1.45
-fog_density = 0.002
+fog_density = 0.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ur5pl"]
 resource_name = "Base Shell"
@@ -309,6 +310,26 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 4, 19)
 [node name="Bubble5" parent="Bubbles" instance=ExtResource("2_g58c0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 8, 18)
 
+[node name="Crystals" type="Node3D" parent="."]
+
+[node name="Crystal 0" parent="Crystals" instance=ExtResource("5_m1oyn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15, 0)
+
+[node name="Crystal 1" parent="Crystals" instance=ExtResource("5_m1oyn")]
+id = 1
+
+[node name="Crystal 2" parent="Crystals" instance=ExtResource("5_m1oyn")]
+transform = Transform3D(0.932475, 0, 0.361234, 0, 1, 0, -0.361234, 0, 0.932475, -18.225, 12.8264, -20.8128)
+id = 2
+
+[node name="Crystal 3" parent="Crystals" instance=ExtResource("5_m1oyn")]
+transform = Transform3D(0.865659, 0, 0.500635, 0, 1, 0, -0.500635, 0, 0.865659, -6.12398, 1.74942, -18.257)
+id = 3
+
+[node name="Crystal 4" parent="Crystals" instance=ExtResource("5_m1oyn")]
+transform = Transform3D(0.865659, 0, 0.500635, 0, 1, 0, -0.500635, 0, 0.865659, 9.25428, 13.3979, -9.1805)
+id = 4
+
 [node name="Coins" type="Node3D" parent="."]
 
 [node name="Coin" parent="Coins" instance=ExtResource("3_6aprr")]
@@ -337,26 +358,6 @@ transform = Transform3D(-0.301873, 0, 0.953348, 0, 1, 0, -0.953348, 0, -0.301873
 
 [node name="Coin9" parent="Coins" instance=ExtResource("3_6aprr")]
 transform = Transform3D(-0.301873, 0, 0.953348, 0, 1, 0, -0.953348, 0, -0.301873, 6.39787, -0.567416, 15.7667)
-
-[node name="Crystals" type="Node3D" parent="."]
-
-[node name="Crystal 0" parent="Crystals" instance=ExtResource("5_m1oyn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15, 0)
-
-[node name="Crystal 1" parent="Crystals" instance=ExtResource("5_m1oyn")]
-id = 1
-
-[node name="Crystal 2" parent="Crystals" instance=ExtResource("5_m1oyn")]
-transform = Transform3D(0.932475, 0, 0.361234, 0, 1, 0, -0.361234, 0, 0.932475, -18.225, 12.8264, -20.8128)
-id = 2
-
-[node name="Crystal 3" parent="Crystals" instance=ExtResource("5_m1oyn")]
-transform = Transform3D(0.865659, 0, 0.500635, 0, 1, 0, -0.500635, 0, 0.865659, -6.12398, 1.74942, -18.257)
-id = 3
-
-[node name="Crystal 4" parent="Crystals" instance=ExtResource("5_m1oyn")]
-transform = Transform3D(0.865659, 0, 0.500635, 0, 1, 0, -0.500635, 0, 0.865659, 9.25428, 13.3979, -9.1805)
-id = 4
 
 [node name="Barrels" type="Node3D" parent="."]
 
@@ -393,19 +394,28 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.71, -5.264)
 [node name="Green Coin3" parent="Green Coins" instance=ExtResource("8_6bjek")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.463, -1.71, -6.718)
 
-[node name="Snails" type="Node3D" parent="."]
+[node name="Race Start" parent="." instance=ExtResource("10_rhqee")]
+transform = Transform3D(-0.00972137, 0, -0.999953, 0, 1, 0, 0.999953, 0, -0.00972137, -0.760494, 1.17917, 19.4141)
+win_time = 20.0
+dev_time = 15.0
 
-[node name="Snail" parent="Snails" node_paths=PackedStringArray("path") instance=ExtResource("9_hdch4")]
-transform = Transform3D(-0.110108, 0, 0.993919, 0, 1, 0, -0.993919, 0, -0.110108, 2.02034, -2.59865, -11.0491)
-path = NodePath("../../Ground Path/PathFollow3D/RemoteTransform3D")
+[node name="Race Checkpoint" parent="Race Start" instance=ExtResource("11_0e32k")]
+transform = Transform3D(0.0147126, 0, -0.999892, 0, 1, 0, 0.999892, 0, 0.0147126, -18.9724, 0, 17.2629)
 
-[node name="Snail2" parent="Snails" node_paths=PackedStringArray("path") instance=ExtResource("9_hdch4")]
-transform = Transform3D(-0.943668, 0, 0.33089, 0, 1, 0, -0.33089, 0, -0.943668, -10.0791, -2.59865, 4.42291)
-path = NodePath("../../Ground Path/PathFollow3D2/RemoteTransform3D")
+[node name="Race Checkpoint2" parent="Race Start" instance=ExtResource("11_0e32k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.0896, 1.90735e-06, -0.788595)
 
-[node name="Snail3" parent="Snails" node_paths=PackedStringArray("path") instance=ExtResource("9_hdch4")]
-transform = Transform3D(0.472335, 0, -0.881418, 0, 1, 0, 0.881418, 0, 0.472335, 6.63808, -2.59865, 5.33198)
-path = NodePath("../../Ground Path/PathFollow3D3/RemoteTransform3D")
+[node name="Race Checkpoint3" parent="Race Start" instance=ExtResource("11_0e32k")]
+transform = Transform3D(0.0147126, 0, -0.999892, 0, 1, 0, 0.999892, 0, 0.0147126, -19.3302, 0, -19.5376)
+
+[node name="Race Checkpoint4" parent="Race Start" instance=ExtResource("11_0e32k")]
+transform = Transform3D(-0.921117, 0, -0.389284, 0, 1, 0, 0.389284, 0, -0.921117, 2.98742, 10.0555, -10.6038)
+
+[node name="Race Checkpoint5" parent="Race Start" instance=ExtResource("11_0e32k")]
+transform = Transform3D(-0.921117, 0, -0.389284, 0, 1, 0, 0.389284, 0, -0.921117, -15.5034, 10.0012, 19.4396)
+
+[node name="Race Checkpoint6" parent="Race Start" instance=ExtResource("11_0e32k")]
+transform = Transform3D(-0.921116, 0, -0.389284, 0, 1, 0, 0.389284, 0, -0.921116, -32.3324, 10.2322, -17.2812)
 
 [node name="Ground Path" type="Path3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.59865, 0)
@@ -431,27 +441,18 @@ progress = 50.0
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="Ground Path/PathFollow3D3"]
 remote_path = NodePath("../../../Snails/Snail3")
 
+[node name="Snails" type="Node3D" parent="."]
+
+[node name="Snail" parent="Snails" node_paths=PackedStringArray("path") instance=ExtResource("9_hdch4")]
+transform = Transform3D(-0.110108, 0, 0.993919, 0, 1, 0, -0.993919, 0, -0.110108, 2.02034, -2.59865, -11.0491)
+path = NodePath("../../Ground Path/PathFollow3D/RemoteTransform3D")
+
+[node name="Snail2" parent="Snails" node_paths=PackedStringArray("path") instance=ExtResource("9_hdch4")]
+transform = Transform3D(-0.943668, 0, 0.33089, 0, 1, 0, -0.33089, 0, -0.943668, -10.0791, -2.59865, 4.42291)
+path = NodePath("../../Ground Path/PathFollow3D2/RemoteTransform3D")
+
+[node name="Snail3" parent="Snails" node_paths=PackedStringArray("path") instance=ExtResource("9_hdch4")]
+transform = Transform3D(0.472335, 0, -0.881418, 0, 1, 0, 0.881418, 0, 0.472335, 6.63808, -2.59865, 5.33198)
+path = NodePath("../../Ground Path/PathFollow3D3/RemoteTransform3D")
+
 [node name="Snail" parent="." instance=ExtResource("9_hdch4")]
-
-[node name="Race Start" parent="." instance=ExtResource("10_rhqee")]
-transform = Transform3D(-0.00972137, 0, -0.999953, 0, 1, 0, 0.999953, 0, -0.00972137, -0.760494, 1.17917, 19.4141)
-win_time = 20.0
-dev_time = 15.0
-
-[node name="Race Checkpoint" parent="Race Start" instance=ExtResource("11_0e32k")]
-transform = Transform3D(0.0147126, 0, -0.999892, 0, 1, 0, 0.999892, 0, 0.0147126, -18.9724, 0, 17.2629)
-
-[node name="Race Checkpoint2" parent="Race Start" instance=ExtResource("11_0e32k")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.0896, 1.90735e-06, -0.788595)
-
-[node name="Race Checkpoint3" parent="Race Start" instance=ExtResource("11_0e32k")]
-transform = Transform3D(0.0147126, 0, -0.999892, 0, 1, 0, 0.999892, 0, 0.0147126, -19.3302, 0, -19.5376)
-
-[node name="Race Checkpoint4" parent="Race Start" instance=ExtResource("11_0e32k")]
-transform = Transform3D(-0.921117, 0, -0.389284, 0, 1, 0, 0.389284, 0, -0.921117, 2.98742, 10.0555, -10.6038)
-
-[node name="Race Checkpoint5" parent="Race Start" instance=ExtResource("11_0e32k")]
-transform = Transform3D(-0.921117, 0, -0.389284, 0, 1, 0, 0.389284, 0, -0.921117, -15.5034, 10.0012, 19.4396)
-
-[node name="Race Checkpoint6" parent="Race Start" instance=ExtResource("11_0e32k")]
-transform = Transform3D(-0.921116, 0, -0.389284, 0, 1, 0, 0.389284, 0, -0.921116, -32.3324, 10.2322, -17.2812)

@@ -7,7 +7,7 @@ const JUMP_VELOCITY = 4.5
 @onready var model = $"Physics collision/PlayerModel"
 @onready var y_pivot = $Camera/y_axis
 @onready var x_pivot = $Camera/y_axis/x_axis
-@onready var t_wall_sens = $"Camera/y_axis/Top Wall Sensor"
+@onready var t_wall_sens = $"Camera/y_axis/Bottom Wall Sensor/Top Wall Sensor"
 @onready var b_wall_sens = $"Camera/y_axis/Bottom Wall Sensor"
 @onready var shadowRay = $ShadowCast
 
@@ -226,24 +226,22 @@ func _physics_process(delta: float) -> void:
 	velocity.y = vy
 	
 	# Direction provided
-	if direction and !groundPound:
+	if direction and !groundPound and !wallHang:
 		$"Physics collision/PlayerModel/AnimationPlayer".speed_scale = speed_multiplier
 		$"Physics collision/PlayerModel/AnimationPlayer".play("Walking")
-		
-		if wallHang:
-			if position.distance_to(wallPoint) >= 1:
-				velocity = Vector3.ZERO
-			if position.y >= wallPoint.y + 1 or position.y <= wallPoint.y - 1:
-				# If moving up/down stop wall hang
-				wallHang = false
-				wallPoint = Vector3.ZERO
 	# No direction input
 	elif !groundPound:
 		if wallHang and wallPoint != Vector3.ZERO:
-			# Makes return to wallpoint smoother after moving
-			direction = (wallPoint - position).normalized()
-			position.x += direction.x * SPEED * delta
-			position.z += direction.z * SPEED * delta
+			# Vector aims a little higher than the point on the floor to accend quicker
+			direction = (wallPoint + Vector3(0, 5, 0) - position).normalized()
+			if position.y <= wallPoint.y:
+				position.y += direction.y * SPEED * delta
+			else:
+				wallHang = false
+				wallPoint = Vector3.ZERO
+				velocity.y = 4
+				velocity.x += direction.x * SPEED
+				velocity.z += direction.z * SPEED
 		else:
 			$"Physics collision/PlayerModel/AnimationPlayer".play("Rest")
 	
@@ -273,11 +271,11 @@ func jump() -> void:
 			else:
 				velocity.y = initial_jump_velo * 2.0
 			curr_jump_velo = initial_jump_velo
-		elif !wallHang and !t_wall_sens.is_colliding() and b_wall_sens.is_colliding():
+		elif !wallHang and t_wall_sens.is_colliding() and b_wall_sens.is_colliding():
 			# Check if player can hang off a wall
 			wallHang = true
 			velocity.y = 0
-			wallPoint = b_wall_sens.get_collision_point()
+			wallPoint = t_wall_sens.get_collision_point()
 		elif !doubleJump and !groundPound:
 			# Double jumping
 			if wallHang:
@@ -304,7 +302,7 @@ func dash() -> void:
 		if floor_check() and !dashed:
 			velocity.y = 4
 			dashed = true
-		elif velocity.y < 0 and shadowRay.global_transform.origin.distance_to(shadowRay.get_collision_point()) < 1:
+		elif velocity.y < 0 and shadowRay.global_transform.origin.distance_to(shadowRay.get_collision_point()) < .7:
 			# If close to ground, don't downdash even if available, just buffer
 			buffer_set("dash")
 			return
