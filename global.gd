@@ -25,6 +25,7 @@ func set_curr_scene(scene: Node3D, player: Node3D) -> void:
 
 
 func item_collected(item: ItemBase) -> void:
+	# Increment total coins away from levels to store total collected (for now?)
 	match item.item_type:
 		"coin":
 			coin_count += 1

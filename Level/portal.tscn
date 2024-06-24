@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://dah3fml1mpjm0"]
+
+[ext_resource type="Script" path="res://Level/portal.gd" id="1_g1jwc"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_l05pp"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kxyai"]
+albedo_color = Color(1.68458e-06, 0, 0.540365, 1)
+emission_enabled = true
+emission = Color(8.03783e-06, 0.731912, 0.474797, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ho7lr"]
+material = SubResource("StandardMaterial3D_kxyai")
+
+[node name="Portal" type="Node3D"]
+script = ExtResource("1_g1jwc")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_l05pp")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D"]
+mesh = SubResource("BoxMesh_ho7lr")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

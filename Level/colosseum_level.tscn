@@ -1,7 +1,8 @@
-[gd_scene load_steps=26 format=3 uid="uid://bldhi8u685csf"]
+[gd_scene load_steps=27 format=3 uid="uid://bldhi8u685csf"]
 
 [ext_resource type="Script" path="res://Level/colosseum_level.gd" id="1_83dof"]
 [ext_resource type="PackedScene" uid="uid://b64ovwa3oxmk5" path="res://Characters/player.tscn" id="1_gp10b"]
+[ext_resource type="PackedScene" uid="uid://dah3fml1mpjm0" path="res://Level/portal.tscn" id="2_4n5mw"]
 [ext_resource type="PackedScene" uid="uid://dex7654wh24he" path="res://Interactables/bubble.tscn" id="2_g58c0"]
 [ext_resource type="PackedScene" uid="uid://cxsts7lsgjqk3" path="res://Items/coin.tscn" id="3_6aprr"]
 [ext_resource type="PackedScene" uid="uid://dhbkmhl4khthm" path="res://Items/crystal.tscn" id="5_m1oyn"]
@@ -266,10 +267,6 @@ light_energy = 3.592
 light_specular = 3.235
 omni_range = 8.682
 
-[node name="Player" parent="." instance=ExtResource("1_gp10b")]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1, 13)
-
 [node name="Colosseum_level" type="Node3D" parent="."]
 transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)
 
@@ -293,22 +290,52 @@ skeleton = NodePath("")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Colosseum_level/Floor/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_jopto")
 
-[node name="Bubbles" type="Node3D" parent="."]
+[node name="Portal" parent="." instance=ExtResource("2_4n5mw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.8361, 1.24683, 4.91372)
 
-[node name="Bubble" parent="Bubbles" instance=ExtResource("2_g58c0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 7, 12)
+[node name="Player" parent="." instance=ExtResource("1_gp10b")]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1, 13)
 
-[node name="Bubble2" parent="Bubbles" instance=ExtResource("2_g58c0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23, 3, 16)
+[node name="Ground Path" type="Path3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.59865, 0)
+curve = SubResource("Curve3D_mpvav")
 
-[node name="Bubble3" parent="Bubbles" instance=ExtResource("2_g58c0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 3, 11)
+[node name="PathFollow3D" type="PathFollow3D" parent="Ground Path"]
+transform = Transform3D(-0.110108, 0, 0.993919, 0, 1, 0, -0.993919, 0, -0.110108, 2.02034, 0, -11.0491)
 
-[node name="Bubble4" parent="Bubbles" instance=ExtResource("2_g58c0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 4, 19)
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="Ground Path/PathFollow3D"]
+remote_path = NodePath("../../../Snails/Snail")
 
-[node name="Bubble5" parent="Bubbles" instance=ExtResource("2_g58c0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 8, 18)
+[node name="PathFollow3D2" type="PathFollow3D" parent="Ground Path"]
+transform = Transform3D(-0.943668, 0, 0.33089, 0, 1, 0, -0.33089, 0, -0.943668, -10.0791, 0, 4.42291)
+progress = 25.0
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="Ground Path/PathFollow3D2"]
+remote_path = NodePath("../../../Snails/Snail2")
+
+[node name="PathFollow3D3" type="PathFollow3D" parent="Ground Path"]
+transform = Transform3D(0.472335, 0, -0.881418, 0, 1, 0, 0.881418, 0, 0.472335, 6.63808, 0, 5.33198)
+progress = 50.0
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="Ground Path/PathFollow3D3"]
+remote_path = NodePath("../../../Snails/Snail3")
+
+[node name="Snails" type="Node3D" parent="."]
+
+[node name="Snail" parent="Snails" node_paths=PackedStringArray("path") instance=ExtResource("9_hdch4")]
+transform = Transform3D(-0.110108, 0, 0.993919, 0, 1, 0, -0.993919, 0, -0.110108, 2.02034, -2.59865, -11.0491)
+path = NodePath("../../Ground Path/PathFollow3D/RemoteTransform3D")
+
+[node name="Snail2" parent="Snails" node_paths=PackedStringArray("path") instance=ExtResource("9_hdch4")]
+transform = Transform3D(-0.943668, 0, 0.33089, 0, 1, 0, -0.33089, 0, -0.943668, -10.0791, -2.59865, 4.42291)
+path = NodePath("../../Ground Path/PathFollow3D2/RemoteTransform3D")
+
+[node name="Snail3" parent="Snails" node_paths=PackedStringArray("path") instance=ExtResource("9_hdch4")]
+transform = Transform3D(0.472335, 0, -0.881418, 0, 1, 0, 0.881418, 0, 0.472335, 6.63808, -2.59865, 5.33198)
+path = NodePath("../../Ground Path/PathFollow3D3/RemoteTransform3D")
+
+[node name="Snail" parent="." instance=ExtResource("9_hdch4")]
 
 [node name="Crystals" type="Node3D" parent="."]
 
@@ -358,6 +385,23 @@ transform = Transform3D(-0.301873, 0, 0.953348, 0, 1, 0, -0.953348, 0, -0.301873
 
 [node name="Coin9" parent="Coins" instance=ExtResource("3_6aprr")]
 transform = Transform3D(-0.301873, 0, 0.953348, 0, 1, 0, -0.953348, 0, -0.301873, 6.39787, -0.567416, 15.7667)
+
+[node name="Bubbles" type="Node3D" parent="."]
+
+[node name="Bubble" parent="Bubbles" instance=ExtResource("2_g58c0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 7, 12)
+
+[node name="Bubble2" parent="Bubbles" instance=ExtResource("2_g58c0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23, 3, 16)
+
+[node name="Bubble3" parent="Bubbles" instance=ExtResource("2_g58c0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 3, 11)
+
+[node name="Bubble4" parent="Bubbles" instance=ExtResource("2_g58c0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 4, 19)
+
+[node name="Bubble5" parent="Bubbles" instance=ExtResource("2_g58c0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 8, 18)
 
 [node name="Barrels" type="Node3D" parent="."]
 
@@ -416,43 +460,3 @@ transform = Transform3D(-0.921117, 0, -0.389284, 0, 1, 0, 0.389284, 0, -0.921117
 
 [node name="Race Checkpoint6" parent="Race Start" instance=ExtResource("11_0e32k")]
 transform = Transform3D(-0.921116, 0, -0.389284, 0, 1, 0, 0.389284, 0, -0.921116, -32.3324, 10.2322, -17.2812)
-
-[node name="Ground Path" type="Path3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.59865, 0)
-curve = SubResource("Curve3D_mpvav")
-
-[node name="PathFollow3D" type="PathFollow3D" parent="Ground Path"]
-transform = Transform3D(-0.110108, 0, 0.993919, 0, 1, 0, -0.993919, 0, -0.110108, 2.02034, 0, -11.0491)
-
-[node name="RemoteTransform3D" type="RemoteTransform3D" parent="Ground Path/PathFollow3D"]
-remote_path = NodePath("../../../Snails/Snail")
-
-[node name="PathFollow3D2" type="PathFollow3D" parent="Ground Path"]
-transform = Transform3D(-0.943668, 0, 0.33089, 0, 1, 0, -0.33089, 0, -0.943668, -10.0791, 0, 4.42291)
-progress = 25.0
-
-[node name="RemoteTransform3D" type="RemoteTransform3D" parent="Ground Path/PathFollow3D2"]
-remote_path = NodePath("../../../Snails/Snail2")
-
-[node name="PathFollow3D3" type="PathFollow3D" parent="Ground Path"]
-transform = Transform3D(0.472335, 0, -0.881418, 0, 1, 0, 0.881418, 0, 0.472335, 6.63808, 0, 5.33198)
-progress = 50.0
-
-[node name="RemoteTransform3D" type="RemoteTransform3D" parent="Ground Path/PathFollow3D3"]
-remote_path = NodePath("../../../Snails/Snail3")
-
-[node name="Snails" type="Node3D" parent="."]
-
-[node name="Snail" parent="Snails" node_paths=PackedStringArray("path") instance=ExtResource("9_hdch4")]
-transform = Transform3D(-0.110108, 0, 0.993919, 0, 1, 0, -0.993919, 0, -0.110108, 2.02034, -2.59865, -11.0491)
-path = NodePath("../../Ground Path/PathFollow3D/RemoteTransform3D")
-
-[node name="Snail2" parent="Snails" node_paths=PackedStringArray("path") instance=ExtResource("9_hdch4")]
-transform = Transform3D(-0.943668, 0, 0.33089, 0, 1, 0, -0.33089, 0, -0.943668, -10.0791, -2.59865, 4.42291)
-path = NodePath("../../Ground Path/PathFollow3D2/RemoteTransform3D")
-
-[node name="Snail3" parent="Snails" node_paths=PackedStringArray("path") instance=ExtResource("9_hdch4")]
-transform = Transform3D(0.472335, 0, -0.881418, 0, 1, 0, 0.881418, 0, 0.472335, 6.63808, -2.59865, 5.33198)
-path = NodePath("../../Ground Path/PathFollow3D3/RemoteTransform3D")
-
-[node name="Snail" parent="." instance=ExtResource("9_hdch4")]
