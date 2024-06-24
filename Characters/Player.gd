@@ -118,6 +118,8 @@ func _physics_process(delta: float) -> void:
 		# On the ground
 		if groundPound:
 			$"Physics collision/PlayerModel/PlayerAnimation".play("recover")
+			$"Physics collision/PlayerModel/GP attack component/Butt square".disabled = true
+			gravity = const_gravity
 		if spun:
 			spun = false
 		if doubleJump:
@@ -266,8 +268,12 @@ func jump() -> void:
 	if Input.is_action_just_pressed("jump") or buffer_used:
 		if floor_check():
 			jumping = true
-			if crouching:
-				velocity.y = initial_jump_velo * 2.0 * 2
+			if $"Physics collision/PlayerModel/PlayerAnimation".current_animation == "recover":
+				#TODO fix recover animation so it doesn't make butt-bounce jittery
+				velocity.y += 7
+			elif crouching:
+				velocity.y += 10
+				#velocity.y = initial_jump_velo * 2.0 * 2
 			else:
 				velocity.y = initial_jump_velo * 2.0
 			curr_jump_velo = initial_jump_velo
@@ -287,10 +293,12 @@ func jump() -> void:
 			doubleJump = true
 		else:
 			# Input buffer
+			print("here")
 			buffer_set("jump")
 	else:
 		# Holding down jump
 		if velocity.y >= 0 and !wallHang and !groundPound:
+			pass
 			# Slow jump down longer jump button is held
 			curr_jump_velo /= jump_velo_rate
 			velocity.y += curr_jump_velo

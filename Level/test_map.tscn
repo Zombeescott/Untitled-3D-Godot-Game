@@ -25,6 +25,7 @@ volumetric_fog_density = 0.0
 [node name="Test Map" type="Node3D"]
 
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+layers = 3
 use_collision = true
 
 [node name="Floor" type="CSGBox3D" parent="CSGCombiner3D"]

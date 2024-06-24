@@ -11,6 +11,8 @@ var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
+	# TODO change it so the gravity doesn't affect it while death animation is occuring
+	# also edit the animation to include the collision when it is in the air
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 	# Handle jump.

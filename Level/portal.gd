@@ -16,9 +16,10 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 	if body.is_in_group("player"):
 		print("Portalling")
 		# In case the level script is empty
-		Global.curr_level = null
+		Global.end_level()
 		call_deferred("change_scene")
 
 
 func change_scene() -> void:
-	get_tree().change_scene_to_packed(warp_location)
+	if warp_location:
+		get_tree().change_scene_to_packed(warp_location)

@@ -19,8 +19,3 @@ func damage_dealt(attack : AttackComponent):
 		if label:
 			get_parent().update_label()
 		
-
-
-
-func _on_body_entered(body: Node3D) -> void:
-	print("here 2")

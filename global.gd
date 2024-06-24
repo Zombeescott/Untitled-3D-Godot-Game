@@ -1,7 +1,9 @@
 extends Node
 
 
+var total_coins = 0
 var coin_count = 0
+var total_crystals = 0
 var crystal_count = 0
 var player : Node3D
 var curr_level : Node3D
@@ -9,6 +11,7 @@ var curr_level : Node3D
 @export var interface : Control
 @export var pause : Control
 @export var settings : Control
+@export var hub_world : PackedScene = load("res://Level/test_map.tscn")
 
 
 # Called when the node enters the scene tree for the first time.
@@ -22,20 +25,28 @@ func _ready() -> void:
 func set_curr_scene(scene: Node3D, player: Node3D) -> void:
 	curr_level = scene
 	self.player = player
+	interface.update_ui()
 
 
 func item_collected(item: ItemBase) -> void:
 	# Increment total coins away from levels to store total collected (for now?)
 	match item.item_type:
 		"coin":
+			total_coins += 1
 			coin_count += 1
 		"crystal":
 			crystal_count += 1
+			total_crystals += 1
 	interface.update_ui()
 
 
 func update_health(health : HealthComponent) -> void:
 	interface.update_health(health)
+	
+	if health.health <= 0:
+		# Send player back to hub world
+		#call_deferred("end_level")
+		get_tree().change_scene_to_packed(hub_world)
 
 
 func update_timer(time : float) -> void:
@@ -112,3 +123,10 @@ func unpause_entities() -> void:
 	for i in get_tree().get_nodes_in_group("entity"):
 		i.set_process(true)
 		i.set_physics_process(true)
+
+
+func end_level() -> void:
+	coin_count = 0
+	crystal_count = 0
+	curr_level = null
+	interface.timer_remove()

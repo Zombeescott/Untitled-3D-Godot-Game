@@ -9,9 +9,15 @@ class_name EnemyBase
 @export var jump_strength: float
 @export var animate: AnimationPlayer
 
+var dying : bool = false
+
 
 func update(health : HealthComponent):
-	if health.health <= 0:
+	if health.health <= 0 and !dying:
+		# dying bool is temp until death animation in snail is figured out
+		# or a solution to disable monitoring of hitbox area is made idk
+		dying = true
+		
 		# Disable ability to damage
 		if attack:
 			attack.queue_free()

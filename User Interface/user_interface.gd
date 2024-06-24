@@ -12,6 +12,8 @@ func update_ui() -> void:
 	if Global.curr_level:
 		$"CanvasLayer/Coin Count".text = "Coins: " + str(Global.coin_count, "/", Global.curr_level.num_coins)
 		$"CanvasLayer/Crystal Count".text = str("Crystals: ", Global.crystal_count, "/", Global.curr_level.num_crystals)
+		var health = Global.player.get_node("Health component")
+		call_deferred("update_health", health)
 	else:
 		$"CanvasLayer/Coin Count".text = "Coins: " + str(Global.coin_count)
 		$"CanvasLayer/Crystal Count".text = str("Crystals: ", Global.crystal_count)

@@ -628,6 +628,7 @@ _data = {
 [sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_b72ty"]
 
 [node name="Player" type="CharacterBody3D" groups=["entity", "player"]]
+visible = false
 script = ExtResource("1_cye5l")
 
 [node name="Physics collision" type="CollisionShape3D" parent="."]
