@@ -11,7 +11,8 @@ var curr_level : Node3D
 @export var interface : Control
 @export var pause : Control
 @export var settings : Control
-@export var hub_world : PackedScene = load("res://Level/test_map.tscn")
+var main_menu
+var hub_world : PackedScene = load("res://Level/test_map.tscn")
 
 
 # Called when the node enters the scene tree for the first time.
@@ -19,7 +20,6 @@ func _ready() -> void:
 	pause.get_child(0).hide()
 	settings.get_child(0).hide()
 	interface.grab_focus
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 
 func set_curr_scene(scene: Node3D, player: Node3D) -> void:
@@ -92,6 +92,16 @@ func stop_settings_scene() -> void:
 	settings.get_child(0).hide()
 	pause.get_child(0).show()
 	pause.grab_focus
+
+
+func main_menu_scene() -> void:
+	curr_level = null
+	player = null
+	if !main_menu:
+		main_menu = load("res://User Interface/main_menu.tscn")
+		get_tree().change_scene_to_packed(main_menu)
+	else:
+		main_menu.start_main_menu()
 
 
 # Halts a node and all their children (Could be optimitzed)

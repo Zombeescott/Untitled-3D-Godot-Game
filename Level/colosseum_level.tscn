@@ -302,20 +302,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.59865, 0)
 curve = SubResource("Curve3D_mpvav")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="Ground Path"]
-transform = Transform3D(-0.110108, 0, 0.993919, 0, 1, 0, -0.993919, 0, -0.110108, 2.02034, 0, -11.0491)
+transform = Transform3D(-0.110111, 0, 0.993919, 0, 1, 0, -0.993919, 0, -0.110111, 2.02034, 0, -11.0491)
 
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="Ground Path/PathFollow3D"]
 remote_path = NodePath("../../../Snails/Snail")
 
 [node name="PathFollow3D2" type="PathFollow3D" parent="Ground Path"]
-transform = Transform3D(-0.943668, 0, 0.33089, 0, 1, 0, -0.33089, 0, -0.943668, -10.0791, 0, 4.42291)
+transform = Transform3D(-0.943668, 0, 0.330891, 0, 1, 0, -0.330891, 0, -0.943668, -10.0791, 0, 4.4229)
 progress = 25.0
 
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="Ground Path/PathFollow3D2"]
 remote_path = NodePath("../../../Snails/Snail2")
 
 [node name="PathFollow3D3" type="PathFollow3D" parent="Ground Path"]
-transform = Transform3D(0.472335, 0, -0.881418, 0, 1, 0, 0.881418, 0, 0.472335, 6.63808, 0, 5.33198)
+transform = Transform3D(0.472336, 0, -0.881417, 0, 1, 0, 0.881417, 0, 0.472336, 6.63807, 0, 5.33199)
 progress = 50.0
 
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="Ground Path/PathFollow3D3"]
@@ -324,15 +324,15 @@ remote_path = NodePath("../../../Snails/Snail3")
 [node name="Snails" type="Node3D" parent="."]
 
 [node name="Snail" parent="Snails" node_paths=PackedStringArray("path") instance=ExtResource("9_hdch4")]
-transform = Transform3D(-0.110108, 0, 0.993919, 0, 1, 0, -0.993919, 0, -0.110108, 2.02034, -2.59865, -11.0491)
+transform = Transform3D(-0.110111, 0, 0.993919, 0, 1, 0, -0.993919, 0, -0.110111, 2.02034, -2.59865, -11.0491)
 path = NodePath("../../Ground Path/PathFollow3D/RemoteTransform3D")
 
 [node name="Snail2" parent="Snails" node_paths=PackedStringArray("path") instance=ExtResource("9_hdch4")]
-transform = Transform3D(-0.943668, 0, 0.33089, 0, 1, 0, -0.33089, 0, -0.943668, -10.0791, -2.59865, 4.42291)
+transform = Transform3D(-0.943668, 0, 0.330891, 0, 1, 0, -0.330891, 0, -0.943668, -10.0791, -2.59865, 4.4229)
 path = NodePath("../../Ground Path/PathFollow3D2/RemoteTransform3D")
 
 [node name="Snail3" parent="Snails" node_paths=PackedStringArray("path") instance=ExtResource("9_hdch4")]
-transform = Transform3D(0.472335, 0, -0.881418, 0, 1, 0, 0.881418, 0, 0.472335, 6.63808, -2.59865, 5.33198)
+transform = Transform3D(0.472336, 0, -0.881417, 0, 1, 0, 0.881417, 0, 0.472336, 6.63807, -2.59865, 5.33199)
 path = NodePath("../../Ground Path/PathFollow3D3/RemoteTransform3D")
 
 [node name="Snail" parent="." instance=ExtResource("9_hdch4")]

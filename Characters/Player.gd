@@ -52,8 +52,10 @@ var wallPoint: Vector3
 # Settings
 var controller: bool = false
 
+
 func _ready() -> void:
 	gravity = const_gravity
+	Global.unpause_scene()
 
 
 func _input(event: InputEvent) -> void:

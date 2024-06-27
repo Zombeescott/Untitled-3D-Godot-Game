@@ -22,38 +22,44 @@ anchor_bottom = 0.5
 offset_left = -175.0
 offset_top = -100.0
 offset_right = 175.0
-offset_bottom = 100.0
+offset_bottom = 125.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 color = Color(0.47451, 0.756863, 1, 0.741176)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PauseBox"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseBox/Background"]
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -150.0
-offset_top = -50.5
+offset_top = -69.5
 offset_right = 150.0
-offset_bottom = 99.5
+offset_bottom = 80.5
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 
-[node name="Resume" type="Button" parent="PauseBox/VBoxContainer"]
+[node name="Resume" type="Button" parent="PauseBox/Background/VBoxContainer"]
 layout_mode = 2
 text = "Resume"
 
-[node name="Settings" type="Button" parent="PauseBox/VBoxContainer"]
+[node name="Settings" type="Button" parent="PauseBox/Background/VBoxContainer"]
 layout_mode = 2
 text = "Settings"
 
-[node name="Exit Game" type="Button" parent="PauseBox/VBoxContainer"]
+[node name="Exit To Menu" type="Button" parent="PauseBox/Background/VBoxContainer"]
+layout_mode = 2
+text = "Exit To Menu"
+
+[node name="Exit Game" type="Button" parent="PauseBox/Background/VBoxContainer"]
 layout_mode = 2
 text = "Exit Game"
 
-[connection signal="pressed" from="PauseBox/VBoxContainer/Resume" to="." method="_on_resume_pressed"]
-[connection signal="pressed" from="PauseBox/VBoxContainer/Settings" to="." method="_on_settings_pressed"]
-[connection signal="pressed" from="PauseBox/VBoxContainer/Exit Game" to="." method="_on_exit_game_pressed"]
+[connection signal="pressed" from="PauseBox/Background/VBoxContainer/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="PauseBox/Background/VBoxContainer/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="PauseBox/Background/VBoxContainer/Exit To Menu" to="." method="_on_exit_to_menu_pressed"]
+[connection signal="pressed" from="PauseBox/Background/VBoxContainer/Exit Game" to="." method="_on_exit_game_pressed"]
