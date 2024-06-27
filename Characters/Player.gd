@@ -10,6 +10,8 @@ const JUMP_VELOCITY = 4.5
 @onready var t_wall_sens = $"Camera/y_axis/Bottom Wall Sensor/Top Wall Sensor"
 @onready var b_wall_sens = $"Camera/y_axis/Bottom Wall Sensor"
 @onready var shadowRay = $ShadowCast
+@onready var animation1 = $"Physics collision/PlayerModel/AnimationPlayer"
+@onready var animation2 = $"Physics collision/PlayerModel/PlayerAnimation"
 
 @export var sens = 1
 @export var rotate_speed = 12.0
@@ -119,7 +121,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		# On the ground
 		if groundPound:
-			$"Physics collision/PlayerModel/PlayerAnimation".play("recover")
+			animation2.play("recover")
 			$"Physics collision/PlayerModel/GP attack component/Butt square".disabled = true
 			gravity = const_gravity
 		if spun:
@@ -181,13 +183,13 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_pressed("crouch"):
 		if !is_on_floor() and !groundPound and !wallHang:
 			if spinning:
-				$"Physics collision/PlayerModel/PlayerAnimation".stop()
+				animation2.stop()
 				spinning = false
 			groundPound = true
 			velocity = Vector3.ZERO
 			gravity = 0
-			$"Physics collision/PlayerModel/PlayerAnimation".play("start_ground_pound")
-		elif !groundPound or $"Physics collision/PlayerModel/PlayerAnimation".current_animation == "recover":
+			animation2.play("start_ground_pound")
+		elif !groundPound or animation2.current_animation == "recover":
 			if !crouching:
 				crouching = true
 	if Input.is_action_just_released("crouch"):
@@ -231,8 +233,8 @@ func _physics_process(delta: float) -> void:
 	
 	# Direction provided
 	if direction and !groundPound and !wallHang:
-		$"Physics collision/PlayerModel/AnimationPlayer".speed_scale = speed_multiplier
-		$"Physics collision/PlayerModel/AnimationPlayer".play("Walking")
+		animation1.speed_scale = speed_multiplier
+		animation1.play("Walking")
 	# No direction input
 	elif !groundPound:
 		if wallHang and wallPoint != Vector3.ZERO:
@@ -247,7 +249,7 @@ func _physics_process(delta: float) -> void:
 				velocity.x += direction.x * SPEED
 				velocity.z += direction.z * SPEED
 		else:
-			$"Physics collision/PlayerModel/AnimationPlayer".play("Rest")
+			animation1.play("Rest")
 	
 	move_and_slide()
 	
@@ -270,7 +272,7 @@ func jump() -> void:
 	if Input.is_action_just_pressed("jump") or buffer_used:
 		if floor_check():
 			jumping = true
-			if $"Physics collision/PlayerModel/PlayerAnimation".current_animation == "recover":
+			if animation2.current_animation == "recover":
 				#TODO fix recover animation so it doesn't make butt-bounce jittery
 				velocity.y += 7
 			elif crouching:
@@ -330,7 +332,7 @@ func spin() -> void:
 		if !floor_check():
 			spun = true
 		spinning = true
-		$"Physics collision/PlayerModel/PlayerAnimation".play("spin_attack")
+		animation2.play("spin_attack")
 		if velocity.y < 0:
 			velocity.y = 0
 		# disable dash_cam because spin/spun
@@ -367,8 +369,8 @@ func interaction_occured(action) -> void:
 	#match action.type:
 	#	"jumppad":
 	velocity.y = action.strength
-	if $"Physics collision/PlayerModel/PlayerAnimation".current_animation == "start_ground_pound":
-		$"Physics collision/PlayerModel/PlayerAnimation".stop()
+	if animation2.current_animation == "start_ground_pound":
+		animation2.stop()
 	call_deferred("refresh_abilities")
 
 

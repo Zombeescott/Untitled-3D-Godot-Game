@@ -54,6 +54,14 @@ shadow_enabled = true
 
 [node name="Player" parent="." instance=ExtResource("2_q6ukj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.41665, 0)
+sens = 1
+rotate_speed = 12.0
+ground_accel = 10.0
+air_accel = 1.5
+initial_jump_velo = 1.0
+jump_velo_rate = 1.15
+input_buffer = 20
+floor_buffer = 5
 
 [node name="Dummy" parent="." instance=ExtResource("6_0c2wx")]
 transform = Transform3D(0.867679, 0, -0.497125, 0, 1, 0, 0.497125, 0, 0.867679, -7.92069, 1.13562, 5.96041)
