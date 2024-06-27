@@ -5,7 +5,7 @@ extends Control
 
 
 func _on_resume_pressed() -> void:
-	Global.unpause_scene()
+	Global.unpause_scene(true)
 
 
 func _on_settings_pressed() -> void:

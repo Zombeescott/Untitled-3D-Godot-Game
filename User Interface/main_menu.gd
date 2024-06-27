@@ -11,7 +11,7 @@ func _ready() -> void:
 func start_main_menu() -> void:
 	get_tree().change_scene(self)
 	$CanvasLayer.visible = true
-	Global.unpause_scene()
+	Global.unpause_scene(false)
 
 
 func _on_new_game_pressed() -> void:

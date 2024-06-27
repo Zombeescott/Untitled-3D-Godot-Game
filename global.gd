@@ -22,6 +22,10 @@ func _ready() -> void:
 	interface.grab_focus
 
 
+func change_scene(scene : PackedScene) -> void:
+	get_tree().change_scene_to_packed(scene)
+
+
 func set_curr_scene(scene: Node3D, player: Node3D) -> void:
 	curr_level = scene
 	self.player = player
@@ -45,8 +49,8 @@ func update_health(health : HealthComponent) -> void:
 	
 	if health.health <= 0:
 		# Send player back to hub world
-		#call_deferred("end_level")
-		get_tree().change_scene_to_packed(hub_world)
+		curr_level = null
+		call_deferred("change_scene", hub_world)
 
 
 func update_timer(time : float) -> void:
@@ -62,7 +66,7 @@ func _input(event: InputEvent) -> void:
 		if pause.get_child(0).visible == false and settings.get_child(0).visible == false:
 			pause_scene()
 		else:
-			unpause_scene()
+			unpause_scene(true)
 
 
 func pause_scene() -> void:
@@ -73,12 +77,12 @@ func pause_scene() -> void:
 		self._set_processing(curr_level, false)
 
 
-func unpause_scene() -> void:
+func unpause_scene(stop : bool) -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	stop_settings_scene() # just in case
 	pause.get_child(0).hide()
 	interface.grab_focus
-	if curr_level:
+	if curr_level and stop:
 		self._set_processing(curr_level, true)
 
 

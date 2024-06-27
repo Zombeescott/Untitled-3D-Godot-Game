@@ -55,7 +55,7 @@ var controller: bool = false
 
 func _ready() -> void:
 	gravity = const_gravity
-	Global.unpause_scene()
+	Global.unpause_scene(false)
 
 
 func _input(event: InputEvent) -> void:
@@ -295,7 +295,6 @@ func jump() -> void:
 			doubleJump = true
 		else:
 			# Input buffer
-			print("here")
 			buffer_set("jump")
 	else:
 		# Holding down jump
