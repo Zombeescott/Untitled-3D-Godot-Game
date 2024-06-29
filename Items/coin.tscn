@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://cxsts7lsgjqk3"]
 
 [ext_resource type="Script" path="res://Items/coin.gd" id="1_ibdmh"]
-[ext_resource type="Material" uid="uid://4pwfmho6bh5h" path="res://Textures/shadow.tres" id="2_r44x2"]
+[ext_resource type="Material" uid="uid://4pwfmho6bh5h" path="res://Textures/materials/shadow.tres" id="2_r44x2"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_tkulc"]
 

@@ -1,10 +1,10 @@
 [gd_scene load_steps=11 format=3 uid="uid://cbfsnkg7uv2f8"]
 
 [ext_resource type="Script" path="res://Interactables/barrel.gd" id="1_ul231"]
-[ext_resource type="Material" uid="uid://bsu46cjxv0ty5" path="res://Textures/barrel_base.tres" id="2_6st5d"]
+[ext_resource type="Material" uid="uid://bsu46cjxv0ty5" path="res://Textures/materials/barrel_base.tres" id="2_6st5d"]
 [ext_resource type="PackedScene" uid="uid://boeput6aolbwp" path="res://Components/hitbox_component.tscn" id="2_cce7s"]
 [ext_resource type="PackedScene" uid="uid://ct0asw0hbjxjs" path="res://Components/health_component.tscn" id="3_2ix4e"]
-[ext_resource type="Material" uid="uid://lfuyp6ddngfr" path="res://Textures/barrel.tres" id="4_xpgbj"]
+[ext_resource type="Material" uid="uid://lfuyp6ddngfr" path="res://Textures/materials/barrel.tres" id="4_xpgbj"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_hoofw"]
 

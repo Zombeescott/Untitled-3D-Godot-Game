@@ -36,6 +36,8 @@ var gravity: float
 var sprinting: bool = false
 var crouching: bool = false
 var groundPound: bool = false
+# if there is a sign or something store it
+var interaction_held
 # Spin attack
 var spun: bool = false
 var spinning: bool = false
@@ -200,6 +202,9 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_pressed("jump"):
 		if buffer_used_reset():
 			jump()
+	if Input.is_action_just_pressed("interact"):
+		if interaction_held:
+			interaction_held.interact()
 	
 	# Modify the movement/deceleration.
 	var speed_multiplier = 1.5
@@ -365,6 +370,7 @@ func update(health : HealthComponent) -> void:
 	Global.update_health(health)
 
 
+# interaction with an object in the world (knockback / jumppad)
 func interaction_occured(action) -> void:
 	#match action.type:
 	#	"jumppad":
@@ -372,6 +378,17 @@ func interaction_occured(action) -> void:
 	if animation2.current_animation == "start_ground_pound":
 		animation2.stop()
 	call_deferred("refresh_abilities")
+
+
+# Used to display "e to interact" (signs)
+func interact_signal(interactable) -> void:
+	if !interaction_held or interaction_held != interactable:
+		# nothing to interact with or the newest thing to interact with
+		interaction_held = interactable
+		$InteractLabel.visible = true
+	else:
+		interaction_held = null
+		$InteractLabel.visible = false
 
 
 func _on_player_animation_animation_finished(anim_name: StringName) -> void:
@@ -394,5 +411,3 @@ func _on_player_animation_animation_finished(anim_name: StringName) -> void:
 		"dash_end":
 			pass
 			model.rotate(180)
-
-

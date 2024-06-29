@@ -1,0 +1,73 @@
+[gd_scene load_steps=7 format=3 uid="uid://673mx03lsecy"]
+
+[ext_resource type="Script" path="res://Interactables/sign.gd" id="1_h0yxb"]
+[ext_resource type="Material" uid="uid://bvsqbt608re3r" path="res://Textures/materials/wood.tres" id="2_cma13"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rvpwc"]
+size = Vector3(1, 1, 0.10083)
+
+[sub_resource type="BoxMesh" id="BoxMesh_gfmk2"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_iyrsx"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_348f0"]
+size = Vector3(1, 1, 2.336)
+
+[node name="Sign" type="StaticBody3D"]
+script = ExtResource("1_h0yxb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.531703, -0.00012207)
+shape = SubResource("BoxShape3D_rvpwc")
+
+[node name="Board" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.621353, 0, 0, 0, 0.11516, 0, 0.721806, 0)
+mesh = SubResource("BoxMesh_gfmk2")
+surface_material_override/0 = ExtResource("2_cma13")
+
+[node name="Post" type="MeshInstance3D" parent="Board"]
+transform = Transform3D(0.0722951, 0, 0, 0, 0.780305, 0, 0, 0, 0.584061, 0, -0.815518, 0)
+mesh = SubResource("BoxMesh_iyrsx")
+surface_material_override/0 = ExtResource("2_cma13")
+
+[node name="Read Area" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Read Area"]
+transform = Transform3D(1.32837, 0, 0, 0, 1.32837, 0, 0, 0, 1.32837, 0, 0.680533, 0.021526)
+shape = SubResource("BoxShape3D_348f0")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -225.0
+offset_top = -125.0
+offset_right = 225.0
+offset_bottom = 125.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+color = Color(0.623529, 0.423529, 0.286275, 1)
+
+[node name="Label" type="Label" parent="CanvasLayer/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Dude I turned into a sign help me"
+
+[connection signal="body_entered" from="Read Area" to="." method="_on_read_area_body_entered"]
+[connection signal="body_exited" from="Read Area" to="." method="_on_read_area_body_exited"]
