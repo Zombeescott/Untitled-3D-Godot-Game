@@ -59,7 +59,12 @@ var controller: bool = false
 
 func _ready() -> void:
 	gravity = const_gravity
+	Global.get_settings().saved_sens = sens
 	Global.unpause_scene(false)
+
+
+func settings_changed(settings : Control) -> void:
+	sens = settings.saved_sens
 
 
 func _input(event: InputEvent) -> void:

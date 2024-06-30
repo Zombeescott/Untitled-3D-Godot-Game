@@ -1,10 +1,11 @@
-[gd_scene load_steps=27 format=3 uid="uid://bldhi8u685csf"]
+[gd_scene load_steps=28 format=3 uid="uid://bldhi8u685csf"]
 
 [ext_resource type="Script" path="res://Level/colosseum_level.gd" id="1_83dof"]
 [ext_resource type="PackedScene" uid="uid://b64ovwa3oxmk5" path="res://Characters/player.tscn" id="1_gp10b"]
 [ext_resource type="PackedScene" uid="uid://dah3fml1mpjm0" path="res://Level/portal.tscn" id="2_4n5mw"]
 [ext_resource type="PackedScene" uid="uid://dex7654wh24he" path="res://Interactables/bubble.tscn" id="2_g58c0"]
 [ext_resource type="PackedScene" uid="uid://cxsts7lsgjqk3" path="res://Items/coin.tscn" id="3_6aprr"]
+[ext_resource type="PackedScene" uid="uid://673mx03lsecy" path="res://Interactables/sign.tscn" id="4_tn0u1"]
 [ext_resource type="PackedScene" uid="uid://dhbkmhl4khthm" path="res://Items/crystal.tscn" id="5_m1oyn"]
 [ext_resource type="PackedScene" uid="uid://cbfsnkg7uv2f8" path="res://Interactables/barrel.tscn" id="6_4css8"]
 [ext_resource type="PackedScene" uid="uid://daerkarjrbb7o" path="res://Interactables/button.tscn" id="7_eho2g"]
@@ -297,12 +298,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.8361, 1.24683, 4.91372)
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1, 13)
 
+[node name="Tutorial Sign" parent="." instance=ExtResource("4_tn0u1")]
+transform = Transform3D(0.976646, 0, 0.214855, 0, 1, 0, -0.214855, 0, 0.976646, 14.3365, -0.0953521, 21.6042)
+text = "Yo, i'm the sign that tells you the controls. On keyboard, space is to jump, spin is left click, and dash is right click. You can ground pound and butt bounce with control. If you are controller you're on your own guy but press options to pair the controller."
+
 [node name="Ground Path" type="Path3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.59865, 0)
 curve = SubResource("Curve3D_mpvav")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="Ground Path"]
-transform = Transform3D(-0.110111, 0, 0.993919, 0, 1, 0, -0.993919, 0, -0.110111, 2.02034, 0, -11.0491)
+transform = Transform3D(-0.110111, 0, 0.993918, 0, 1, 0, -0.993918, 0, -0.110111, 2.02034, 0, -11.0491)
 
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="Ground Path/PathFollow3D"]
 remote_path = NodePath("../../../Snails/Snail")
@@ -324,7 +329,7 @@ remote_path = NodePath("../../../Snails/Snail3")
 [node name="Snails" type="Node3D" parent="."]
 
 [node name="Snail" parent="Snails" node_paths=PackedStringArray("path") instance=ExtResource("9_hdch4")]
-transform = Transform3D(-0.110111, 0, 0.993919, 0, 1, 0, -0.993919, 0, -0.110111, 2.02034, -2.59865, -11.0491)
+transform = Transform3D(-0.110111, 0, 0.993918, 0, 1, 0, -0.993918, 0, -0.110111, 2.02034, -2.59865, -11.0491)
 path = NodePath("../../Ground Path/PathFollow3D/RemoteTransform3D")
 
 [node name="Snail2" parent="Snails" node_paths=PackedStringArray("path") instance=ExtResource("9_hdch4")]
@@ -460,3 +465,5 @@ transform = Transform3D(-0.921117, 0, -0.389284, 0, 1, 0, 0.389284, 0, -0.921117
 
 [node name="Race Checkpoint6" parent="Race Start" instance=ExtResource("11_0e32k")]
 transform = Transform3D(-0.921116, 0, -0.389284, 0, 1, 0, 0.389284, 0, -0.921116, -32.3324, 10.2322, -17.2812)
+
+[node name="Speedrun Timer" type="Timer" parent="."]

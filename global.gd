@@ -41,6 +41,8 @@ func item_collected(item: ItemBase) -> void:
 		"crystal":
 			crystal_count += 1
 			total_crystals += 1
+	if Global.curr_level and crystal_count >= curr_level.num_crystals:
+		curr_level.speedrunning = false
 	interface.update_ui()
 
 
@@ -55,6 +57,10 @@ func update_health(health : HealthComponent) -> void:
 
 func update_timer(time : float) -> void:
 	interface.update_timer(time)
+
+
+func update_speedrun_timer(time : float) -> void:
+	interface.update_speedrun_timer(time)
 
 
 func timer_remove() -> void:
@@ -96,6 +102,10 @@ func stop_settings_scene() -> void:
 	settings.get_child(0).hide()
 	pause.get_child(0).show()
 	pause.grab_focus
+
+
+func get_settings() -> Control:
+	return settings
 
 
 func main_menu_scene() -> void:
@@ -144,3 +154,4 @@ func end_level() -> void:
 	crystal_count = 0
 	curr_level = null
 	interface.timer_remove()
+	interface.remove_speedrun_timer()

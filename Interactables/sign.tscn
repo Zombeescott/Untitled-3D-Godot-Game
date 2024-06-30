@@ -61,13 +61,16 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -11.5
-offset_right = 20.0
-offset_bottom = 11.5
+offset_left = -200.0
+offset_top = -115.5
+offset_right = 200.0
+offset_bottom = 115.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "Dude I turned into a sign help me"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
 
 [connection signal="body_entered" from="Read Area" to="." method="_on_read_area_body_entered"]
 [connection signal="body_exited" from="Read Area" to="." method="_on_read_area_body_exited"]

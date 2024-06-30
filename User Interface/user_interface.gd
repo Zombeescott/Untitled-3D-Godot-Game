@@ -6,6 +6,7 @@ extends Control
 @onready var empty_heart = load("res://Textures/Tile_07-128x128.png")
 
 @onready var timer_label = $CanvasLayer/Timer
+@onready var speed_label = $CanvasLayer/SpeedTimer
 
 
 func update_ui() -> void:
@@ -53,3 +54,14 @@ func timer_remove() -> void:
 func _on_timer_timeout() -> void:
 	$CanvasLayer/Timer.visible = false
 	set_timer_color("white")
+
+
+func update_speedrun_timer(time : float) -> void:
+	if speed_label.visible == false:
+		speed_label.visible = true
+	# TODO If whole #, it just says 2 instead 2.00 and I don wanna fix it rn
+	speed_label.text = str(time)
+
+
+func remove_speedrun_timer() -> void:
+	speed_label.visible = false

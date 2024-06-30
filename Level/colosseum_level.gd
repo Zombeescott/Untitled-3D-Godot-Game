@@ -8,6 +8,9 @@ var found_crystals : Array[bool]
 @export var num_barrels : int = 6
 var broken_barrels : int = 0
 
+var speedrunning : bool = false
+var elapsed_time : float = 0
+
 # Found in the middle in the air
 @export var crystal_0 : Node3D
 # Collect all the coins
@@ -24,6 +27,8 @@ var broken_barrels : int = 0
 func _ready() -> void:
 	Global.set_curr_scene(self, %Player)
 	Global.interface.update_ui() # Update UI
+	if Global.get_settings().saved_speed:
+		speedrunning = true
 	# load from save file in future
 	found_crystals = [false, false, false, false, false, false]
 	# Crystals will be invisible by default in the future
@@ -31,6 +36,13 @@ func _ready() -> void:
 	crystal_2.hide_item()
 	crystal_3.hide_item()
 	crystal_4.hide_item()
+
+
+func _process(delta: float) -> void:
+	# speedrunning is turned false in global's item_collected function when all crystals are collected
+	if speedrunning:
+		elapsed_time += delta
+		Global.update_speedrun_timer(round(elapsed_time * 100) / 100.0)
 
 
 func item_collected(item: ItemBase) -> void:
