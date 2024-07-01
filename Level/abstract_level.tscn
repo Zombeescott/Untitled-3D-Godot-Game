@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bxwmqfu7sjqvo"]
+
+[ext_resource type="Script" path="res://Level/abstract_level.gd" id="1_wsaa3"]
+
+[node name="abstract_level" type="Node3D"]
+script = ExtResource("1_wsaa3")

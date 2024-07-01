@@ -4,6 +4,12 @@ class_name ItemBase
 
 @export var item_type : String
 @export var area : Area3D
+@export var appeared : bool = true
+
+
+func _ready() -> void:
+	if appeared == false:
+		self.hide_item()
 
 
 func body_entered(body: Node3D) -> void:

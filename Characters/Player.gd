@@ -302,7 +302,7 @@ func jump() -> void:
 				wallHang = false
 				wallPoint = Vector3.ZERO
 			# Less velocity for double jump
-			velocity.y = (initial_jump_velo / 1.25) * 1.5
+			velocity.y = (initial_jump_velo / 1.25) * 2
 			curr_jump_velo = initial_jump_velo / 1.25
 			doubleJump = true
 		else:

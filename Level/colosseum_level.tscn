@@ -1,7 +1,7 @@
 [gd_scene load_steps=28 format=3 uid="uid://bldhi8u685csf"]
 
-[ext_resource type="Script" path="res://Level/colosseum_level.gd" id="1_83dof"]
 [ext_resource type="PackedScene" uid="uid://b64ovwa3oxmk5" path="res://Characters/player.tscn" id="1_gp10b"]
+[ext_resource type="Script" path="res://Level/abstract_level.gd" id="1_woxk6"]
 [ext_resource type="PackedScene" uid="uid://dah3fml1mpjm0" path="res://Level/portal.tscn" id="2_4n5mw"]
 [ext_resource type="PackedScene" uid="uid://dex7654wh24he" path="res://Interactables/bubble.tscn" id="2_g58c0"]
 [ext_resource type="PackedScene" uid="uid://cxsts7lsgjqk3" path="res://Items/coin.tscn" id="3_6aprr"]
@@ -239,13 +239,13 @@ _data = {
 }
 point_count = 8
 
-[node name="Colosseum Level" type="Node3D" node_paths=PackedStringArray("crystal_0", "crystal_1", "crystal_2", "crystal_3", "crystal_4")]
-script = ExtResource("1_83dof")
-crystal_0 = NodePath("Crystals/Crystal 0")
-crystal_1 = NodePath("Crystals/Crystal 1")
-crystal_2 = NodePath("Crystals/Crystal 2")
-crystal_3 = NodePath("Crystals/Crystal 3")
-crystal_4 = NodePath("Crystals/Crystal 4")
+[node name="Colosseum Level" type="Node3D" node_paths=PackedStringArray("reach_crystal", "coin_crystal", "destroy_crystal", "green_crystal", "race_crystal")]
+script = ExtResource("1_woxk6")
+reach_crystal = NodePath("Crystals/Crystal 0")
+coin_crystal = NodePath("Crystals/Crystal 1")
+destroy_crystal = NodePath("Crystals/Crystal 2")
+green_crystal = NodePath("Crystals/Crystal 3")
+race_crystal = NodePath("Crystals/Crystal 4")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_kyyqh")
@@ -349,18 +349,22 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15, 0)
 
 [node name="Crystal 1" parent="Crystals" instance=ExtResource("5_m1oyn")]
 id = 1
+appeared = false
 
 [node name="Crystal 2" parent="Crystals" instance=ExtResource("5_m1oyn")]
 transform = Transform3D(0.932475, 0, 0.361234, 0, 1, 0, -0.361234, 0, 0.932475, -18.225, 12.8264, -20.8128)
 id = 2
+appeared = false
 
 [node name="Crystal 3" parent="Crystals" instance=ExtResource("5_m1oyn")]
 transform = Transform3D(0.865659, 0, 0.500635, 0, 1, 0, -0.500635, 0, 0.865659, -6.12398, 1.74942, -18.257)
 id = 3
+appeared = false
 
 [node name="Crystal 4" parent="Crystals" instance=ExtResource("5_m1oyn")]
 transform = Transform3D(0.865659, 0, 0.500635, 0, 1, 0, -0.500635, 0, 0.865659, 9.25428, 13.3979, -9.1805)
 id = 4
+appeared = false
 
 [node name="Coins" type="Node3D" parent="."]
 
