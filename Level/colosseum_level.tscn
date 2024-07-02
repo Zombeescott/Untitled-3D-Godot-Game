@@ -362,7 +362,7 @@ path = NodePath("../../Ground Path/PathFollow3D3/RemoteTransform3D")
 [node name="Snail" parent="." instance=ExtResource("9_hdch4")]
 
 [node name="Shark" parent="." node_paths=PackedStringArray("path") instance=ExtResource("6_7wsny")]
-transform = Transform3D(0.61805, -0.362534, 0.697555, 0.595879, 0.794815, -0.114881, -0.512779, 0.486661, 0.707262, 8.31197, 13.322, -19.7481)
+transform = Transform3D(0.618049, -0.362534, 0.697563, 0.595878, 0.794815, -0.114882, -0.512778, 0.486661, 0.70727, 8.31197, 13.322, -19.7481)
 path = NodePath("../Sky Path/PathFollow1/RemoteTransform3D")
 
 [node name="Crystals" type="Node3D" parent="."]

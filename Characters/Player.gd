@@ -55,16 +55,22 @@ var wallHang: bool = false
 var wallPoint: Vector3
 # Settings
 var controller: bool = false
+var meter: bool = true #speedometer
 
 
 func _ready() -> void:
 	gravity = const_gravity
-	Global.get_settings().saved_sens = sens
+	settings_changed(Global.get_settings())
 	Global.unpause_scene(false)
 
 
 func settings_changed(settings : Control) -> void:
 	sens = settings.saved_sens
+	meter = settings.saved_meter
+	if meter:
+		$Speedometer.visible = true
+	else: 
+		$Speedometer.visible = false
 
 
 func _input(event: InputEvent) -> void:
@@ -260,6 +266,8 @@ func _physics_process(delta: float) -> void:
 				velocity.z += direction.z * SPEED
 		else:
 			animation1.play("Rest")
+	if meter:
+		$Speedometer.text = str("Speed: ", round(velocity.length() * 100) / 100.0)
 	
 	move_and_slide()
 	
