@@ -26,7 +26,7 @@ var elapsed_time : float = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	Global.set_curr_scene(self, %Player)
+	Global.set_curr_scene(self, $Player)
 	Global.interface.update_ui() # Update UI
 	if Global.get_settings().saved_speed:
 		speedrunning = true

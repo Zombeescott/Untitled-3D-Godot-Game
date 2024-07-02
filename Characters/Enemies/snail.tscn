@@ -54,9 +54,11 @@ _data = {
 "Die": SubResource("Animation_wkg6m")
 }
 
-[node name="Snail" type="CharacterBody3D" node_paths=PackedStringArray("attack", "animate") groups=["enemy", "entity"]]
+[node name="Snail" type="CharacterBody3D" node_paths=PackedStringArray("attack", "health", "animate") groups=["enemy", "entity"]]
 script = ExtResource("1_iflre")
 attack = NodePath("Attack Component")
+health = NodePath("Health Component")
+speed = 0.05
 type = "enemy"
 jump_strength = 5.0
 animate = NodePath("AnimationPlayer")

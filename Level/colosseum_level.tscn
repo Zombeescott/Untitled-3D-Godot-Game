@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://bldhi8u685csf"]
+[gd_scene load_steps=30 format=3 uid="uid://bldhi8u685csf"]
 
 [ext_resource type="PackedScene" uid="uid://b64ovwa3oxmk5" path="res://Characters/player.tscn" id="1_gp10b"]
 [ext_resource type="Script" path="res://Level/abstract_level.gd" id="1_woxk6"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://673mx03lsecy" path="res://Interactables/sign.tscn" id="4_tn0u1"]
 [ext_resource type="PackedScene" uid="uid://dhbkmhl4khthm" path="res://Items/crystal.tscn" id="5_m1oyn"]
 [ext_resource type="PackedScene" uid="uid://cbfsnkg7uv2f8" path="res://Interactables/barrel.tscn" id="6_4css8"]
+[ext_resource type="PackedScene" uid="uid://dj8nxfedmqp58" path="res://Characters/Enemies/shark.tscn" id="6_7wsny"]
 [ext_resource type="PackedScene" uid="uid://daerkarjrbb7o" path="res://Interactables/button.tscn" id="7_eho2g"]
 [ext_resource type="PackedScene" uid="uid://prm444wo48m7" path="res://Items/green_coin.tscn" id="8_6bjek"]
 [ext_resource type="PackedScene" uid="uid://expy3arbt4i6" path="res://Characters/Enemies/snail.tscn" id="9_hdch4"]
@@ -239,6 +240,13 @@ _data = {
 }
 point_count = 8
 
+[sub_resource type="Curve3D" id="Curve3D_c0iix"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -8.67911, 0, -17.3942, 2.16177, 0.351936, -3.48221, -2.16177, -0.351936, 3.48221, -18.1145, 0, -8.53506, -1.66022, 0.328615, -1.66324, 1.66022, -0.328615, 1.66324, -18.6697, -1.40013, 1.77456, -4.68855, 0.796539, 2.1707, 4.68855, -0.796539, -2.1707, -10.2163, -2.67599, 3.93208, -6.28144, -3.1978, 4.18052, 6.28144, 3.1978, -4.18052, -3.74957, -4.57965, -7.04857, -3.15271, 0.126006, -0.369205, 3.15271, -0.126006, 0.369205, 4.68838, -2.34465, -13.3458, -0.0581884, -0.399479, -2.99699, 0.0581884, 0.399479, 2.99699, 8.37005, -1.44534, -3.90848, 5.51934, 0.194944, -4.18015, -5.51934, -0.194944, 4.18015, 5.44577, 0.515102, 7.48524, 3.501, 1.31058, -2.66174, -3.501, -1.31058, 2.66174, -8.96721, 0, 9.7595, -3.34324, 0.43214, -1.82022, 3.34324, -0.43214, 1.82022, -5.08755, -1.60756, 18.0646, -2.67897, 0.632276, 1.89412, 2.67897, -0.632276, -1.89412, 3.62957, -3.28682, 17.8836, -0.743481, 0.444624, 4.28367, 0.743481, -0.444624, -4.28367, 11.9984, -4.9081, 11.1875, 0.418625, -0.165715, 4.26729, -0.418625, 0.165715, -4.26729, 18.2688, -3.92419, -0.715178, 3.87528, 0.133256, 2.238, -3.87528, -0.133256, -2.238, 14.1026, -3.28447, -9.12993, 3.09824, -0.5808, -1.46276, -3.09824, 0.5808, 1.46276, 3.78136, 0, -8.89519, 2.82997, 1.33004, -3.43631, -2.82997, -1.33004, 3.43631, -1.1164, 0, 1.83666, -0.0310478, -0.49929, 3.43155, 0.0310478, 0.49929, -3.43155, -9.54342, 0, -3.0611, -2.72589, 0.128801, 1.73867, 2.72589, -0.128801, -1.73867, -5.33439, 0.275003, -12.6456, -2.96854, 0.896654, 0.899585, 2.96854, -0.896654, -0.899585, 8.31898, 0, -13.0727, 3.70867, -0.326912, 2.75553, -3.70867, 0.326912, -2.75553, 7.16453, 0.612904, -20.7411, 1.90027, -0.0131683, -1.00571, -1.90027, 0.0131683, 1.00571, -2.41286, 0, -20.9235, 0, 0, 0, 0, 0, 0, -8.67911, 0, -17.3942),
+"tilts": PackedFloat32Array(0, 0, -0.378303, -0.468674, -0.779107, -0.641143, -0.817582, -0.840384, 1.86768, 1.812, 1.70664, 1.20929, 2.09805, 1.89049, 1.65888, -0.841225, -0.836349, -0.822942, -0.800155, 1.90815, -1.10563, 0)
+}
+point_count = 22
+
 [node name="Colosseum Level" type="Node3D" node_paths=PackedStringArray("reach_crystal", "coin_crystal", "destroy_crystal", "green_crystal", "race_crystal")]
 script = ExtResource("1_woxk6")
 reach_crystal = NodePath("Crystals/Crystal 0")
@@ -326,6 +334,17 @@ progress = 50.0
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="Ground Path/PathFollow3D3"]
 remote_path = NodePath("../../../Snails/Snail3")
 
+[node name="Sky Path" type="Path3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.8512, 0)
+curve = SubResource("Curve3D_c0iix")
+
+[node name="PathFollow1" type="PathFollow3D" parent="Sky Path"]
+transform = Transform3D(0.618049, -0.362534, 0.697563, 0.595878, 0.794815, -0.114882, -0.512778, 0.486661, 0.70727, 8.31197, 0.470768, -19.7481)
+progress = 222.305
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="Sky Path/PathFollow1"]
+remote_path = NodePath("../../../Shark")
+
 [node name="Snails" type="Node3D" parent="."]
 
 [node name="Snail" parent="Snails" node_paths=PackedStringArray("path") instance=ExtResource("9_hdch4")]
@@ -341,6 +360,10 @@ transform = Transform3D(0.472336, 0, -0.881417, 0, 1, 0, 0.881417, 0, 0.472336, 
 path = NodePath("../../Ground Path/PathFollow3D3/RemoteTransform3D")
 
 [node name="Snail" parent="." instance=ExtResource("9_hdch4")]
+
+[node name="Shark" parent="." node_paths=PackedStringArray("path") instance=ExtResource("6_7wsny")]
+transform = Transform3D(0.61805, -0.362534, 0.697555, 0.595879, 0.794815, -0.114881, -0.512779, 0.486661, 0.707262, 8.31197, 13.322, -19.7481)
+path = NodePath("../Sky Path/PathFollow1/RemoteTransform3D")
 
 [node name="Crystals" type="Node3D" parent="."]
 

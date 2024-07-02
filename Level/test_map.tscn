@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://jrroq7wi8bhm"]
+[gd_scene load_steps=17 format=3 uid="uid://jrroq7wi8bhm"]
 
 [ext_resource type="Material" uid="uid://bk8ewcvmq6bvu" path="res://Textures/materials/GridTexture1.tres" id="1_enji8"]
 [ext_resource type="PackedScene" uid="uid://b64ovwa3oxmk5" path="res://Characters/player.tscn" id="2_q6ukj"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://daerkarjrbb7o" path="res://Interactables/button.tscn" id="8_s8ep4"]
 [ext_resource type="PackedScene" uid="uid://expy3arbt4i6" path="res://Characters/Enemies/snail.tscn" id="9_6nox0"]
 [ext_resource type="PackedScene" uid="uid://cduuyllwhe4nw" path="res://Interactables/race_start.tscn" id="10_5b7ao"]
+[ext_resource type="PackedScene" uid="uid://dj8nxfedmqp58" path="res://Characters/Enemies/shark.tscn" id="10_785ii"]
 [ext_resource type="PackedScene" uid="uid://bb8t4oat50ixt" path="res://Interactables/race_checkpoint.tscn" id="11_w4l35"]
 [ext_resource type="PackedScene" uid="uid://dah3fml1mpjm0" path="res://Level/portal.tscn" id="12_6ouji"]
 [ext_resource type="PackedScene" uid="uid://bldhi8u685csf" path="res://Level/colosseum_level.tscn" id="13_7ted7"]
@@ -85,6 +86,9 @@ transform = Transform3D(1.88965, 0, 0, 0, 1.55334, 0, 0, 0, 1.88965, 0, 0.41586,
 
 [node name="Snail" parent="." instance=ExtResource("9_6nox0")]
 transform = Transform3D(0.484672, 0, -0.874696, 0, 1, 0, 0.874696, 0, 0.484672, -15.0948, 1.07839, 5.22279)
+
+[node name="Shark" parent="." instance=ExtResource("10_785ii")]
+transform = Transform3D(0.569509, 0, 0.821985, 0, 1, 0, -0.821985, 0, 0.569509, -1.61532, 6.86147, -21.0996)
 
 [node name="Race Start" parent="." node_paths=PackedStringArray("checkpoints") instance=ExtResource("10_5b7ao")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.862, 2.5628, 2.97416)

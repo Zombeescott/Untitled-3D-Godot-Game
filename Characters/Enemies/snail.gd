@@ -18,9 +18,9 @@ func _physics_process(delta: float) -> void:
 	# Handle jump.
 	#velocity.y = JUMP_VELOCITY
 	
-	if animate and path:
-		if animate.current_animation != "Die":
-			path.get_parent().progress += delta + SPEED
+	#if animate and path:
+	#	if animate.current_animation != "Die":
+	#		path.get_parent().progress += delta + SPEED
 	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
