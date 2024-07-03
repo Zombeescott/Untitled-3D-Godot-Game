@@ -730,7 +730,7 @@ MAX_HEALTH = 3
 
 [node name="ShadowCast" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 20, 0, 0, 0, 1, 0, 0.05, 0)
-collide_with_areas = true
+collision_mask = 3
 
 [node name="Shadow" type="MeshInstance3D" parent="ShadowCast"]
 transform = Transform3D(0.672, 0, 0, 0, 0.0336, 0, 0, 0, 0.64, 0, -0.002, 0)

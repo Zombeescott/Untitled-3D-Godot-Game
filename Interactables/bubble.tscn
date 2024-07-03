@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://dex7654wh24he"]
+[gd_scene load_steps=6 format=3 uid="uid://dex7654wh24he"]
 
 [ext_resource type="PackedScene" uid="uid://olsjtcsrhd0b" path="res://Components/jumppad_component.tscn" id="1_00ver"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ignp8"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_08emy"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_jc1n3"]
 
@@ -13,13 +15,22 @@ cull_mode = 2
 
 [node name="Bubble" type="Node3D"]
 
-[node name="Jumppad Component" parent="." node_paths=PackedStringArray("pop_timer") instance=ExtResource("1_00ver")]
+[node name="Jumppad Component" parent="." node_paths=PackedStringArray("pop_timer", "collision") instance=ExtResource("1_00ver")]
 type = "jumppad"
 strength = 7.0
 pop_timer = NodePath("Timer")
+collision = NodePath("StaticBody3D/CollisionShape3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Jumppad Component"]
+transform = Transform3D(1.045, 0, 0, 0, 1.045, 0, 0, 0, 1.045, 0, 0, 0)
 shape = SubResource("SphereShape3D_ignp8")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Jumppad Component"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Jumppad Component/StaticBody3D"]
+shape = SubResource("SphereShape3D_08emy")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Jumppad Component"]
 mesh = SubResource("SphereMesh_jc1n3")
