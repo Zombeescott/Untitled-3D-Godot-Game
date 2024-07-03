@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://cg3d6evyj1ic5"]
+
+[ext_resource type="PackedScene" uid="uid://da0u1sw1ccqqy" path="res://Components/attack_component.tscn" id="1_6p5sd"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_m0iju"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_d5ywx"]
+
+[node name="KillBox" type="Area3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_m0iju")
+
+[node name="Attack Component" parent="." instance=ExtResource("1_6p5sd")]
+damage = 10.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Attack Component"]
+shape = SubResource("BoxShape3D_d5ywx")

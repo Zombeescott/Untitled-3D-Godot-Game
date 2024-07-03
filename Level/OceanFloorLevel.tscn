@@ -27,12 +27,12 @@ radius = 4.1661
 height = 42.4397
 
 [node name="coral2" type="CSGCylinder3D" parent="Map"]
-transform = Transform3D(0.526407, 0.850233, 3.71648e-08, -1.83855e-15, -4.37114e-08, 1, 0.850233, -0.526407, -2.301e-08, 18.7465, -0.0915531, -27.6182)
+transform = Transform3D(0.526407, 0.850233, 3.71648e-08, -1.83855e-15, -4.37114e-08, 1, 0.850233, -0.526407, -2.301e-08, 7.69585, -0.0915531, -20.2382)
 radius = 3.09575
 height = 39.4894
 
 [node name="coral3" type="CSGCylinder3D" parent="Map"]
-transform = Transform3D(0.871556, 0.490295, 2.14315e-08, -2.87915e-15, -4.37114e-08, 1, 0.490295, -0.871556, -3.80969e-08, 65.6667, -0.0915622, -54.4688)
+transform = Transform3D(0.871556, 0.490295, 2.14315e-08, -2.87915e-15, -4.37114e-08, 1, 0.490295, -0.871556, -3.80969e-08, 59.0665, -0.0915622, -43.0489)
 radius = 3.09575
 height = 39.4894
 
@@ -48,9 +48,9 @@ size = Vector3(209.866, 0.164673, 241.772)
 material = ExtResource("2_rp114")
 
 [node name="Floor1" type="CSGBox3D" parent="Map"]
-transform = Transform3D(0.727833, 0, -0.685755, 0, 1, 0, 0.685755, 0, 0.727833, -55.7287, 4.21616, -49.3439)
+transform = Transform3D(0.727833, 0, -0.685755, 0, 1, 0, 0.685755, 0, 0.727833, -61.4035, 4.21616, -32.6369)
 use_collision = true
-size = Vector3(108.025, 10.8491, 279.347)
+size = Vector3(73.4994, 10.8491, 218.633)
 
 [node name="Floor2" type="CSGBox3D" parent="Map"]
 transform = Transform3D(0.802547, 0, -0.596589, 0, 1, 0, 0.596589, 0, 0.802547, 50.9191, 0.307357, 46.0895)
@@ -58,31 +58,35 @@ use_collision = true
 size = Vector3(61.8103, 1.86865, 219.578)
 
 [node name="Floor3" type="CSGBox3D" parent="Map"]
-transform = Transform3D(0.871385, 0, -0.4906, 0, 1, 0, 0.4906, 0, 0.871385, -57.0532, 1.6727, 96.3342)
+transform = Transform3D(0.655716, 0, -0.755007, 0, 1, 0, 0.755007, 0, 0.655716, -62.07, 1.6727, 89.6693)
 use_collision = true
-size = Vector3(111.136, 4.59937, 96.7168)
+size = Vector3(136.508, 4.59937, 96.7168)
 
 [node name="Walls" type="Node3D" parent="Map"]
 transform = Transform3D(0.741496, 0, -0.670957, 0, 1, 0, 0.670957, 0, 0.741496, 0, 0, 0)
 
 [node name="Wall1" type="CSGBox3D" parent="Map/Walls"]
-transform = Transform3D(0.614079, 0, 0.789245, 0, 1, 0, -0.789245, 0, 0.614079, -66.4001, 12.8899, -60.978)
-size = Vector3(208.854, 27.0337, 1)
+transform = Transform3D(0.887269, 0, 0.461253, 0, 1, 0, -0.461253, 0, 0.887269, -36.9409, 12.8899, -83.2472)
+size = Vector3(130.291, 27.0337, 1)
+
+[node name="Wall6" type="CSGBox3D" parent="Map/Walls"]
+transform = Transform3D(0.0792771, 0, 0.996852, 0, 1, 0, -0.996852, 0, 0.0792771, -90.547, 12.8899, -1.39913)
+size = Vector3(127.528, 27.0337, 1)
 
 [node name="Wall2" type="CSGBox3D" parent="Map/Walls"]
 transform = Transform3D(0.0692167, 0, 0.997602, 0, 1, 0, -0.997602, 0, 0.0692167, 90.0349, 12.8899, 19.2906)
 size = Vector3(89.0483, 27.0337, 1)
 
 [node name="Wall3" type="CSGBox3D" parent="Map/Walls"]
-transform = Transform3D(-0.631082, 0, 0.775716, 0, 1, 0, -0.775716, 0, -0.631082, 44.688, 12.0176, -80.1658)
-size = Vector3(164.655, 27.0337, 1)
+transform = Transform3D(-0.631082, 0, 0.775716, 0, 1, 0, -0.775716, 0, -0.631082, 56.5986, 12.0176, -65.5255)
+size = Vector3(126.908, 27.0337, 1)
 
 [node name="Wall4" type="CSGBox3D" parent="Map/Walls"]
-transform = Transform3D(-0.716923, 0, 0.697153, 0, 1, 0, -0.697153, 0, -0.716923, -59.6662, 12.8899, 85.3867)
-size = Vector3(199.378, 27.0337, 1)
+transform = Transform3D(-0.733089, 0, 0.680133, 0, 1, 0, -0.680133, 0, -0.733089, -49.8208, 12.8899, 93.9082)
+size = Vector3(141.569, 27.0337, 1)
 
 [node name="Wall5" type="CSGBox3D" parent="Map/Walls"]
-transform = Transform3D(0.618683, 0, 0.785641, 0, 1, 0, -0.785641, 0, 0.618683, 50.5919, 12.8899, 104.718)
+transform = Transform3D(0.733279, 0, 0.679928, 0, 1, 0, -0.679928, 0, 0.733279, 42.9409, 12.8899, 96.2627)
 size = Vector3(132.193, 27.0337, 1)
 
 [node name="Player" parent="." instance=ExtResource("3_io1u0")]

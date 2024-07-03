@@ -13,8 +13,10 @@ func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	# TODO change it so the gravity doesn't affect it while death animation is occuring
 	# also edit the animation to include the collision when it is in the air
-	if not is_on_floor():
+	if not is_on_floor() and !dying:
 		velocity.y -= gravity * delta
+	if dying:
+		$Collision.disabled = true
 	# Handle jump.
 	#velocity.y = JUMP_VELOCITY
 	

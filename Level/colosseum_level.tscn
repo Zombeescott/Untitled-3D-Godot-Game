@@ -339,7 +339,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.8512, 0)
 curve = SubResource("Curve3D_c0iix")
 
 [node name="PathFollow1" type="PathFollow3D" parent="Sky Path"]
-transform = Transform3D(0.618049, -0.362534, 0.697563, 0.595878, 0.794815, -0.114882, -0.512778, 0.486661, 0.70727, 8.31197, 0.470768, -19.7481)
+transform = Transform3D(0.61804, -0.362538, 0.697569, 0.595887, 0.794809, -0.11488, -0.512778, 0.486668, 0.707265, 8.31191, 0.470777, -19.7482)
 progress = 222.305
 
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="Sky Path/PathFollow1"]
